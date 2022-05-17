@@ -46,9 +46,9 @@ async function register(name, owner, duration) {
 }
 ```
 
-{% note info %}
+
 为简明起见，这个例子是使用异步而不是用回调编写的。因此，这个例子可以在 web3 的 1.0.x 版本下正常工作。注意，它不会在 MetaMask 内置的 web3 中工作，因为这是一个较老的版本，缺乏异步支持。
-{% endnote %}
+
 
 ## 读取操作
 
