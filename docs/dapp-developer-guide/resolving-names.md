@@ -84,8 +84,9 @@ YourSmartContract contract = YourSmartContract.load(
 
 对其他区块链地址的支持是通过重载 `addr()` 来实现的。要解析非以太坊的地址，必须要有相应加密货币的 Namehash 和符合 [SLIP44](https://github.com/satoshilabs/slips/blob/master/slip-0044.html) 规范的链 ID 。例如，要解析一个比特币地址，可以调用 `addr(hash, 0)` 。注意，返回的地址是用二进制表示的，因此要通过解码来得到文本格式的地址，详细内容请参阅 [EIP2304](https://eips.ethereum.org/EIPS/eip-2304) 。
 
+{% note warn %}
 使用 `addr()` 进行解析时，必须将来自解析器 0x00…00 的返回值视为未设置的记录。否则，在用户配置了解析器却没有为名称设置解析地址的情况下，可能导致用户的资金被发送到空地址!
-
+{% endnote %}
 
 ## 解析至其他资源
 
@@ -260,9 +261,9 @@ console.log(addr); // 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
 
 反向解析是通过专用名称 _addr.reverse_ 和解析器的 `name()` 函数实现的。 _addr.reverse_ 的所有权属于一个专用的注册器合约，该合约将子名称分配给相应地址的所有者。例如，地址 _0x314159265dd8dbb310642f98f50c066173c1259b_ 可以要求使用 _314159265dd8dbb310642f98f50c066173c1259b.addr.reverse_ ，并设置解析器和解析记录。通过这个解析器的 `name()` 函数可以取得与该地址关联的名称。
 
-
+{% note warn %}
 ENS 并不强制要求反向记录的准确性。例如，每个人都可以声明其地址的名称为 “alice.eth” 。所以，为了确保声明是准确的，你必须始终对返回的名称执行正向解析，并检查正向解析得到的地址是否与原始地址匹配。
-
+{% endnote %}
 
 大多数 ENS 库提供了执行反向解析的功能：
 
