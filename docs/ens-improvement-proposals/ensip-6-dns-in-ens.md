@@ -5,9 +5,9 @@ title: 'ENSIP-6: ENS 中的 DNS'
 description: 为 ENS 定义了一个解析类型，提供 DNS 记录的存储和查找功能 (原来的 EIP-1185)。
 ---
 
-{% note warn %}
+
 这个标准已经过时了，并且不能反映当前的实现。
-{% endnote %}
+
 
 | **作者**  | Jim McDonald (@mcdee) |
 | ----------- | --------------------- |
