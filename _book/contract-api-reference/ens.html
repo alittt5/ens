@@ -1,0 +1,936 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>注册表 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="ENS 注册表。">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="reverseregistrar.html" />
+    
+    
+    <link rel="prev" href="name-processing.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../readme.html">
+            
+                <a href="../readme.html">
+            
+                    
+                    概述
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">开始</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    ENS介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    专业术语
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    ENS部署情况
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    注册器常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    在私有链上部署ENS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    DNS注册器指南
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    漏洞奖金计划
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9" data-path="../ens-improvement-proposals/readme.html">
+            
+                <a href="../ens-improvement-proposals/readme.html">
+            
+                    
+                    ENS改进提案
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.9.1" data-path="../ens-improvement-proposals/ensip-1-ens.html">
+            
+                <a href="../ens-improvement-proposals/ensip-1-ens.html">
+            
+                    
+                    ENSIP-1: ENS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.2" data-path="../ens-improvement-proposals/ensip-2-initial-hash-registrar.html">
+            
+                <a href="../ens-improvement-proposals/ensip-2-initial-hash-registrar.html">
+            
+                    
+                    ENSIP-2: 初始哈希注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.3" data-path="../ens-improvement-proposals/ensip-3-reverse-resolution.html">
+            
+                <a href="../ens-improvement-proposals/ensip-3-reverse-resolution.html">
+            
+                    
+                    ENSIP-3: 反向解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.4" data-path="../ens-improvement-proposals/ensip-4-support-for-contract-abis.html">
+            
+                <a href="../ens-improvement-proposals/ensip-4-support-for-contract-abis.html">
+            
+                    
+                    ENSIP-4: 合约 ABI 支持
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.5" data-path="../ens-improvement-proposals/ensip-5-text-records.html">
+            
+                <a href="../ens-improvement-proposals/ensip-5-text-records.html">
+            
+                    
+                    ENSIP-5: 文本记录
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.6" data-path="../ens-improvement-proposals/ensip-6-dns-in-ens.html">
+            
+                <a href="../ens-improvement-proposals/ensip-6-dns-in-ens.html">
+            
+                    
+                    ENSIP-6: ENS 中的 DNS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.7" data-path="../ens-improvement-proposals/ensip-7-contenthash-field.html">
+            
+                <a href="../ens-improvement-proposals/ensip-7-contenthash-field.html">
+            
+                    
+                    ENSIP-7: 内容哈希字段
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.8" data-path="../ens-improvement-proposals/ensip-8-interface-discovery.html">
+            
+                <a href="../ens-improvement-proposals/ensip-8-interface-discovery.html">
+            
+                    
+                    ENSIP-8: 接口发现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.9" data-path="../ens-improvement-proposals/ensip-9-multichain-address-resolution.html">
+            
+                <a href="../ens-improvement-proposals/ensip-9-multichain-address-resolution.html">
+            
+                    
+                    ENSIP-9: 多链地址解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.10" data-path="../ens-improvement-proposals/ensip-10-wildcard-resolution.html">
+            
+                <a href="../ens-improvement-proposals/ensip-10-wildcard-resolution.html">
+            
+                    
+                    ENSIP-10: 通配符解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.11" data-path="../ens-improvement-proposals/ensip-11-evmchain-address-resolution.html">
+            
+                <a href="../ens-improvement-proposals/ensip-11-evmchain-address-resolution.html">
+            
+                    
+                    ENSIP-11: 兼容链地址解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.12" data-path="../ens-improvement-proposals/ensip-12-avatar-text-records.html">
+            
+                <a href="../ens-improvement-proposals/ensip-12-avatar-text-records.html">
+            
+                    
+                    ENSIP-12: 头像文本记录
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">DAPP开发指南</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../dapp-developer-guide/ens-enabling-your-dapp.html">
+            
+                <a href="../dapp-developer-guide/ens-enabling-your-dapp.html">
+            
+                    
+                    在 DAPP 中启用 ENS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../dapp-developer-guide/ens-libraries.html">
+            
+                <a href="../dapp-developer-guide/ens-libraries.html">
+            
+                    
+                    ENS 库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="../dapp-developer-guide/working-with-ens.html">
+            
+                <a href="../dapp-developer-guide/working-with-ens.html">
+            
+                    
+                    ENS 的使用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.4" data-path="../dapp-developer-guide/resolving-names.html">
+            
+                <a href="../dapp-developer-guide/resolving-names.html">
+            
+                    
+                    名称解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.5" data-path="../dapp-developer-guide/managing-names.html">
+            
+                <a href="../dapp-developer-guide/managing-names.html">
+            
+                    
+                    名称管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.6" data-path="../dapp-developer-guide/registering-and-renewing-names.html">
+            
+                <a href="../dapp-developer-guide/registering-and-renewing-names.html">
+            
+                    
+                    名称注册和续费
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.7" data-path="../dapp-developer-guide/front-end-design-guidelines.html">
+            
+                <a href="../dapp-developer-guide/front-end-design-guidelines.html">
+            
+                    
+                    ENS 前端设计指南
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.8" data-path="../dapp-developer-guide/ens-as-nft.html">
+            
+                <a href="../dapp-developer-guide/ens-as-nft.html">
+            
+                    
+                    ENS 作为一种 NFT
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.9" data-path="../dapp-developer-guide/ens-l2-offchain.html">
+            
+                <a href="../dapp-developer-guide/ens-l2-offchain.html">
+            
+                    
+                    L2 和链下数据支持
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">合约 API 参考</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="ENS-Contracts-Overview.html">
+            
+                <a href="ENS-Contracts-Overview.html">
+            
+                    
+                    ENS 合约概述
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="name-processing.html">
+            
+                <a href="name-processing.html">
+            
+                    
+                    名称处理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="4.3" data-path="ens.html">
+            
+                <a href="ens.html">
+            
+                    
+                    注册表
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4" data-path="reverseregistrar.html">
+            
+                <a href="reverseregistrar.html">
+            
+                    
+                    反向注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5" data-path="testregistrar.html">
+            
+                <a href="testregistrar.html">
+            
+                    
+                    测试注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6" data-path="publicresolver.html">
+            
+                <a href="publicresolver.html">
+            
+                    
+                    公共解析器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.7" data-path="eth-permanent-registrar/readme.html">
+            
+                <a href="eth-permanent-registrar/readme.html">
+            
+                    
+                    .eth 永久注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8" data-path="eth-permanent-registrar/registrar.html">
+            
+                <a href="eth-permanent-registrar/registrar.html">
+            
+                    
+                    .eth 永久注册器的实现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.9" data-path="eth-permanent-registrar/controller.html">
+            
+                <a href="eth-permanent-registrar/controller.html">
+            
+                    
+                    .eth 永久注册器的控制器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.10" data-path="dns-registrar.html">
+            
+                <a href="dns-registrar.html">
+            
+                    
+                    DNS 注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">合约开发指南</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../contract-developer-guide/resolving-names-on-chain.html">
+            
+                <a href="../contract-developer-guide/resolving-names-on-chain.html">
+            
+                    
+                    链上名称解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="../contract-developer-guide/writing-a-resolver.html">
+            
+                <a href="../contract-developer-guide/writing-a-resolver.html">
+            
+                    
+                    编写一个解析器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="../contract-developer-guide/writing-a-registrar.html">
+            
+                <a href="../contract-developer-guide/writing-a-registrar.html">
+            
+                    
+                    编写一个注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">ENS 迁移(2020年2月)</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="../ens-migration-february-2020/guide-for-dapp-developers.html">
+            
+                <a href="../ens-migration-february-2020/guide-for-dapp-developers.html">
+            
+                    
+                    DApp 开发者迁移指南
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2" data-path="../ens-migration-february-2020/technical-description.html">
+            
+                <a href="../ens-migration-february-2020/technical-description.html">
+            
+                    
+                    技术说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >注册表</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <p><a href="https://github.com/ensdomains/ens/blob/master/contracts/ENS.sol" target="_blank">&#x6E90;&#x4EE3;&#x7801;</a></p>
+<p>ENS &#x6CE8;&#x518C;&#x8868;&#x662F; ENS &#x7CFB;&#x7EDF;&#x4E2D;&#x7684;&#x6838;&#x5FC3;&#x5408;&#x7EA6;&#xFF0C;&#x6240;&#x6709;&#x7684; ENS &#x67E5;&#x8BE2;&#x90FD;&#x4ECE;&#x6CE8;&#x518C;&#x8868;&#x5F00;&#x59CB;&#x3002;&#x6CE8;&#x518C;&#x8868;&#x8D1F;&#x8D23;&#x7BA1;&#x7406;&#x540D;&#x79F0;&#x5217;&#x8868;&#xFF0C;&#x8BB0;&#x5F55;&#x6BCF;&#x4E2A;&#x540D;&#x79F0;&#x7684;&#x6240;&#x6709;&#x8005;&#x3001;&#x89E3;&#x6790;&#x5668;&#x548C; TTL &#xFF0C;&#x5E76;&#x5141;&#x8BB8;&#x540D;&#x79F0;&#x7684;&#x6240;&#x6709;&#x8005;&#x5BF9;&#x8FD9;&#x4E9B;&#x6570;&#x636E;&#x8FDB;&#x884C;&#x66F4;&#x6539;&#x3002;</p>
+<p>ENS &#x6CE8;&#x518C;&#x8868;&#x7684;&#x8BE6;&#x7EC6;&#x4FE1;&#x606F;&#x8BF7;&#x53C2;&#x9605; <a href="https://eips.ethereum.org/EIPS/eip-137" target="_blank">EIP137</a> &#x3002;</p>
+<h3 id="&#x83B7;&#x53D6;&#x6240;&#x6709;&#x8005;">&#x83B7;&#x53D6;&#x6240;&#x6709;&#x8005;</h3>
+<pre><code class="lang-text">function owner(bytes32 node) external view returns (address);
+</code></pre>
+<p>&#x4EE5;&#x4E0A;&#x51FD;&#x6570;&#x8FD4;&#x56DE; <code>node</code> &#x6240;&#x6807;&#x8BC6;&#x540D;&#x79F0;&#x7684;&#x6240;&#x6709;&#x8005;&#x3002;</p>
+<h3 id="&#x83B7;&#x53D6;&#x89E3;&#x6790;&#x5668;">&#x83B7;&#x53D6;&#x89E3;&#x6790;&#x5668;</h3>
+<pre><code class="lang-text">function resolver(bytes32 node) external view returns (address);
+</code></pre>
+<p>&#x4EE5;&#x4E0A;&#x51FD;&#x6570;&#x8FD4;&#x56DE; <code>node</code> &#x6240;&#x6807;&#x8BC6;&#x540D;&#x79F0;&#x7684;&#x89E3;&#x6790;&#x5668;&#x5730;&#x5740;&#x3002;</p>
+<h3 id="&#x83B7;&#x53D6;-ttl">&#x83B7;&#x53D6; TTL</h3>
+<pre><code class="lang-text">function ttl(bytes32 node) external view returns (uint64);
+</code></pre>
+<p>&#x4EE5;&#x4E0A;&#x51FD;&#x6570;&#x8FD4;&#x56DE; <code>node</code> &#x6240;&#x6807;&#x8BC6;&#x540D;&#x79F0;&#x7684;&#x7F13;&#x5B58;&#x5B58;&#x6D3B;&#x65F6;&#x95F4;&#xFF08;TTL&#xFF09;&#x3002;&#x5E0C;&#x671B;&#x7F13;&#x5B58;&#x540D;&#x79F0;&#x4FE1;&#x606F;(&#x5305;&#x62EC;&#x6240;&#x6709;&#x8005;&#x3001;&#x89E3;&#x6790;&#x5668;&#x5730;&#x5740;&#x548C;&#x5176;&#x4ED6;&#x8BB0;&#x5F55;)&#x7684;&#x7CFB;&#x7EDF;&#x5E94;&#x8BE5;&#x91CD;&#x89C6;&#x8FD9;&#x4E2A;&#x503C;&#x3002;&#x5982;&#x679C; TTL &#x4E3A; 0 &#xFF0C;&#x90A3;&#x4E48;&#x6BCF;&#x6B21;&#x67E5;&#x8BE2;&#x90FD;&#x9700;&#x8981;&#x83B7;&#x53D6;&#x65B0;&#x6570;&#x636E;&#x3002;</p>
+<h3 id="&#x8BBE;&#x7F6E;&#x6240;&#x6709;&#x8005;">&#x8BBE;&#x7F6E;&#x6240;&#x6709;&#x8005;</h3>
+<pre><code class="lang-text">function setOwner(bytes32 node, address owner) external;
+</code></pre>
+<p>&#x5C06; <code>node</code> &#x6240;&#x6807;&#x8BC6;&#x540D;&#x79F0;&#x7684;&#x6240;&#x6709;&#x6743;&#x91CD;&#x65B0;&#x5206;&#x914D;&#x7ED9; <code>owner</code> &#xFF0C;&#x6B64;&#x51FD;&#x6570;&#x53EA;&#x80FD;&#x7531;&#x540D;&#x79F0;&#x5F53;&#x524D;&#x7684;&#x6240;&#x6709;&#x8005;&#x8C03;&#x7528;&#x3002;</p>
+<p>&#x8BE5;&#x64CD;&#x4F5C;&#x4F1A;&#x89E6;&#x53D1;&#x4EE5;&#x4E0B;&#x4E8B;&#x4EF6;&#xFF1A;</p>
+<pre><code class="lang-text">event Transfer(bytes32 indexed node, address owner);
+</code></pre>
+<h3 id="&#x8BBE;&#x7F6E;&#x89E3;&#x6790;&#x5668;">&#x8BBE;&#x7F6E;&#x89E3;&#x6790;&#x5668;</h3>
+<pre><code class="lang-text">function setResolver(bytes32 node, address resolver) external;
+</code></pre>
+<p>&#x5C06;&#x4E0E; <code>node</code> &#x6240;&#x6807;&#x8BC6;&#x540D;&#x79F0;&#x76F8;&#x5173;&#x8054;&#x7684;&#x89E3;&#x6790;&#x5668;&#x66F4;&#x65B0;&#x4E3A; <code>resolver</code> &#xFF0C;&#x6B64;&#x51FD;&#x6570;&#x53EA;&#x80FD;&#x7531;&#x540D;&#x79F0;&#x5F53;&#x524D;&#x7684;&#x6240;&#x6709;&#x8005;&#x8C03;&#x7528;&#x3002;<code>resolver</code> &#x5FC5;&#x987B;&#x662F;&#x4E00;&#x4E2A;&#x5B9E;&#x73B0;&#x4E86;&#x89E3;&#x6790;&#x5668;&#x63A5;&#x53E3;&#x7684;&#x5408;&#x7EA6;&#x5730;&#x5740;&#x3002;</p>
+<p>&#x8BE5;&#x64CD;&#x4F5C;&#x4F1A;&#x89E6;&#x53D1;&#x4EE5;&#x4E0B;&#x4E8B;&#x4EF6;&#xFF1A;</p>
+<pre><code class="lang-text">event NewResolver(bytes32 indexed node, address resolver);
+</code></pre>
+<h3 id="&#x8BBE;&#x7F6E;-ttl">&#x8BBE;&#x7F6E; TTL</h3>
+<pre><code class="lang-text">function setTTL(bytes32 node, uint64 ttl) external;
+</code></pre>
+<p>&#x66F4;&#x65B0; <code>node</code> &#x6240;&#x6807;&#x8BC6;&#x540D;&#x79F0;&#x7684;&#x7F13;&#x5B58;&#x5B58;&#x6D3B;&#x65F6;&#x95F4;&#xFF0C;&#x6B64;&#x51FD;&#x6570;&#x53EA;&#x80FD;&#x7531;&#x540D;&#x79F0;&#x5F53;&#x524D;&#x7684;&#x6240;&#x6709;&#x8005;&#x8C03;&#x7528;&#x3002;</p>
+<p>&#x8BE5;&#x64CD;&#x4F5C;&#x4F1A;&#x89E6;&#x53D1;&#x4EE5;&#x4E0B;&#x4E8B;&#x4EF6;&#xFF1A;</p>
+<pre><code class="lang-text">event NewTTL(bytes32 indexed node, uint64 ttl);
+</code></pre>
+<h3 id="&#x8BBE;&#x7F6E;&#x5B50;&#x540D;&#x79F0;&#x6240;&#x6709;&#x8005;">&#x8BBE;&#x7F6E;&#x5B50;&#x540D;&#x79F0;&#x6240;&#x6709;&#x8005;</h3>
+<pre><code class="lang-text">function setSubnodeOwner(bytes32 node, bytes32 label, address owner) external;
+</code></pre>
+<p>&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x5B50;&#x540D;&#x79F0; <code>node</code> &#xFF0C;&#x5C06;&#x5176;&#x6240;&#x6709;&#x6743;&#x5206;&#x914D;&#x7ED9;&#x6307;&#x5B9A;&#x7684; <code>owner</code> &#x3002;&#x5982;&#x679C;&#x8BE5;&#x5B50;&#x540D;&#x79F0;&#x5DF2;&#x7ECF;&#x5B58;&#x5728;&#xFF0C;&#x5219;&#x91CD;&#x65B0;&#x5206;&#x914D;&#x6240;&#x6709;&#x6743;&#xFF0C;&#x4F46;&#x89E3;&#x6790;&#x5668;&#x548C; TTL &#x4FDD;&#x6301;&#x4E0D;&#x53D8;&#x3002;</p>
+<p><code>label</code> &#x662F;&#x8981;&#x521B;&#x5EFA;&#x7684;&#x5B50;&#x540D;&#x79F0;&#x6807;&#x7B7E;&#x7684; keccak256 &#x54C8;&#x5E0C;&#x3002;&#x4F8B;&#x5982;&#xFF0C;&#x5982;&#x679C;&#x4F60;&#x62E5;&#x6709; <em>alice.eth</em> &#x5E76;&#x60F3;&#x521B;&#x5EFA;&#x5B50;&#x540D;&#x79F0; <em>iam.alice.eth</em> &#xFF0C;&#x5C31;&#x9700;&#x8981;&#x5C06; <code>namehash(&apos;alice.eth&apos;)</code> &#x4F5C;&#x4E3A; <code>node</code> &#xFF0C;&#x5C06; <code>keccak256(&apos;iam&apos;)</code> &#x4F5C;&#x4E3A; <code>label</code> &#x3002;</p>
+<p>&#x8BE5;&#x64CD;&#x4F5C;&#x4F1A;&#x89E6;&#x53D1;&#x4EE5;&#x4E0B;&#x4E8B;&#x4EF6;&#xFF1A;</p>
+<pre><code class="lang-text">event NewOwner(bytes32 indexed node, bytes32 indexed label, address owner);
+</code></pre>
+<h3 id="&#x8BBE;&#x7F6E;&#x540D;&#x79F0;&#x8BB0;&#x5F55;">&#x8BBE;&#x7F6E;&#x540D;&#x79F0;&#x8BB0;&#x5F55;</h3>
+<pre><code class="lang-text">function setRecord(bytes32 node, address owner, address resolver, uint64 ttl);
+</code></pre>
+<p>&#x901A;&#x8FC7;&#x4E00;&#x6B21;&#x64CD;&#x4F5C;&#x5728; ENS &#x8BB0;&#x5F55;&#x4E2D;&#x8BBE;&#x7F6E;&#x540D;&#x79F0;&#x7684;&#x6240;&#x6709;&#x8005;&#x3001;&#x89E3;&#x6790;&#x5668;&#x548C; TTL &#x3002;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x662F;&#x4E3A;&#x4E86;&#x65B9;&#x4FBF;&#x7528;&#x6237;&#x64CD;&#x4F5C;&#x800C;&#x63D0;&#x4F9B;&#x7684;&#xFF0C;&#x8C03;&#x7528;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x5B8C;&#x5168;&#x7B49;&#x540C;&#x4E8E;&#x6309;&#x4E00;&#x5B9A;&#x7684;&#x987A;&#x5E8F;&#x8C03;&#x7528; <code>setResolver</code> <code>setTTL</code> &#x548C; <code>setOwner</code> &#x3002;</p>
+<h3 id="&#x8BBE;&#x7F6E;&#x5B50;&#x540D;&#x79F0;&#x8BB0;&#x5F55;">&#x8BBE;&#x7F6E;&#x5B50;&#x540D;&#x79F0;&#x8BB0;&#x5F55;</h3>
+<pre><code class="lang-text">function setSubnodeRecord(bytes32 node, bytes32 label, address owner, address resolver, uint64 ttl);
+</code></pre>
+<p>&#x8BBE;&#x7F6E;&#x5B50;&#x540D;&#x79F0;&#x7684;&#x6240;&#x6709;&#x8005;&#x3001;&#x89E3;&#x6790;&#x5668;&#x548C; TTL &#xFF0C;&#x5E76;&#x5728;&#x5FC5;&#x8981;&#x65F6;&#x521B;&#x5EFA;&#x8FD9;&#x4E2A;&#x5B50;&#x540D;&#x79F0;&#x3002;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x662F;&#x4E3A;&#x4E86;&#x65B9;&#x4FBF;&#x7528;&#x6237;&#x64CD;&#x4F5C;&#x800C;&#x63D0;&#x4F9B;&#x7684;&#xFF0C;&#x5B83;&#x80FD;&#x591F;&#x5148;&#x5C06;&#x5B50;&#x540D;&#x79F0;&#x7684;&#x5168;&#x90E8;&#x4E09;&#x4E2A;&#x5B57;&#x6BB5;&#x8BBE;&#x7F6E;&#x597D;&#x4E4B;&#x540E;&#xFF0C;&#x518D;&#x5728;&#x5C06;&#x5B50;&#x540D;&#x79F0;&#x7684;&#x6240;&#x6709;&#x6743;&#x8F6C;&#x79FB;&#x7ED9;&#x8C03;&#x7528;&#x8005;&#x3002;</p>
+<h3 id="&#x8BBE;&#x7F6E;&#x6388;&#x6743;">&#x8BBE;&#x7F6E;&#x6388;&#x6743;</h3>
+<pre><code class="lang-text">function setApprovalForAll(address operator, bool approved);
+</code></pre>
+<p>&#x8BBE;&#x7F6E;&#x6216;&#x53D6;&#x6D88;&#x6388;&#x6743;&#x3002;&#x5F97;&#x5230;&#x6388;&#x6743;&#x7684;&#x5E10;&#x6237;&#x53EF;&#x4EE5;&#x4EE3;&#x8868;&#x8BE5;&#x51FD;&#x6570;&#x8C03;&#x7528;&#x8005;&#x6267;&#x884C;&#x6240;&#x6709;&#x5173;&#x4E8E; ENS &#x6CE8;&#x518C;&#x8868;&#x7684;&#x64CD;&#x4F5C;&#x3002;</p>
+<h3 id="&#x68C0;&#x67E5;&#x6388;&#x6743;">&#x68C0;&#x67E5;&#x6388;&#x6743;</h3>
+<pre><code class="lang-text">function isApprovedForAll(address owner, address operator) external view returns (bool);
+</code></pre>
+<p>&#x5982;&#x679C; <code>operator</code> &#x88AB;&#x6388;&#x6743;&#x4EE3;&#x8868; <code>owner</code> &#x8FDB;&#x884C; ENS &#x6CE8;&#x518C;&#x8868;&#x7684;&#x64CD;&#x4F5C;&#xFF0C;&#x5219;&#x8FD4;&#x56DE; true &#x3002;</p>
+<h3 id="&#x68C0;&#x67E5;&#x8BB0;&#x5F55;&#x662F;&#x5426;&#x5B58;&#x5728;">&#x68C0;&#x67E5;&#x8BB0;&#x5F55;&#x662F;&#x5426;&#x5B58;&#x5728;</h3>
+<pre><code class="lang-text">function recordExists(bytes32 node) public view returns (bool);
+</code></pre>
+<p>&#x5982;&#x679C; <code>node</code> &#x5B58;&#x5728;&#x4E8E; ENS &#x6CE8;&#x518C;&#x8868;&#x4E2D;&#xFF0C;&#x5219;&#x8FD4;&#x56DE; true &#x3002;&#x5BF9;&#x4E8E;&#x5B58;&#x5728;&#x4E8E;&#x65E7; ENS &#x6CE8;&#x518C;&#x8868;&#x4E2D;&#x4E14;&#x5C1A;&#x672A;&#x8FC1;&#x79FB;&#x5230;&#x65B0;&#x6CE8;&#x518C;&#x8868;&#x7684;&#x8BB0;&#x5F55;&#xFF0C;&#x5C06;&#x8FD4;&#x56DE; false &#x3002;</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="name-processing.html" class="navigation navigation-prev " aria-label="Previous page: 名称处理">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="reverseregistrar.html" class="navigation navigation-next " aria-label="Next page: 反向注册器">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"part":"ENS 中文文档","title":"注册表","description":"ENS 注册表。","level":"4.3","depth":1,"next":{"title":"反向注册器","level":"4.4","depth":1,"path":"contract-api-reference/reverseregistrar.md","ref":"contract-api-reference/reverseregistrar.md","articles":[]},"previous":{"title":"名称处理","level":"4.2","depth":1,"path":"contract-api-reference/name-processing.md","ref":"contract-api-reference/name-processing.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"contract-api-reference/ens.md","mtime":"2022-03-22T05:35:54.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-05-17T08:51:35.389Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

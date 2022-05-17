@@ -1,0 +1,937 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>L2 和链下数据支持 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../contract-api-reference/ENS-Contracts-Overview.html" />
+    
+    
+    <link rel="prev" href="ens-as-nft.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../readme.html">
+            
+                <a href="../readme.html">
+            
+                    
+                    概述
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">开始</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    ENS介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    专业术语
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    ENS部署情况
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    注册器常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    在私有链上部署ENS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    DNS注册器指南
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    漏洞奖金计划
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9" data-path="../ens-improvement-proposals/readme.html">
+            
+                <a href="../ens-improvement-proposals/readme.html">
+            
+                    
+                    ENS改进提案
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.9.1" data-path="../ens-improvement-proposals/ensip-1-ens.html">
+            
+                <a href="../ens-improvement-proposals/ensip-1-ens.html">
+            
+                    
+                    ENSIP-1: ENS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.2" data-path="../ens-improvement-proposals/ensip-2-initial-hash-registrar.html">
+            
+                <a href="../ens-improvement-proposals/ensip-2-initial-hash-registrar.html">
+            
+                    
+                    ENSIP-2: 初始哈希注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.3" data-path="../ens-improvement-proposals/ensip-3-reverse-resolution.html">
+            
+                <a href="../ens-improvement-proposals/ensip-3-reverse-resolution.html">
+            
+                    
+                    ENSIP-3: 反向解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.4" data-path="../ens-improvement-proposals/ensip-4-support-for-contract-abis.html">
+            
+                <a href="../ens-improvement-proposals/ensip-4-support-for-contract-abis.html">
+            
+                    
+                    ENSIP-4: 合约 ABI 支持
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.5" data-path="../ens-improvement-proposals/ensip-5-text-records.html">
+            
+                <a href="../ens-improvement-proposals/ensip-5-text-records.html">
+            
+                    
+                    ENSIP-5: 文本记录
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.6" data-path="../ens-improvement-proposals/ensip-6-dns-in-ens.html">
+            
+                <a href="../ens-improvement-proposals/ensip-6-dns-in-ens.html">
+            
+                    
+                    ENSIP-6: ENS 中的 DNS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.7" data-path="../ens-improvement-proposals/ensip-7-contenthash-field.html">
+            
+                <a href="../ens-improvement-proposals/ensip-7-contenthash-field.html">
+            
+                    
+                    ENSIP-7: 内容哈希字段
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.8" data-path="../ens-improvement-proposals/ensip-8-interface-discovery.html">
+            
+                <a href="../ens-improvement-proposals/ensip-8-interface-discovery.html">
+            
+                    
+                    ENSIP-8: 接口发现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.9" data-path="../ens-improvement-proposals/ensip-9-multichain-address-resolution.html">
+            
+                <a href="../ens-improvement-proposals/ensip-9-multichain-address-resolution.html">
+            
+                    
+                    ENSIP-9: 多链地址解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.10" data-path="../ens-improvement-proposals/ensip-10-wildcard-resolution.html">
+            
+                <a href="../ens-improvement-proposals/ensip-10-wildcard-resolution.html">
+            
+                    
+                    ENSIP-10: 通配符解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.11" data-path="../ens-improvement-proposals/ensip-11-evmchain-address-resolution.html">
+            
+                <a href="../ens-improvement-proposals/ensip-11-evmchain-address-resolution.html">
+            
+                    
+                    ENSIP-11: 兼容链地址解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.12" data-path="../ens-improvement-proposals/ensip-12-avatar-text-records.html">
+            
+                <a href="../ens-improvement-proposals/ensip-12-avatar-text-records.html">
+            
+                    
+                    ENSIP-12: 头像文本记录
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">DAPP开发指南</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="ens-enabling-your-dapp.html">
+            
+                <a href="ens-enabling-your-dapp.html">
+            
+                    
+                    在 DAPP 中启用 ENS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="ens-libraries.html">
+            
+                <a href="ens-libraries.html">
+            
+                    
+                    ENS 库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="working-with-ens.html">
+            
+                <a href="working-with-ens.html">
+            
+                    
+                    ENS 的使用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.4" data-path="resolving-names.html">
+            
+                <a href="resolving-names.html">
+            
+                    
+                    名称解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.5" data-path="managing-names.html">
+            
+                <a href="managing-names.html">
+            
+                    
+                    名称管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.6" data-path="registering-and-renewing-names.html">
+            
+                <a href="registering-and-renewing-names.html">
+            
+                    
+                    名称注册和续费
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.7" data-path="front-end-design-guidelines.html">
+            
+                <a href="front-end-design-guidelines.html">
+            
+                    
+                    ENS 前端设计指南
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.8" data-path="ens-as-nft.html">
+            
+                <a href="ens-as-nft.html">
+            
+                    
+                    ENS 作为一种 NFT
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="3.9" data-path="ens-l2-offchain.html">
+            
+                <a href="ens-l2-offchain.html">
+            
+                    
+                    L2 和链下数据支持
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">合约 API 参考</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../contract-api-reference/ENS-Contracts-Overview.html">
+            
+                <a href="../contract-api-reference/ENS-Contracts-Overview.html">
+            
+                    
+                    ENS 合约概述
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="../contract-api-reference/name-processing.html">
+            
+                <a href="../contract-api-reference/name-processing.html">
+            
+                    
+                    名称处理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3" data-path="../contract-api-reference/ens.html">
+            
+                <a href="../contract-api-reference/ens.html">
+            
+                    
+                    注册表
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4" data-path="../contract-api-reference/reverseregistrar.html">
+            
+                <a href="../contract-api-reference/reverseregistrar.html">
+            
+                    
+                    反向注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5" data-path="../contract-api-reference/testregistrar.html">
+            
+                <a href="../contract-api-reference/testregistrar.html">
+            
+                    
+                    测试注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6" data-path="../contract-api-reference/publicresolver.html">
+            
+                <a href="../contract-api-reference/publicresolver.html">
+            
+                    
+                    公共解析器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.7" data-path="../contract-api-reference/eth-permanent-registrar/readme.html">
+            
+                <a href="../contract-api-reference/eth-permanent-registrar/readme.html">
+            
+                    
+                    .eth 永久注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8" data-path="../contract-api-reference/eth-permanent-registrar/registrar.html">
+            
+                <a href="../contract-api-reference/eth-permanent-registrar/registrar.html">
+            
+                    
+                    .eth 永久注册器的实现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.9" data-path="../contract-api-reference/eth-permanent-registrar/controller.html">
+            
+                <a href="../contract-api-reference/eth-permanent-registrar/controller.html">
+            
+                    
+                    .eth 永久注册器的控制器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.10" data-path="../contract-api-reference/dns-registrar.html">
+            
+                <a href="../contract-api-reference/dns-registrar.html">
+            
+                    
+                    DNS 注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">合约开发指南</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../contract-developer-guide/resolving-names-on-chain.html">
+            
+                <a href="../contract-developer-guide/resolving-names-on-chain.html">
+            
+                    
+                    链上名称解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="../contract-developer-guide/writing-a-resolver.html">
+            
+                <a href="../contract-developer-guide/writing-a-resolver.html">
+            
+                    
+                    编写一个解析器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="../contract-developer-guide/writing-a-registrar.html">
+            
+                <a href="../contract-developer-guide/writing-a-registrar.html">
+            
+                    
+                    编写一个注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">ENS 迁移(2020年2月)</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="../ens-migration-february-2020/guide-for-dapp-developers.html">
+            
+                <a href="../ens-migration-february-2020/guide-for-dapp-developers.html">
+            
+                    
+                    DApp 开发者迁移指南
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2" data-path="../ens-migration-february-2020/technical-description.html">
+            
+                <a href="../ens-migration-february-2020/technical-description.html">
+            
+                    
+                    技术说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >L2 和链下数据支持</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h2 id="&#x91CD;&#x8981;&#x63D0;&#x793A;">&#x91CD;&#x8981;&#x63D0;&#x793A;</h2>
+<p>ENS &#x94FE;&#x5916;&#x6570;&#x636E;&#x652F;&#x6301;&#x7684;&#x5F00;&#x53D1;&#x4ECD;&#x5728;&#x8FDB;&#x884C;&#x4E2D;&#xFF0C;&#x4E0B;&#x9762;&#x63CF;&#x8FF0;&#x7684;&#x89E3;&#x51B3;&#x65B9;&#x6848;&#x8FD8;&#x6CA1;&#x6709;&#x5728;&#x751F;&#x4EA7;&#x73AF;&#x5883;&#x4E2D;&#x4F7F;&#x7528;&#x3002;&#x56E0;&#x6B64;&#xFF0C;&#x672C;&#x6587;&#x4E3B;&#x8981;&#x662F;&#x4E3A;&#x4E86;&#x63D0;&#x4F9B;&#x4FE1;&#x606F;&#x800C;&#x7F16;&#x5199;&#x7684;&#xFF0C;&#x4EE5;&#x4FBF; dapp &#x548C;&#x94B1;&#x5305;&#x5F00;&#x53D1;&#x4EBA;&#x5458;&#x5728;&#x5B8C;&#x5168;&#x652F;&#x6301;&#x96C6;&#x6210;&#x540E;&#x53EF;&#x4EE5;&#x4E3A;&#x96C6;&#x6210;&#x505A;&#x51C6;&#x5907;&#x3002;</p>
+<h2 id="&#x6458;&#x8981;">&#x6458;&#x8981;</h2>
+<p>&#x968F;&#x7740;&#x4EE5;&#x592A;&#x574A; L2 &#x89E3;&#x51B3;&#x65B9;&#x6848;&#x7684;&#x666E;&#x53CA;&#xFF0C;&#x4EE5;&#x592A;&#x574A;&#x5F00;&#x59CB;&#x8D70;&#x5411;&#x6210;&#x719F;&#xFF0C;&#x91CD;&#x8981;&#x7684;&#x662F; ENS &#x80FD;&#x591F;&#x5728;&#x6574;&#x4E2A;&#x751F;&#x6001;&#x7CFB;&#x7EDF;&#x4E2D;&#x63D0;&#x4F9B;&#x89E3;&#x6790;&#x670D;&#x52A1;&#xFF0C;&#x5E76;&#x4F7F; ENS &#x7528;&#x6237;&#x80FD;&#x591F;&#x4EAB;&#x53D7; L2 &#x89E3;&#x51B3;&#x65B9;&#x6848;&#x6240;&#x5E26;&#x6765;&#x7684;&#x6548;&#x7387;&#x3002;&#x5728; <a href="https://ethereum-magicians.org/t/a-general-purpose-l2-friendly-ens-standard/4591" target="_blank">Vitalik</a> &#x7684;&#x4E00;&#x7BC7;&#x6587;&#x7AE0;&#x63D0;&#x51FA;&#x4E86;&#x4E00;&#x79CD;&#x53EF;&#x80FD;&#x7684;&#x65B9;&#x6CD5;&#x4E4B;&#x540E;&#xFF0C;ENS &#x56E2;&#x961F;&#x4EE5;&#x53CA; ENS &#x548C; L2 &#x793E;&#x533A;&#x4E00;&#x76F4;&#x5728;&#x6784;&#x5EFA;&#x4E00;&#x4E2A;&#x901A;&#x7528;&#x7684;&#x201C; L2 &#x6865;&#x201D;&#xFF0C;&#x5B83;&#x80FD;&#x4E3A; ENS &#x548C;&#x5176;&#x4ED6;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x63D0;&#x4F9B;&#x8DE8;&#x5E73;&#x53F0;&#x7684;&#x4E92;&#x64CD;&#x4F5C;&#x6027;&#x5E76;&#x63D0;&#x51FA;&#x6807;&#x51C6;&#xFF0C;&#x8FD9;&#x4E9B;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x9700;&#x8981;&#x4EE5;&#x96F6;&#x4FE1;&#x4EFB;&#x7684;&#x65B9;&#x5F0F;&#x4ECE;&#x5404;&#x79CD;&#x94FE;&#x4E0B;&#x6570;&#x636E;&#x6E90; (&#x5B58;&#x50A8;&#x5728;&#x4EE5;&#x592A;&#x574A;&#x4E3B;&#x7F51;&#x4E4B;&#x5916;&#x7684;&#x4EFB;&#x4F55;&#x6570;&#x636E;&#xFF0C;&#x8FD9;&#x5305;&#x62EC;&#x4E13;&#x6709;&#x6570;&#x636E;&#x5E93;&#x548C; L2 &#x89E3;&#x51B3;&#x65B9;&#x6848;&#xFF0C;&#x5982; Optimism&#x3001;Arbitrum&#x3001;Starkware&#x3001;ZKSync &#x7B49;&#x7B49;) &#x6765;&#x83B7;&#x53D6;&#x6570;&#x636E;&#x3002;</p>
+<ul>
+<li><a href="https://eips.ethereum.org/EIPS/eip-3668" target="_blank">EIP-3668: CCIP Read: &#x5B89;&#x5168;&#x5730;&#x83B7;&#x53D6;&#x94FE;&#x5916;&#x6570;&#x636E;</a></li>
+<li><a href="../docs/ens-improvement-proposals/ensip-10-wildcard-resolution.html">ENSIP 10: &#x901A;&#x914D;&#x7B26;&#x89E3;&#x6790;</a></li>
+</ul>
+<p><strong>EIP 3668</strong> &#x5141;&#x8BB8;&#x4EE5;&#x4E00;&#x79CD;&#x5BF9;&#x5BA2;&#x6237;&#x900F;&#x660E;&#x7684;&#x65B9;&#x5F0F;&#x8FDB;&#x884C;&#x94FE;&#x4E0B; (&#x5305;&#x62EC; L2 ) &#x6570;&#x636E;&#x67E5;&#x8BE2;&#xFF0C;&#x5E76;&#x53EF;&#x4EE5;&#x8BA9;&#x5408;&#x7EA6;&#x7684;&#x4F5C;&#x8005;&#x5B9E;&#x73B0;&#x4EFB;&#x4F55;&#x5FC5;&#x8981;&#x7684;&#x9A8C;&#x8BC1;&#x3002;&#x5728;&#x8BB8;&#x591A;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x5982;&#x679C;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x5728;&#x94FE;&#x4E0A;&#xFF0C;&#x5219;&#x65E0;&#x9700;&#x4EFB;&#x4F55;&#x989D;&#x5916;&#x7684;&#x4FE1;&#x4EFB;&#x5047;&#x8BBE;&#x3002;</p>
+<p><strong>ENSIP 10</strong> &#x662F;&#x5728; L1 &#x4E0A;&#x89E3;&#x6790;&#x901A;&#x914D;&#x7B26; (&#x5982;: *.foo.eth) &#x7684;&#x901A;&#x7528;&#x65B9;&#x6CD5;&#x3002;&#x901A;&#x8FC7;&#x5206;&#x53D1;&#x5B50;&#x540D;&#x79F0;&#x5E76;&#x5C06;&#x7236;&#x540D;&#x79F0;&#x7684;&#x89E3;&#x6790;&#x79FB;&#x81F3;&#x94FE;&#x4E0B;&#xFF0C;&#x53EF;&#x4EE5;&#x8BA9; dapp &#x5728;&#x94FE;&#x4E0B;&#x521B;&#x5EFA;&#x5B50;&#x540D;&#x79F0;&#xFF0C;&#x7136;&#x540E;&#x901A;&#x8FC7; L1 &#x8BBF;&#x95EE;&#x3002;</p>
+<h2 id="dapp-&#x548C;&#x94B1;&#x5305;&#x652F;&#x6301;&#x94FE;&#x4E0B;&#x6570;&#x636E;&#x67E5;&#x8BE2;&#x6240;&#x9700;&#x7684;&#x6B65;&#x9AA4;">Dapp &#x548C;&#x94B1;&#x5305;&#x652F;&#x6301;&#x94FE;&#x4E0B;&#x6570;&#x636E;&#x67E5;&#x8BE2;&#x6240;&#x9700;&#x7684;&#x6B65;&#x9AA4;</h2>
+<p>&#x5982;&#x679C;&#x4F60;&#x7684; dapp &#x6216;&#x94B1;&#x5305;&#x4F7F;&#x7528;&#x4E86;&#x4E0B;&#x9762;&#x7684;&#x5E93;&#xFF0C;EIP 3668 &#x548C; ENSIP 10 &#x652F;&#x6301;&#x5C06;&#x88AB;&#x5185;&#x7F6E;&#xFF0C;&#x6240;&#x4EE5;&#x53EA;&#x8981;&#x5728;&#x51C6;&#x5907;&#x597D;&#x65F6;&#x66F4;&#x65B0;&#x5E93;&#x5373;&#x53EF;&#x3002;</p>
+<ul>
+<li><a href="https://github.com/ethers-io/ethers.js" target="_blank">ethersjs</a></li>
+<li><a href="https://github.com/ethereum/web3.js" target="_blank">web3js</a></li>
+</ul>
+<h3 id="ethersjs">ethersjs</h3>
+<p>&#x76EE;&#x524D;&#xFF0C;EIP 3668 &#x662F;&#x4F5C;&#x4E3A; npm &#x6A21;&#x5757;&#x5B9E;&#x73B0;&#x7684;: <a href="@chainlink/ethers-ccip-read-provider">@chainlink/ethers-ccip-read-provider
+</a>(<a href="https://github.com/smartcontractkit/ccip-read/tree/rewrite/packages/ethers-ccip-read-provider" target="_blank">source</a>).</p>
+<p>&#x57FA;&#x672C;&#x7684;&#x7528;&#x6CD5;&#x793A;&#x4F8B;&#x5982;&#x4E0B;&#x3002;</p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> { CCIPReadProvider } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;@chainlink/ethers-ccip-read-provider&apos;</span>;
+<span class="hljs-keyword">import</span> { abi <span class="hljs-keyword">as</span> IExtendedResolver_abi } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;@ensdomains/offchain-resolver-contracts/artifacts/contracts/IExtendedResolver.sol/IExtendedResolver.json&apos;</span>;
+<span class="hljs-keyword">const</span> IExtendedResolver = <span class="hljs-keyword">new</span> ethers.utils.Interface(IExtendedResolver_abi);
+<span class="hljs-keyword">const</span> baseProvider = ethers.getDefaultProvider(options.provider);
+<span class="hljs-keyword">const</span> provider = <span class="hljs-keyword">new</span> CCIPReadProvider(baseProvider);
+</code></pre>
+<p>&#x76EE;&#x524D;&#x8FD8;&#x4E0D;&#x652F;&#x6301;&#x901A;&#x914D;&#x7B26;&#x3002;</p>
+<p>&#x8BE6;&#x60C5;&#x8BF7;&#x53C2;&#x8003;<a href="https://github.com/ensdomains/offchain-resolver/blob/main/packages/client/src/index.ts#L46" target="_blank">&#x94FE;&#x4E0B;&#x89E3;&#x6790;&#x5668;&#x5BA2;&#x6237;&#x7AEF;&#x793A;&#x4F8B;&#x4EE3;&#x7801;</a>&#x3002;</p>
+<h3 id="web3js">web3js</h3>
+<p>&#x5F00;&#x53D1;&#x4E2D;&#x3002;</p>
+<h3 id="&#x5176;&#x4ED6;&#x5E93;">&#x5176;&#x4ED6;&#x5E93;</h3>
+<p>&#x5982;&#x679C;&#x60A8;&#x4F7F;&#x7528;&#x5176;&#x4ED6;&#x5E93;&#x6216;&#x81EA;&#x5B9A;&#x4E49;&#x96C6;&#x6210;&#xFF0C;&#x8BF7;&#x5411;&#x9879;&#x76EE;&#x4ED3;&#x5E93;&#x63D0;&#x51FA; github issue&#xFF0C;&#x5982;&#x679C;&#x9879;&#x76EE;&#x5BF9;&#x5E94;&#x7684;&#x4ED3;&#x5E93;&#x4E0D;&#x5B58;&#x5728;&#xFF0C;&#x8BF7;&#x5230; <a href="https://github.com/ensdomains/pm/issues" target="_blank">ENS &#x9879;&#x76EE;&#x7BA1;&#x7406;&#x4ED3;&#x5E93;</a> &#x63D0;&#x51FA; issue&#xFF0C;&#x4EE5;&#x4FBF; ENS &#x56E2;&#x961F;&#x8DDF;&#x8E2A;&#x8FDB;&#x5C55;&#x3002;</p>
+<h2 id="dapp-&#x548C;&#x94B1;&#x5305;&#x5206;&#x53D1;&#x5B50;&#x540D;&#x79F0;&#x7684;&#x6B65;&#x9AA4;">Dapp &#x548C;&#x94B1;&#x5305;&#x5206;&#x53D1;&#x5B50;&#x540D;&#x79F0;&#x7684;&#x6B65;&#x9AA4;</h2>
+<p>&#x5982;&#x679C;&#x60A8;&#x5E0C;&#x671B;&#x4F7F;&#x7528;&#x94FE;&#x4E0B;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x53D1;&#x5E03;&#x5B50;&#x540D;&#x79F0;&#xFF0C;&#x8BF7;&#x53C2;&#x8003;<a href="https://github.com/ensdomains/offchain-resolver" target="_blank">&#x94FE;&#x4E0B;&#x89E3;&#x6790;&#x5668;</a>&#x3002;&#x8BE5;&#x793A;&#x4F8B;&#x4F7F;&#x7528;&#x5E73;&#x9762;&#x6587;&#x4EF6;&#x4F5C;&#x4E3A;&#x6570;&#x636E;&#x6E90;&#xFF0C;&#x4F46;&#x53EF;&#x4EE5;&#x8F7B;&#x6613;&#x5730;&#x66FF;&#x6362;&#x4E3A;&#x6570;&#x636E;&#x5E93;&#x8C03;&#x7528;&#x3002;</p>
+<p>L2 &#x7684;&#x652F;&#x6301;&#x4ECD;&#x7136;&#x5728;&#x5F00;&#x53D1;&#x4E2D;&#x3002;</p>
+<h2 id="&#x5E38;&#x89C1;&#x95EE;&#x9898;">&#x5E38;&#x89C1;&#x95EE;&#x9898;</h2>
+<h3 id="&#x66F4;&#x6539;&#x662F;&#x5411;&#x540E;&#x517C;&#x5BB9;&#x7684;&#x5417;">&#x66F4;&#x6539;&#x662F;&#x5411;&#x540E;&#x517C;&#x5BB9;&#x7684;&#x5417;?</h3>
+<p>&#x662F;&#x7684;&#x3002;&#x5373;&#x4F7F;&#x5728;&#x6CA1;&#x6709;&#x5BA2;&#x6237;&#x7AEF;&#x6216;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x652F;&#x6301;&#x8FD9;&#x4E9B;&#x6807;&#x51C6;&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;L1 &#x4E0A;&#x73B0;&#x6709;&#x7684;&#x540D;&#x79F0;&#x4E5F;&#x53EF;&#x4EE5;&#x6B63;&#x5E38;&#x4F7F;&#x7528;&#x3002;&#x53EA;&#x6709;&#x5728; L1 &#x4E4B;&#x5916;&#x7684;&#x540D;&#x79F0;&#x624D;&#x4E0D;&#x4F1A;&#x88AB;&#x89E3;&#x6790;&#x3002;</p>
+<h3 id="graphql-&#x652F;&#x6301;-l2-&#x6216;&#x94FE;&#x4E0B;&#x6570;&#x636E;&#x5417;">GraphQL &#x652F;&#x6301; L2 &#x6216;&#x94FE;&#x4E0B;&#x6570;&#x636E;&#x5417;?</h3>
+<p>&#x4E00;&#x65E6;&#x67D0;&#x4E2A; L2 &#x5F97;&#x5230;&#x5B98;&#x65B9;&#x652F;&#x6301;&#xFF0C;&#x6211;&#x4EEC;&#x5C06;&#x9700;&#x8981;&#x4E3A;&#x8FD9;&#x4E2A; L2 &#x6865;&#x7F16;&#x5236;&#x4E00;&#x4E2A;&#x5B50;&#x56FE;&#xFF0C;&#x5E76;&#x4E14;&#x6211;&#x4EEC;&#x4F1A;&#x901A;&#x8FC7;&#x6A21;&#x5F0F;&#x62FC;&#x63A5;&#x8BA9;&#x8C03;&#x7528;&#x8005;&#x53EF;&#x4EE5;&#x900F;&#x660E;&#x5730;&#x4F7F;&#x7528;&#x5B83;&#x4EEC;&#x3002;</p>
+<p>&#x5BF9;&#x4E8E;&#x6CA1;&#x6709;&#x6258;&#x7BA1;&#x5728;&#x53D7;&#x652F;&#x6301;&#x7684; L2 &#x4E0A;&#x7684;&#x540D;&#x79F0;&#xFF0C;&#x6211;&#x4EEC;&#x5C06;&#x65E0;&#x6CD5;&#x83B7;&#x53D6;&#x90A3;&#x4E9B;&#x901A;&#x5E38;&#x53EA;&#x5728;&#x5B50;&#x56FE;&#x4E0A;&#x53EF;&#x7528;&#x7684;&#x6570;&#x636E;&#x3002;</p>
+<h3 id="&#x5982;&#x4F55;&#x652F;&#x6301;&#x5176;&#x4ED6;-evm-&#x517C;&#x5BB9;&#x94FE;">&#x5982;&#x4F55;&#x652F;&#x6301;&#x5176;&#x4ED6; EVM &#x517C;&#x5BB9;&#x94FE;?</h3>
+<p>&#x975E; L2 &#x94FE;&#x7F3A;&#x4E4F;&#x4EE5;&#x96F6;&#x4FE1;&#x4EFB;&#x65B9;&#x5F0F;&#x9A8C;&#x8BC1; L1 &#x4E0A;&#x6570;&#x636E;&#x7684;&#x65B9;&#x6CD5;&#x3002;&#x66FF;&#x4EE3;&#x529E;&#x6CD5;&#x662F;&#xFF0C;&#x8DE8;&#x94FE;&#x6865;&#x7684;&#x8FD0;&#x8425;&#x8005;&#x4F5C;&#x4E3A;&#x53EF;&#x4FE1;&#x7684;&#x7B2C;&#x4E09;&#x65B9;&#xFF0C;&#x6258;&#x7BA1;&#x94FE;&#x4E0B;&#x7F51;&#x5173;&#xFF0C;&#x6216;&#x8005;&#x7531; dapp &#x6258;&#x7BA1;&#x81EA;&#x5DF1;&#x7684;&#x7F51;&#x5173;&#xFF0C;&#x5E76;&#x4F7F;&#x7528; ENS &#x540D;&#x79F0;&#x7684;&#x79C1;&#x94A5;&#x5BF9;&#x6BCF;&#x6761;&#x6570;&#x636E;&#x8FDB;&#x884C;&#x7B7E;&#x540D;&#x3002;</p>
+<h3 id="&#x6211;&#x80FD;&#x5728;&#x94FE;&#x4E0B;&#x73AF;&#x5883;&#x4E2D;&#x53D1;&#x5E03;&#x65B0;&#x7684;-tld-&#x5417;">&#x6211;&#x80FD;&#x5728;&#x94FE;&#x4E0B;&#x73AF;&#x5883;&#x4E2D;&#x53D1;&#x5E03;&#x65B0;&#x7684; tld &#x5417;?</h3>
+<p>&#x4E0D;&#x80FD;&#x3002;&#x8BE6;&#x7EC6;&#x4FE1;&#x606F;&#x8BF7;&#x770B; <a href="../news/2019-12-20-why-not-ens-support-more-tld.html">&#x4E3A;&#x4EC0;&#x4E48; ENS &#x4E0D;&#x521B;&#x5EFA;&#x66F4;&#x591A;&#x7684;&#x9876;&#x7EA7;&#x57DF;&#xFF1A;&#x6211;&#x4EEC;&#x5728;&#x5BF9;&#x5168;&#x7403;&#x540D;&#x79F0;&#x7A7A;&#x95F4;&#x8D1F;&#x8D23;</a>&#x3002;</p>
+<h3 id="&#x6211;&#x53EF;&#x4EE5;&#x5728;&#x94FE;&#x4E0B;&#x540D;&#x79F0;&#x4E2D;&#x8BBE;&#x7F6E;&#x4E00;&#x4E2A;&#x4E3B;&#x540D;&#x79F0;&#x5417;">&#x6211;&#x53EF;&#x4EE5;&#x5728;&#x94FE;&#x4E0B;&#x540D;&#x79F0;&#x4E2D;&#x8BBE;&#x7F6E;&#x4E00;&#x4E2A;&#x4E3B;&#x540D;&#x79F0;&#x5417;?</h3>
+<p>&#x53EF;&#x4EE5;&#x3002;&#x7136;&#x800C;&#xFF0C;&#x53CD;&#x5411;&#x6CE8;&#x518C;&#x5668; (&#x5B83;&#x662F;&#x4E00;&#x4E2A;&#x4EE5; .addr.reverse &#x5F00;&#x5934;&#x7684;&#x9690;&#x85CF;&#x7684;&#x9876;&#x7EA7;&#x540D;&#x79F0;) &#x76EE;&#x524D;&#x5B58;&#x50A8;&#x5728; L1 &#x4E0A;&#xFF0C;&#x6240;&#x4EE5;&#x9700;&#x8981;&#x5728; L1 &#x4E0A;&#x6D88;&#x8017; Gas&#x3002;&#x6211;&#x4EEC;&#x5C06;&#x6765;&#x53EF;&#x80FD;&#x4F1A;&#x8003;&#x8651;&#x5C06;&#x53CD;&#x5411;&#x6CE8;&#x518C;&#x5668;&#x8FC1;&#x79FB;&#x81F3; L2&#x3002;</p>
+<h3 id="&#x6211;&#x53EF;&#x4EE5;&#x5728;&#x94FE;&#x4E0B;&#x6CE8;&#x518C;-eth-&#x540D;&#x79F0;&#x5417;">&#x6211;&#x53EF;&#x4EE5;&#x5728;&#x94FE;&#x4E0B;&#x6CE8;&#x518C; .eth &#x540D;&#x79F0;&#x5417;?</h3>
+<p>&#x5F53;&#x53D1;&#x73B0;&#x54EA;&#x4E2A; L2 &#x5BF9; ENS &#x96C6;&#x6210;&#x7684;&#x652F;&#x6301;&#x6700;&#x53CB;&#x597D;&#x4EE5;&#x540E;&#xFF0C;&#x6211;&#x4EEC;&#x4F1A;&#x5C06; .eth &#x540D;&#x79F0;&#x8FC1;&#x79FB;&#x5230;&#x7279;&#x5B9A;&#x7684; L2&#xFF0C;&#x8FD9;&#x4F1A;&#x662F;&#x8FC1;&#x79FB;&#x7684;&#x6700;&#x540E;&#x4E00;&#x6B65;&#xFF0C;&#x53EA;&#x6709;&#x8FD9;&#x4E9B;&#x5B8C;&#x6210;&#x4EE5;&#x540E;&#xFF0C;&#x624D;&#x53EF;&#x4EE5;&#x5B9E;&#x73B0; .eth &#x540D;&#x79F0;&#x7684;&#x94FE;&#x4E0B;&#x6CE8;&#x518C;&#x3002;</p>
+<h3 id="&#x6211;&#x5982;&#x4F55;&#x5904;&#x7406;&#x5408;&#x7EA6;&#x5730;&#x5740;">&#x6211;&#x5982;&#x4F55;&#x5904;&#x7406;&#x5408;&#x7EA6;&#x5730;&#x5740;?</h3>
+<p>&#x4E0E; EOA (&#x5916;&#x90E8;&#x5E10;&#x6237;) &#x4E0D;&#x540C;&#xFF0C;&#x591A;&#x7B7E;&#x8D26;&#x6237;&#x7B49;&#x57FA;&#x4E8E;&#x5408;&#x7EA6;&#x7684;&#x5E10;&#x6237;&#x53EF;&#x80FD;&#x53EA;&#x80FD;&#x5728;&#x67D0;&#x4E9B;&#x94FE;&#x4E2D;&#x8BBF;&#x95EE;&#x3002;</p>
+<p><a href="../docs/ens-improvement-proposals/ensip-11-evmchain-address-resolution.html">ENSIP-11</a> &#x5141;&#x8BB8;&#x5355;&#x4E2A;&#x540D;&#x79F0;&#x5728;&#x591A;&#x4E2A; EVM &#x517C;&#x5BB9;&#x94FE;&#x4E2D;&#x4FDD;&#x5B58;&#x4E0D;&#x540C;&#x7684;&#x5730;&#x5740;&#xFF0C;&#x5EFA;&#x8BAE;&#x5C06;&#x5408;&#x7EA6;&#x5730;&#x5740;&#x5B58;&#x50A8;&#x5230; EVM &#x94FE;&#x6307;&#x5B9A;&#x5730;&#x5740;&#x8BB0;&#x5F55;&#x5B57;&#x6BB5;&#x3002;</p>
+<h3 id="&#x6211;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x5176;&#x4ED6;&#x652F;&#x6301;-eth-&#x540D;&#x79F0;&#x670D;&#x52A1;&#x7684;&#x5E93;&#x5417;">&#x6211;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x5176;&#x4ED6;&#x652F;&#x6301; .eth &#x540D;&#x79F0;&#x670D;&#x52A1;&#x7684;&#x5E93;&#x5417;?</h3>
+<p><code>@unstoppabledomains/resolution</code> <a href="(https:/github.com/unstoppabledomains/resolution/releases/tag/v7.0.0">&#x5BF9; ENS &#x7684;&#x652F;&#x6301;</a>)&#x5DF2;&#x4E8E; 2021 &#x5E74; 12 &#x6708;&#x79FB;&#x9664;&#x3002;&#x5176;&#x4ED6;&#x670D;&#x52A1;&#x5F80;&#x5F80;&#x4E0D;&#x652F;&#x6301;&#x6240;&#x6709; ENS tld&#xFF0C;&#x5C24;&#x5176;&#x662F;&#x57FA;&#x4E8E; DNS &#x7684; tld (.com .net &#x7B49;)&#xFF0C;&#x6240;&#x4EE5;&#x6211;&#x4EEC;&#x5EFA;&#x8BAE;&#x4E0D;&#x8981;&#x4F9D;&#x8D56;&#x8FD9;&#x4E9B;&#x5E93;&#x89E3;&#x6790; ENS &#x540D;&#x79F0;&#x3002;</p>
+<h2 id="&#x53C2;&#x8003;&#x6587;&#x732E;&#x548C;&#x4EE5;&#x524D;&#x7684;&#x8BA8;&#x8BBA;">&#x53C2;&#x8003;&#x6587;&#x732E;&#x548C;&#x4EE5;&#x524D;&#x7684;&#x8BA8;&#x8BBA;</h2>
+<ul>
+<li><a href="https://medium.com/the-ethereum-name-service/mvp-of-ens-on-l2-with-optimism-demo-video-how-to-try-it-yourself-b44c390cbd67" target="_blank">MVP of ENS on L2 with Optimism: Demo Video + How to Try It Yourself</a></li>
+<li><a href="https://medium.com/the-ethereum-name-service/a-general-purpose-bridge-for-ethereum-layer-2s-e28810ec1d88" target="_blank">A general-purpose bridge for Ethereum Layer 2s</a></li>
+<li><a href="https://ethereum-magicians.org/t/a-general-purpose-l2-friendly-ens-standard/4591" target="_blank">A general-purpose L2-friendly ENS standard</a></li>
+<li><a href="https://www.youtube.com/watch?v=L9N7U_bNmOU" target="_blank">Video: ENS Workshop on 18th Oct 2021</a></li>
+<li><a href="https://www.youtube.com/watch?v=9DdL7AQgXTM" target="_blank">Video: ENS Workshop on 6th April 2021</a></li>
+<li><a href="https://www.youtube.com/watch?v=QwEiAedSNYI" target="_blank">Video: ENS on Layer 2 meeting #2 on 28th Oct 2020</a></li>
+<li><a href="https://www.youtube.com/watch?v=vloI0VT8DXE" target="_blank">Video: ENS on Layer 2 meeting on 13th Oct 2020</a></li>
+<li><a href="https://www.youtube.com/watch?v=65z_j4n8mTk&amp;t=2s" target="_blank">Video: ENS workshop on 29th Sep 2020</a></li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="ens-as-nft.html" class="navigation navigation-prev " aria-label="Previous page: ENS 作为一种 NFT">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../contract-api-reference/ENS-Contracts-Overview.html" class="navigation navigation-next " aria-label="Next page: ENS 合约概述">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"part":"ENS 中文文档","title":"L2 和链下数据支持","level":"3.9","depth":1,"next":{"title":"ENS 合约概述","level":"4.1","depth":1,"path":"contract-api-reference/ENS-Contracts-Overview.md","ref":"contract-api-reference/ENS-Contracts-Overview.md","articles":[]},"previous":{"title":"ENS 作为一种 NFT","level":"3.8","depth":1,"path":"dapp-developer-guide/ens-as-nft.md","ref":"dapp-developer-guide/ens-as-nft.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"dapp-developer-guide/ens-l2-offchain.md","mtime":"2022-03-22T05:35:54.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-05-17T08:51:35.389Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
