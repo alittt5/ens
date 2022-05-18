@@ -8,7 +8,7 @@ ENS中文文档
 * [常见问题](terminology.md)
 * [ENS部署情况](terminology.md)
 * [注册器常见问题](terminology.md)
-
+* [在私有链上部署ENS](terminology.md)
 * [DNS注册器指南](terminology.md)
 * [漏洞奖金计划](terminology.md)
 * [ENS改进提案](ens-improvement-proposals/readme.md)
