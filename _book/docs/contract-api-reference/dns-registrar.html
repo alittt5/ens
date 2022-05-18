@@ -1,0 +1,974 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-cn" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>DNS 注册器 · Kubernetes Handbook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="Pengfei Ni">
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-page-toc/page-toc.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search-plus/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-tbfed-pagefooter/footer.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../contract-developer-guide/resolving-names-on-chain.html" />
+    
+    
+    <link rel="prev" href="eth-permanent-registrar/controller.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="輸入並搜尋" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../readme.html">
+            
+                <a href="../readme.html">
+            
+                    
+                    概述
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">开始</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    ENS介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    专业术语
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    ENS部署情况
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    注册器常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    在私有链上部署ENS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    DNS注册器指南
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    漏洞奖金计划
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9" data-path="../ens-improvement-proposals/readme.html">
+            
+                <a href="../ens-improvement-proposals/readme.html">
+            
+                    
+                    ENS改进提案
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.9.1" data-path="../ens-improvement-proposals/ensip-1-ens.html">
+            
+                <a href="../ens-improvement-proposals/ensip-1-ens.html">
+            
+                    
+                    ENSIP-1: ENS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.2" data-path="../ens-improvement-proposals/ensip-2-initial-hash-registrar.html">
+            
+                <a href="../ens-improvement-proposals/ensip-2-initial-hash-registrar.html">
+            
+                    
+                    ENSIP-2: 初始哈希注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.3" data-path="../ens-improvement-proposals/ensip-3-reverse-resolution.html">
+            
+                <a href="../ens-improvement-proposals/ensip-3-reverse-resolution.html">
+            
+                    
+                    ENSIP-3: 反向解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.4" data-path="../ens-improvement-proposals/ensip-4-support-for-contract-abis.html">
+            
+                <a href="../ens-improvement-proposals/ensip-4-support-for-contract-abis.html">
+            
+                    
+                    ENSIP-4: 合约 ABI 支持
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.5" data-path="../ens-improvement-proposals/ensip-5-text-records.html">
+            
+                <a href="../ens-improvement-proposals/ensip-5-text-records.html">
+            
+                    
+                    ENSIP-5: 文本记录
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.6" data-path="../ens-improvement-proposals/ensip-6-dns-in-ens.html">
+            
+                <a href="../ens-improvement-proposals/ensip-6-dns-in-ens.html">
+            
+                    
+                    ENSIP-6: ENS 中的 DNS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.7" data-path="../ens-improvement-proposals/ensip-7-contenthash-field.html">
+            
+                <a href="../ens-improvement-proposals/ensip-7-contenthash-field.html">
+            
+                    
+                    ENSIP-7: 内容哈希字段
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.8" data-path="../ens-improvement-proposals/ensip-8-interface-discovery.html">
+            
+                <a href="../ens-improvement-proposals/ensip-8-interface-discovery.html">
+            
+                    
+                    ENSIP-8: 接口发现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.9" data-path="../ens-improvement-proposals/ensip-9-multichain-address-resolution.html">
+            
+                <a href="../ens-improvement-proposals/ensip-9-multichain-address-resolution.html">
+            
+                    
+                    ENSIP-9: 多链地址解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.10" data-path="../ens-improvement-proposals/ensip-10-wildcard-resolution.html">
+            
+                <a href="../ens-improvement-proposals/ensip-10-wildcard-resolution.html">
+            
+                    
+                    ENSIP-10: 通配符解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.11" data-path="../ens-improvement-proposals/ensip-11-evmchain-address-resolution.html">
+            
+                <a href="../ens-improvement-proposals/ensip-11-evmchain-address-resolution.html">
+            
+                    
+                    ENSIP-11: 兼容链地址解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.12" data-path="../ens-improvement-proposals/ensip-12-avatar-text-records.html">
+            
+                <a href="../ens-improvement-proposals/ensip-12-avatar-text-records.html">
+            
+                    
+                    ENSIP-12: 头像文本记录
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">DAPP开发指南</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../dapp-developer-guide/ens-enabling-your-dapp.html">
+            
+                <a href="../dapp-developer-guide/ens-enabling-your-dapp.html">
+            
+                    
+                    在 DAPP 中启用 ENS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../dapp-developer-guide/ens-libraries.html">
+            
+                <a href="../dapp-developer-guide/ens-libraries.html">
+            
+                    
+                    ENS 库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="../dapp-developer-guide/working-with-ens.html">
+            
+                <a href="../dapp-developer-guide/working-with-ens.html">
+            
+                    
+                    ENS 的使用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.4" data-path="../dapp-developer-guide/resolving-names.html">
+            
+                <a href="../dapp-developer-guide/resolving-names.html">
+            
+                    
+                    名称解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.5" data-path="../dapp-developer-guide/managing-names.html">
+            
+                <a href="../dapp-developer-guide/managing-names.html">
+            
+                    
+                    名称管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.6" data-path="../dapp-developer-guide/registering-and-renewing-names.html">
+            
+                <a href="../dapp-developer-guide/registering-and-renewing-names.html">
+            
+                    
+                    名称注册和续费
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.7" data-path="../dapp-developer-guide/front-end-design-guidelines.html">
+            
+                <a href="../dapp-developer-guide/front-end-design-guidelines.html">
+            
+                    
+                    ENS 前端设计指南
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.8" data-path="../dapp-developer-guide/ens-as-nft.html">
+            
+                <a href="../dapp-developer-guide/ens-as-nft.html">
+            
+                    
+                    ENS 作为一种 NFT
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.9" data-path="../dapp-developer-guide/ens-l2-offchain.html">
+            
+                <a href="../dapp-developer-guide/ens-l2-offchain.html">
+            
+                    
+                    L2 和链下数据支持
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">合约 API 参考</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="ENS-Contracts-Overview.html">
+            
+                <a href="ENS-Contracts-Overview.html">
+            
+                    
+                    ENS 合约概述
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="name-processing.html">
+            
+                <a href="name-processing.html">
+            
+                    
+                    名称处理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3" data-path="ens.html">
+            
+                <a href="ens.html">
+            
+                    
+                    注册表
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4" data-path="reverseregistrar.html">
+            
+                <a href="reverseregistrar.html">
+            
+                    
+                    反向注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5" data-path="testregistrar.html">
+            
+                <a href="testregistrar.html">
+            
+                    
+                    测试注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6" data-path="publicresolver.html">
+            
+                <a href="publicresolver.html">
+            
+                    
+                    公共解析器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.7" data-path="eth-permanent-registrar/readme.html">
+            
+                <a href="eth-permanent-registrar/readme.html">
+            
+                    
+                    .eth 永久注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8" data-path="eth-permanent-registrar/registrar.html">
+            
+                <a href="eth-permanent-registrar/registrar.html">
+            
+                    
+                    .eth 永久注册器的实现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.9" data-path="eth-permanent-registrar/controller.html">
+            
+                <a href="eth-permanent-registrar/controller.html">
+            
+                    
+                    .eth 永久注册器的控制器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="4.10" data-path="dns-registrar.html">
+            
+                <a href="dns-registrar.html">
+            
+                    
+                    DNS 注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">合约开发指南</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../contract-developer-guide/resolving-names-on-chain.html">
+            
+                <a href="../contract-developer-guide/resolving-names-on-chain.html">
+            
+                    
+                    链上名称解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="../contract-developer-guide/writing-a-resolver.html">
+            
+                <a href="../contract-developer-guide/writing-a-resolver.html">
+            
+                    
+                    编写一个解析器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="../contract-developer-guide/writing-a-registrar.html">
+            
+                <a href="../contract-developer-guide/writing-a-registrar.html">
+            
+                    
+                    编写一个注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">ENS 迁移(2020年2月)</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="../ens-migration-february-2020/guide-for-dapp-developers.html">
+            
+                <a href="../ens-migration-february-2020/guide-for-dapp-developers.html">
+            
+                    
+                    DApp 开发者迁移指南
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2" data-path="../ens-migration-february-2020/technical-description.html">
+            
+                <a href="../ens-migration-february-2020/technical-description.html">
+            
+                    
+                    技术说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            本書使用 GitBook 釋出
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >DNS 注册器</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div class="search-plus" id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <p>&#x5728; ENS &#x4E0A;&#xFF0C;&#x6709;&#x4E24;&#x4E2A;&#x5173;&#x4E8E; DNS &#x7684;&#x667A;&#x80FD;&#x5408;&#x7EA6;&#xFF0C;<a href="https://github.com/ensdomains/dnssec-oracle" target="_blank">DNSSECOracle</a> &#x548C; <a href="https://github.com/ensdomains/dnsregistrar" target="_blank">DNSRegistrar</a>&#x3002;</p>
+<!-- DNSSEC (The Domain Name System Security Extensions) establishes a chain of trust from the root key which signed by ICANN (.) and down through each key. We start off knowing the hash of the root key of DNS (this is hard coded in the smart contract oracle). Given the hashes of that key, we can pass in the actual key, we can verify that it matches the hash and we can add it to the set of the trusted records.
+
+Given that key, we can now verify any record that is signed with that key, so in this case, it’s the hash of the root of the xyz top level domain. Given that, we can recognize the key, and so on and so forth. -->
+<p>DNSSEC&#xFF08;&#x540D;&#x79F0;&#x7CFB;&#x7EDF;&#x5B89;&#x5168;&#x6269;&#x5C55;&#xFF09;&#x5EFA;&#x7ACB;&#x4E86;&#x4E00;&#x4E2A;&#x4FE1;&#x4EFB;&#x94FE;&#xFF0C;&#x4ECE; ICANN &#x7B7E;&#x540D;&#x7684;&#x6839;&#x5BC6;&#x94A5;&#xFF08;.&#xFF09;&#x5411;&#x4E0B;&#x81F3;&#x6BCF;&#x4E2A;&#x5BC6;&#x94A5;&#x3002;&#x6211;&#x4EEC;&#x9996;&#x5148;&#x77E5;&#x9053; DNS &#x6839;&#x5BC6;&#x94A5;&#x7684;&#x54C8;&#x5E0C;&#x503C;&#xFF08;&#x8FD9;&#x662F;&#x5728; oracle &#x667A;&#x80FD;&#x5408;&#x7EA6;&#x4E2D;&#x786C;&#x7F16;&#x7801;&#x7684;&#xFF09;&#x3002;&#x6709;&#x4E86;&#x8BE5;&#x5BC6;&#x94A5;&#x7684;&#x54C8;&#x5E0C;&#x503C;&#xFF0C;&#x5C31;&#x53EF;&#x4EE5;&#x4F20;&#x5165;&#x5B9E;&#x9645;&#x7684;&#x5BC6;&#x94A5;&#xFF0C;&#x9A8C;&#x8BC1;&#x5B83;&#x662F;&#x5426;&#x4E0E;&#x6B64;&#x54C8;&#x5E0C;&#x503C;&#x5339;&#x914D;&#xFF0C;&#x9A8C;&#x8BC1;&#x540E;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5C06;&#x5B83;&#x6DFB;&#x52A0;&#x5230;&#x53EF;&#x4FE1;&#x8BB0;&#x5F55;&#x96C6;&#x3002;</p>
+<p>&#x6709;&#x4E86;&#x8BE5;&#x5BC6;&#x94A5;&#xFF0C;&#x6211;&#x4EEC;&#x73B0;&#x5728;&#x53EF;&#x4EE5;&#x9A8C;&#x8BC1;&#x4EFB;&#x4F55;&#x7528;&#x8BE5;&#x5BC6;&#x94A5;&#x7B7E;&#x540D;&#x7684;&#x8BB0;&#x5F55;&#xFF0C;&#x5728;&#x672C;&#x4F8B;&#x4E2D;&#xFF0C;&#x5B83;&#x662F; xyz &#x9876;&#x7EA7;&#x57DF;&#x7684;&#x6839;&#x54C8;&#x5E0C;&#x503C;&#x3002;&#x8FD9;&#x6837;&#xFF0C;&#x6211;&#x4EEC;&#x5C31;&#x80FD;&#x8BC6;&#x522B;&#x5BC6;&#x94A5;&#xFF0C;&#x7B49;&#x7B49;&#x3002;</p>
+<p><img src="../../images/docs/dnsprovejs-diagram.png" alt=""></p>
+<p>&#x4EFB;&#x4F55;&#x4EBA;&#x90FD;&#x53EF;&#x4EE5;&#x5728;&#x4EE5;&#x592A;&#x574A;&#x533A;&#x5757;&#x94FE;&#x4E0A;&#x5411; DNSSEC oracle &#x63D0;&#x4EA4;&#x7ECF;&#x8FC7; DNSSEC &#x7B7E;&#x540D;&#x7684; DNS &#x8BB0;&#x5F55;&#x7684;&#x8BC1;&#x660E;&#xFF0C;&#x53EA;&#x8981;&#x662F;&#x91C7;&#x7528;&#x5F53;&#x524D;&#x652F;&#x6301;&#x7684;&#x516C;&#x94A5;&#x65B9;&#x6848;&#x548C;&#x6458;&#x8981;&#x7B7E;&#x540D;&#x7684;&#x5C31;&#x884C;&#x3002;&#x5982;&#x679C;&#x4E00;&#x4E2A;&#x4EBA;&#x80FD;&#x591F;&#x901A;&#x8FC7; DNSSEC Oracle &#x8BC1;&#x660E;&#x4ED6;&#x62E5;&#x6709;&#x67D0;&#x4E2A; DNS &#x57DF;&#x540D;&#x7684;&#x6240;&#x6709;&#x6743;&#xFF0C;&#x90A3;&#x4E48; DNSRegistrar &#x4F1A;&#x5C06;&#x76F8;&#x5E94;&#x7684; ENS &#x540D;&#x79F0;&#x5206;&#x914D;&#x7ED9;&#x4ED6;&#x3002;</p>
+<h2 id="dnsregistrar-&#x7684;&#x5730;&#x5740;">DNSRegistrar &#x7684;&#x5730;&#x5740;</h2>
+<ul>
+<li>Mainnet: &#x5F85;&#x5B9A;</li>
+<li>Ropsten: 0x475e527d54b91b0b011DA573C69Ac54B2eC269ea</li>
+</ul>
+<p>&#x6CE8;&#x518C; ENS &#x540D;&#x79F0;&#x65F6;&#xFF0C;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x67E5;&#x627E;&#x5176;&#x4E0A;&#x7EA7;&#x540D;&#x79F0;&#x6240;&#x6709;&#x8005;&#xFF08;&#x4F8B;&#x5982; <code>.matoken.eth</code> &#x7684;&#x4E0A;&#x7EA7;&#x540D;&#x79F0;&#x662F; <code>.eth</code>&#xFF09;&#x6765;&#x67E5;&#x627E;&#x6CE8;&#x518C;&#x5668;&#x5408;&#x7EA6;&#x5730;&#x5740;&#x3002;&#x4F46;&#x662F;&#xFF0C;&#x5F53;&#x60A8;&#x901A;&#x8FC7;DNSSEC &#x6CE8;&#x518C;&#x5668;&#x8FDB;&#x884C;&#x6CE8;&#x518C;&#x65F6;&#xFF0C;&#x5982;&#x679C;&#x60A8;&#x662F;&#x5728;&#x8BE5; TLD&#x4E0B; &#x7B2C;&#x4E00;&#x4E2A;&#x6CE8;&#x518C;&#x7684;&#xFF0C;&#x90A3;&#x4E48;&#x7236;&#x540D;&#x79F0;&#x53EF;&#x80FD;&#x4E0D;&#x5B58;&#x5728;&#x3002;</p>
+<h2 id="gas-&#x6D88;&#x8017;">Gas &#x6D88;&#x8017;</h2>
+<p>&#x5411; DNSSEC Oracle &#x63D0;&#x4EA4;&#x8BC1;&#x660E;&#x6D89;&#x53CA;&#x590D;&#x6742;&#x7684;&#x8BA1;&#x7B97;&#x8FC7;&#x7A0B;&#xFF0C;&#x56E0;&#x6B64;&#x4F1A;&#x6D88;&#x8017;&#x5927;&#x91CF; Gas&#x3002;&#x5982;&#x679C;&#x4F60;&#x662F;&#x5728;&#x67D0;&#x4E2A; TLD &#x4E0B;&#x7B2C;&#x4E00;&#x4E2A;&#x63D0;&#x4EA4;&#x540D;&#x79F0;&#x7684;&#xFF0C;&#x8FD8;&#x4F1A;&#x6D88;&#x8017;&#x66F4;&#x591A;&#x7684; Gas&#xFF0C;&#x56E0;&#x4E3A;&#x5B83;&#x5728;&#x540C;&#x65F6;&#x63D0;&#x4EA4;&#x60A8;&#x7684;&#x540D;&#x79F0;&#x53CA;&#x5176;&#x7236;&#x540D;&#x79F0;&#x8FD9;&#x4E24;&#x9879;&#x8BC1;&#x660E;&#xFF08;&#x4F8B;&#x5982;&#xFF1A;<code>matoken.live</code> &#x4E0E; <code>.live</code>&#xFF09;&#x3002;&#x5728; Ropsten &#x7F51;&#x7EDC;&#x4E0A;&#x8FDB;&#x884C;&#x6D4B;&#x8BD5;&#x65F6;&#xFF0C;<a href="https://ropsten.etherscan.io/tx/0x7ba91728530b2a9f325b330986265fd455639fd3f07e775cf68ee8c767b2637f" target="_blank">&#x6B64;&#x8FC7;&#x7A0B;&#x6D88;&#x8017;&#x4E86; 1,663,953 gas</a>&#x3002;</p>
+<h2 id="typescriptjavascript-&#x5E93;">Typescript/Javascript &#x5E93;</h2>
+<p>To help you interact with DNSSEC data and the DNSRegistrar, we provide two libraries.
+&#x4E3A;&#x4E86;&#x5E2E;&#x52A9;&#x60A8;&#x4E0E; DNSSEC &#x6570;&#x636E;&#x4EE5;&#x53CA; DNSRegistrar &#x8FDB;&#x884C;&#x4EA4;&#x4E92;&#xFF0C;&#x6211;&#x4EEC;&#x63D0;&#x4F9B;&#x4E86;&#x4E24;&#x4E2A;&#x5E93;&#x3002;</p>
+<ul>
+<li><a href="https://github.com/ensdomains/dnsprovejs" target="_blank">DNSProvejs</a>&#xFF1A;&#x7528;&#x4E8E;&#x4ECE; DNS &#x67E5;&#x8BE2;&#x548C;&#x9A8C;&#x8BC1; DNSSEC &#x6570;&#x636E;&#x7684;&#x5E93;</li>
+<li><a href="https://github.com/ensdomains/dnssecoraclejs" target="_blank">dnssecoraclejs</a>&#xFF1A;&#x4E3A; ENS DNSSEC Oracle &#x751F;&#x6210;&#x8BC1;&#x660E;&#x6570;&#x636E;&#x7684;&#x4E00;&#x4E2A;&#x5E93;&#x3002;</li>
+</ul>
+<h2 id="&#x793A;&#x4F8B;">&#x793A;&#x4F8B;</h2>
+<h3 id="&#x4ECE;-dns-&#x4E2D;&#x68C0;&#x7D22;&#x8BC1;&#x660E;">&#x4ECE; DNS &#x4E2D;&#x68C0;&#x7D22;&#x8BC1;&#x660E;</h3>
+<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> { Oracle } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;@ensdomains/dnssecoraclejs&apos;</span>
+<span class="hljs-keyword">import</span> { DNSProver } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;@ensdomains/dnsprovejs&apos;</span>
+<span class="hljs-keyword">const</span> textDomain = <span class="hljs-string">&apos;_ens.matoken.xyz&apos;</span>
+<span class="hljs-keyword">const</span> prover = DNSProver.create(<span class="hljs-string">&quot;https://cloudflare-dns.com/dns-query&quot;</span>)
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> prover.queryWithProof(<span class="hljs-string">&apos;TXT&apos;</span>, textDomain)
+</code></pre>
+<h3 id="&#x68C0;&#x7D22;-dns-&#x6587;&#x672C;&#x8BB0;&#x5F55;">&#x68C0;&#x7D22; DNS &#x6587;&#x672C;&#x8BB0;&#x5F55;</h3>
+<pre><code class="lang-javascript">const result = {
+  answer: SignedSet {
+    records: [{
+      name: &apos;_ens.matoken.xyz&apos;,
+      type: &apos;TXT&apos;,
+      ttl: 300,
+      class: &apos;IN&apos;,
+      flush: false,
+      data: [Array]
+    }],
+    signature: {
+      name: &apos;_ens.matoken.xyz&apos;,
+      type: &apos;RRSIG&apos;,
+      ttl: 300,
+      class: &apos;IN&apos;,
+      flush: false,
+      data: [Object]
+    }
+  },
+  proofs: [
+    SignedSet { records: [Array], signature: [Object] },
+    SignedSet { records: [Array], signature: [Object] },
+    SignedSet { records: [Array], signature: [Object] },
+    SignedSet { records: [Array], signature: [Object] },
+    SignedSet { records: [Array], signature: [Object] }
+  ]
+}
+// Retrieving the text record
+result.answer.records[0].data.toString()
+// &apos;a=0xa5313060f9fa6b607ac8ca8728a851166c9f612&apos;
+</code></pre>
+<p><code>queryWithProof</code> &#x8FD4;&#x56DE; <code>answer</code> &#x548C; <code>proofs</code>&#x3002;<code>answer</code> &#x5305;&#x542B; DNS &#x8BB0;&#x5F55;&#x7684;&#x53EF;&#x8BFB;&#x8BB0;&#x5F55;&#x53CA;&#x5176;&#x7B7E;&#x540D;&#xFF08;RRSIG&#xFF09;&#x3002;&#x4E0A;&#x9762;&#x7684;&#x4F8B;&#x5B50;&#x663E;&#x793A;&#x4E86;&#x533A;&#x5757;&#x94FE;&#x4E0A;&#x7684;&#x4E00;&#x6761;&#x6570;&#x636E;&#xFF08;&#x8FD4;&#x56DE;&#x7684;&#x7B2C;&#x4E00;&#x4E2A;&#x8BB0;&#x5F55;&#xFF09;&#xFF0C;&#x8FD9;&#x6761;&#x6570;&#x636E;&#x5305;&#x542B;&#x7740;&#x4E00;&#x6761; <code>a=$ETHEREUM_ADDRESS</code> &#x683C;&#x5F0F;&#x7684; <code>TXT</code> &#x8BB0;&#x5F55;&#x3002;</p>
+<h3 id="&#x5411;-dnsregistrar-&#x63D0;&#x4EA4;&#x8BC1;&#x660E;">&#x5411; DNSRegistrar &#x63D0;&#x4EA4;&#x8BC1;&#x660E;</h3>
+<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> { Oracle } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;@ensdomains/dnssecoraclejs&apos;</span>
+<span class="hljs-keyword">import</span> { abi } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;@ensdomains/contracts/abis/dnsregistrar/DNSRegistrar.json&apos;</span>
+<span class="hljs-keyword">import</span> { Contract } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;ethers&apos;</span>
+<span class="hljs-comment">// The registrar address nees to be hard-coded</span>
+<span class="hljs-keyword">const</span> registrarAddress = <span class="hljs-string">&apos;0x475e527d54b91b0b011DA573C69Ac54B2eC269ea&apos;</span>
+<span class="hljs-keyword">const</span> registrar <span class="hljs-keyword">new</span> Contract(registrarAddress, abi, provider)
+<span class="hljs-keyword">const</span> oracleAddress = <span class="hljs-keyword">await</span> registrar.oracle()
+<span class="hljs-keyword">const</span> oracle = <span class="hljs-keyword">new</span> Oracle(oracleAddress, provider)
+<span class="hljs-keyword">const</span> { data, proof } = oracle.getProofData(result)
+<span class="hljs-keyword">if</span>(data.length === <span class="hljs-number">0</span>){
+    <span class="hljs-comment">// This happens if someone has submitted the proof directly to DNSSECOracle, hence only claim a name on the registrar.</span>
+    <span class="hljs-keyword">return</span> registrar.claim(claim.encodedName, proof)
+}<span class="hljs-keyword">else</span>{
+    <span class="hljs-comment">// This submits proof to DNSSECOracle, then claim a name.</span>
+    <span class="hljs-keyword">return</span> registrar.proveAndClaim(claim.encodedName, data, proof)
+}
+</code></pre>
+<h2 id="&#x4E0B;&#x4E00;&#x6B65;">&#x4E0B;&#x4E00;&#x6B65;</h2>
+<p>&#x76EE;&#x524D;&#x7F3A;&#x5C11;&#x4E00;&#x4E2A; Typescript/JS &#x5E93;&#xFF0C;&#x8FD9;&#x4E2A;&#x5E93;&#x652F;&#x6301;&#x901A;&#x8FC7;&#x63D0;&#x4F9B; NSEC/NSEC3&#xFF08;&#x4E0B;&#x4E00;&#x4EE3;&#x5B89;&#x5168;&#x8BB0;&#x5F55;&#xFF09;&#x8BC1;&#x660E;&#x6765;&#x5220;&#x9664; DNSSECOracle &#x4E2D;&#x7684;&#x8BB0;&#x5F55;&#x3002;</p>
+<footer class="page-footer"><span class="copyright">&#xA9; Pengfei Ni all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">Updated at
+2022-05-17 21:04:39
+</span></footer>
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="eth-permanent-registrar/controller.html" class="navigation navigation-prev " aria-label="Previous page: .eth 永久注册器的控制器">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../contract-developer-guide/resolving-names-on-chain.html" class="navigation navigation-next " aria-label="Next page: 链上名称解析">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"part":"ENS 中文文档","title":"DNS 注册器","level":"4.10","depth":1,"next":{"title":"链上名称解析","level":"5.1","depth":1,"path":"docs/contract-developer-guide/resolving-names-on-chain.md","ref":"docs/contract-developer-guide/resolving-names-on-chain.md","articles":[]},"previous":{"title":".eth 永久注册器的控制器","level":"4.9","depth":1,"path":"docs/contract-api-reference/eth-permanent-registrar/controller.md","ref":"docs/contract-api-reference/eth-permanent-registrar/controller.md","articles":[]},"dir":"ltr"},"config":{"plugins":["mermaid","github","editlink","page-toc","-lunr","-search","search-plus","tbfed-pagefooter","livereload"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"&copy Pengfei Ni","modify_label":"Updated at","modify_format":"YYYY-MM-DD HH:mm:ss"},"github":{"url":"https://github.com/feiskyer/kubernetes-handbook"},"editlink":{"label":"编辑本页","multilingual":false,"base":"https://github.com/feiskyer/kubernetes-handbook/blob/master"},"livereload":{},"mermaid":{},"page-toc":{"position":"before-first","selector":".markdown-section h1, .markdown-section h2, .markdown-section h3","showByDefault":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Pengfei Ni","pdf":{"pageNumbers":true,"fontSize":11,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"toc":true},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Kubernetes Handbook","language":"zh-cn","gitbook":">= 3.2.2"},"file":{"path":"docs/contract-api-reference/dns-registrar.md","mtime":"2022-05-18T04:04:39.509Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-05-18T06:00:13.958Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-editlink/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-page-toc/anchor-3.1.1.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-page-toc/page-toc.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search-plus/jquery.mark.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search-plus/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

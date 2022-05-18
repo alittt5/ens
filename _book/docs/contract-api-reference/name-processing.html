@@ -1,0 +1,934 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-cn" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>名称处理 · Kubernetes Handbook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="描述如何规范化 ENS 名称以及如何将名称进行哈希.">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="Pengfei Ni">
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-page-toc/page-toc.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search-plus/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-tbfed-pagefooter/footer.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="ens.html" />
+    
+    
+    <link rel="prev" href="ENS-Contracts-Overview.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="輸入並搜尋" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../readme.html">
+            
+                <a href="../readme.html">
+            
+                    
+                    概述
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">开始</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    ENS介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    专业术语
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    ENS部署情况
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    注册器常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    在私有链上部署ENS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    DNS注册器指南
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="../terminology.html">
+            
+                <a href="../terminology.html">
+            
+                    
+                    漏洞奖金计划
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9" data-path="../ens-improvement-proposals/readme.html">
+            
+                <a href="../ens-improvement-proposals/readme.html">
+            
+                    
+                    ENS改进提案
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.9.1" data-path="../ens-improvement-proposals/ensip-1-ens.html">
+            
+                <a href="../ens-improvement-proposals/ensip-1-ens.html">
+            
+                    
+                    ENSIP-1: ENS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.2" data-path="../ens-improvement-proposals/ensip-2-initial-hash-registrar.html">
+            
+                <a href="../ens-improvement-proposals/ensip-2-initial-hash-registrar.html">
+            
+                    
+                    ENSIP-2: 初始哈希注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.3" data-path="../ens-improvement-proposals/ensip-3-reverse-resolution.html">
+            
+                <a href="../ens-improvement-proposals/ensip-3-reverse-resolution.html">
+            
+                    
+                    ENSIP-3: 反向解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.4" data-path="../ens-improvement-proposals/ensip-4-support-for-contract-abis.html">
+            
+                <a href="../ens-improvement-proposals/ensip-4-support-for-contract-abis.html">
+            
+                    
+                    ENSIP-4: 合约 ABI 支持
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.5" data-path="../ens-improvement-proposals/ensip-5-text-records.html">
+            
+                <a href="../ens-improvement-proposals/ensip-5-text-records.html">
+            
+                    
+                    ENSIP-5: 文本记录
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.6" data-path="../ens-improvement-proposals/ensip-6-dns-in-ens.html">
+            
+                <a href="../ens-improvement-proposals/ensip-6-dns-in-ens.html">
+            
+                    
+                    ENSIP-6: ENS 中的 DNS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.7" data-path="../ens-improvement-proposals/ensip-7-contenthash-field.html">
+            
+                <a href="../ens-improvement-proposals/ensip-7-contenthash-field.html">
+            
+                    
+                    ENSIP-7: 内容哈希字段
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.8" data-path="../ens-improvement-proposals/ensip-8-interface-discovery.html">
+            
+                <a href="../ens-improvement-proposals/ensip-8-interface-discovery.html">
+            
+                    
+                    ENSIP-8: 接口发现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.9" data-path="../ens-improvement-proposals/ensip-9-multichain-address-resolution.html">
+            
+                <a href="../ens-improvement-proposals/ensip-9-multichain-address-resolution.html">
+            
+                    
+                    ENSIP-9: 多链地址解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.10" data-path="../ens-improvement-proposals/ensip-10-wildcard-resolution.html">
+            
+                <a href="../ens-improvement-proposals/ensip-10-wildcard-resolution.html">
+            
+                    
+                    ENSIP-10: 通配符解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.11" data-path="../ens-improvement-proposals/ensip-11-evmchain-address-resolution.html">
+            
+                <a href="../ens-improvement-proposals/ensip-11-evmchain-address-resolution.html">
+            
+                    
+                    ENSIP-11: 兼容链地址解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9.12" data-path="../ens-improvement-proposals/ensip-12-avatar-text-records.html">
+            
+                <a href="../ens-improvement-proposals/ensip-12-avatar-text-records.html">
+            
+                    
+                    ENSIP-12: 头像文本记录
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">DAPP开发指南</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../dapp-developer-guide/ens-enabling-your-dapp.html">
+            
+                <a href="../dapp-developer-guide/ens-enabling-your-dapp.html">
+            
+                    
+                    在 DAPP 中启用 ENS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../dapp-developer-guide/ens-libraries.html">
+            
+                <a href="../dapp-developer-guide/ens-libraries.html">
+            
+                    
+                    ENS 库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="../dapp-developer-guide/working-with-ens.html">
+            
+                <a href="../dapp-developer-guide/working-with-ens.html">
+            
+                    
+                    ENS 的使用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.4" data-path="../dapp-developer-guide/resolving-names.html">
+            
+                <a href="../dapp-developer-guide/resolving-names.html">
+            
+                    
+                    名称解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.5" data-path="../dapp-developer-guide/managing-names.html">
+            
+                <a href="../dapp-developer-guide/managing-names.html">
+            
+                    
+                    名称管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.6" data-path="../dapp-developer-guide/registering-and-renewing-names.html">
+            
+                <a href="../dapp-developer-guide/registering-and-renewing-names.html">
+            
+                    
+                    名称注册和续费
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.7" data-path="../dapp-developer-guide/front-end-design-guidelines.html">
+            
+                <a href="../dapp-developer-guide/front-end-design-guidelines.html">
+            
+                    
+                    ENS 前端设计指南
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.8" data-path="../dapp-developer-guide/ens-as-nft.html">
+            
+                <a href="../dapp-developer-guide/ens-as-nft.html">
+            
+                    
+                    ENS 作为一种 NFT
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.9" data-path="../dapp-developer-guide/ens-l2-offchain.html">
+            
+                <a href="../dapp-developer-guide/ens-l2-offchain.html">
+            
+                    
+                    L2 和链下数据支持
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">合约 API 参考</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="ENS-Contracts-Overview.html">
+            
+                <a href="ENS-Contracts-Overview.html">
+            
+                    
+                    ENS 合约概述
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="4.2" data-path="name-processing.html">
+            
+                <a href="name-processing.html">
+            
+                    
+                    名称处理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3" data-path="ens.html">
+            
+                <a href="ens.html">
+            
+                    
+                    注册表
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4" data-path="reverseregistrar.html">
+            
+                <a href="reverseregistrar.html">
+            
+                    
+                    反向注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5" data-path="testregistrar.html">
+            
+                <a href="testregistrar.html">
+            
+                    
+                    测试注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6" data-path="publicresolver.html">
+            
+                <a href="publicresolver.html">
+            
+                    
+                    公共解析器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.7" data-path="eth-permanent-registrar/readme.html">
+            
+                <a href="eth-permanent-registrar/readme.html">
+            
+                    
+                    .eth 永久注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8" data-path="eth-permanent-registrar/registrar.html">
+            
+                <a href="eth-permanent-registrar/registrar.html">
+            
+                    
+                    .eth 永久注册器的实现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.9" data-path="eth-permanent-registrar/controller.html">
+            
+                <a href="eth-permanent-registrar/controller.html">
+            
+                    
+                    .eth 永久注册器的控制器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.10" data-path="dns-registrar.html">
+            
+                <a href="dns-registrar.html">
+            
+                    
+                    DNS 注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">合约开发指南</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../contract-developer-guide/resolving-names-on-chain.html">
+            
+                <a href="../contract-developer-guide/resolving-names-on-chain.html">
+            
+                    
+                    链上名称解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="../contract-developer-guide/writing-a-resolver.html">
+            
+                <a href="../contract-developer-guide/writing-a-resolver.html">
+            
+                    
+                    编写一个解析器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="../contract-developer-guide/writing-a-registrar.html">
+            
+                <a href="../contract-developer-guide/writing-a-registrar.html">
+            
+                    
+                    编写一个注册器
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">ENS 迁移(2020年2月)</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="../ens-migration-february-2020/guide-for-dapp-developers.html">
+            
+                <a href="../ens-migration-february-2020/guide-for-dapp-developers.html">
+            
+                    
+                    DApp 开发者迁移指南
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2" data-path="../ens-migration-february-2020/technical-description.html">
+            
+                <a href="../ens-migration-february-2020/technical-description.html">
+            
+                    
+                    技术说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            本書使用 GitBook 釋出
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >名称处理</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div class="search-plus" id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <p>ENS &#x53EA;&#x4F7F;&#x7528;&#x56FA;&#x5B9A;&#x957F;&#x5EA6;&#x7684;256&#x4F4D;&#x52A0;&#x5BC6;&#x54C8;&#x5E0C;&#x6765;&#x4EE3;&#x66FF;&#x53EF;&#x8BFB;&#x7684;&#x540D;&#x79F0;&#x3002;&#x4E3A;&#x4E86;&#x4ECE;&#x540D;&#x79F0;&#x6D3E;&#x751F;&#x54C8;&#x5E0C;&#x7684;&#x540C;&#x65F6;&#x4ECD;&#x7136;&#x4FDD;&#x7559;&#x5176;&#x5C42;&#x6B21;&#x6027;&#xFF0C;&#x4F7F;&#x7528;&#x4E86;&#x540D;&#x4E3A; Namehash &#x7684;&#x7B97;&#x6CD5;&#x3002;&#x4F8B;&#x5982;&#xFF0C;&#x201C;alice.eth&#x201D; &#x7684; Namehash &#x4E3A; <em>0x787192fc5378cc32aa956ddfdedbf26b24e8d78e40109add0eea2c1a012c3dec</em> &#xFF0C;&#x8FD9;&#x662F;&#x540D;&#x79F0;&#x5728; ENS &#x5185;&#x90E8;&#x7684;&#x552F;&#x4E00;&#x8868;&#x793A;&#x65B9;&#x5F0F;&#x3002;</p>
+<p>&#x5728;&#x4F7F;&#x7528; Namehash &#x8FDB;&#x884C;&#x54C8;&#x5E0C;&#x4E4B;&#x524D;&#xFF0C;&#x9996;&#x5148;&#x4F7F;&#x7528; UTS-46 &#x6807;&#x51C6;&#x5BF9;&#x540D;&#x79F0;&#x8FDB;&#x884C;&#x89C4;&#x8303;&#x5316;&#xFF0C;&#x786E;&#x4FDD;&#x540D;&#x79F0;&#x4E2D;&#x7684;&#x5B57;&#x6BCD;&#x4E0E;&#x5927;&#x5C0F;&#x5199;&#x65E0;&#x5173;&#xFF0C;&#x5E76;&#x7981;&#x6B62;&#x4F7F;&#x7528;&#x65E0;&#x6548;&#x5B57;&#x7B26;&#x3002;&#x4EFB;&#x4F55;&#x5BF9;&#x540D;&#x79F0;&#x8FDB;&#x884C;&#x54C8;&#x5E0C;&#x548C;&#x89E3;&#x6790;&#x7684;&#x64CD;&#x4F5C;&#x90FD;<strong>&#x5FC5;&#x987B;</strong>&#x9996;&#x5148;&#x5BF9;&#x5176;&#x8FDB;&#x884C;&#x89C4;&#x8303;&#x5316;&#xFF0C;&#x4EE5;&#x786E;&#x4FDD;&#x6240;&#x6709;&#x7528;&#x6237;&#x83B7;&#x5F97; ENS &#x7684;&#x4E00;&#x81F4;&#x6027;&#x3002;</p>
+<h2 id="&#x89C4;&#x8303;&#x5316;&#x540D;&#x79F0;">&#x89C4;&#x8303;&#x5316;&#x540D;&#x79F0;</h2>
+<p>&#x5728;&#x4F7F;&#x7528; Namehash &#x5C06;&#x540D;&#x79F0;&#x8F6C;&#x6362;&#x4E3A;&#x54C8;&#x5E0C;&#x8282;&#x70B9;&#x4E4B;&#x524D;&#xFF0C;&#x5FC5;&#x987B;&#x9996;&#x5148;&#x5BF9;&#x540D;&#x79F0;&#x8FDB;&#x884C;&#x89C4;&#x8303;&#x5316;&#x548C;&#x6709;&#x6548;&#x6027;&#x68C0;&#x67E5;&#xFF08;&#x6BD4;&#x5982;&#x5C06; <em>fOO.eth</em> &#x89C4;&#x8303;&#x4E3A; <em>foo.eth</em>&#xFF09;&#x5E76;&#x5C4F;&#x853D;&#x5305;&#x542B;&#x4E0B;&#x5212;&#x7EBF;&#x7B49;&#x7981;&#x6B62;&#x5B57;&#x7B26;&#x7684;&#x540D;&#x79F0;&#x3002;&#x66F4;&#x4E3A;&#x5173;&#x952E;&#x7684;&#x662F;&#xFF0C;&#x6240;&#x6709;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x90FD;&#x5FC5;&#x987B;&#x9075;&#x5FAA;&#x76F8;&#x540C;&#x7684;&#x89C4;&#x8303;&#x5316;&#x548C;&#x9A8C;&#x8BC1;&#x89C4;&#x5219;&#x96C6;&#xFF0C;&#x5426;&#x5219;&#x76F8;&#x540C;&#x7684;&#x5B57;&#x7B26;&#x8F93;&#x5165;&#x5230;&#x4E0D;&#x540C;&#x7CFB;&#x7EDF;&#x4E0A;&#x53EF;&#x80FD;&#x4F1A;&#x88AB;&#x89E3;&#x6790;&#x4E3A;&#x4E24;&#x4E2A;&#x4E0D;&#x540C;&#x7684; ENS &#x540D;&#x79F0;&#x3002;</p>
+<p>&#x4F7F;&#x7528;ENS&#x548C;&#x5904;&#x7406;&#x53EF;&#x8BFB;&#x540D;&#x79F0;&#x7684;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x5728;&#x8FDB;&#x884C;&#x89C4;&#x8303;&#x5316;&#x548C;&#x9A8C;&#x8BC1;&#x65F6;&#x5FC5;&#x987B;&#x9075;&#x5FAA; <a href="http://unicode.org/reports/tr46/" target="_blank">UTS46</a> &#x3002;&#x5904;&#x7406;&#x8FC7;&#x7A0B;&#x5E94;&#x8BE5;&#x901A;&#x8FC7;&#x8BBE;&#x7F6E; <code>UseSTD3ASCIIRules=true</code> &#x91C7;&#x7528;&#x975E;&#x8FC7;&#x6E21;&#x89C4;&#x5219;&#x3002;</p>
+<p><a href="https://www.npmjs.com/package/@ensdomains/eth-ens-namehash" target="_blank">eth-ens-namehash</a> &#x8FD9;&#x4E2A; Javascript &#x5E93;&#x4F1A;&#x6267;&#x884C;&#x8FD9;&#x91CC;&#x63CF;&#x8FF0;&#x7684;&#x89C4;&#x8303;&#x5316;&#x548C;&#x54C8;&#x5E0C;&#x3002;DApp &#x5F00;&#x53D1;&#x8005;&#x6307;&#x5357;&#x4E2D;&#x6D89;&#x53CA;&#x7684;&#x6240;&#x6709; <a href="../dapp-developer-guide/ens-libraries.html">ENS &#x5E93;</a> &#x90FD;&#x4F1A;&#x6267;&#x884C;&#x89C4;&#x8303;&#x5316;&#x548C;&#x54C8;&#x5E0C;&#x3002;</p>
+<h2 id="&#x5BF9;&#x540D;&#x79F0;&#x8FDB;&#x884C;&#x54C8;&#x5E0C;">&#x5BF9;&#x540D;&#x79F0;&#x8FDB;&#x884C;&#x54C8;&#x5E0C;</h2>
+<p>Namehash &#x662F;&#x4E00;&#x4E2A;&#x9012;&#x5F52;&#x8FC7;&#x7A0B;&#xFF0C;&#x53EF;&#x4EE5;&#x4E3A;&#x4EFB;&#x4F55;&#x6709;&#x6548;&#x7684;&#x540D;&#x79F0;&#x751F;&#x6210;&#x552F;&#x4E00;&#x7684;&#x54C8;&#x5E0C;&#x3002;&#x4ECE;&#x4EFB;&#x610F;&#x4E00;&#x4E2A;&#x540D;&#x79F0;&#x7684; Namehash &#x5F00;&#x59CB;&#xFF08;&#x6BD4;&#x5982; &#x201C;alice.eth&#x201D; &#x7684; Namehash&#xFF09;&#x53EF;&#x4EE5;&#x63A8;&#x5BFC;&#x51FA;&#x4EFB;&#x610F;&#x5B50;&#x540D;&#x79F0;&#x7684; Namehash&#xFF08;&#x6BD4;&#x5982; &#x201C;iam.alice.eth&#x201D; &#x7684; Namehash&#xFF09;&#xFF0C;&#x800C;&#x4E14;&#x63A8;&#x5BFC;&#x8FC7;&#x7A0B;&#x4E2D;&#x4E0D;&#x9700;&#x8981;&#x77E5;&#x9053;&#x6216;&#x5904;&#x7406; &#x201C;alice.eth&#x201D; &#x8FD9;&#x4E2A;&#x53EF;&#x8BFB;&#x7684;&#x539F;&#x59CB;&#x540D;&#x79F0;&#x3002;&#x6B63;&#x662F;&#x8FD9;&#x4E2A;&#x7279;&#x6027;&#x4F7F;&#x5F97; ENS &#x80FD;&#x591F;&#x6210;&#x4E3A;&#x4E00;&#x4E2A;&#x5C42;&#x6B21;&#x6027;&#x7684;&#x7CFB;&#x7EDF;&#xFF0C;&#x4E14;&#x4E0D;&#x5FC5;&#x5728;&#x5185;&#x90E8;&#x5904;&#x7406;&#x53EF;&#x8BFB;&#x7684;&#x6587;&#x672C;&#x5B57;&#x7B26;&#x4E32;&#x3002;</p>
+<h3 id="&#x672F;&#x8BED;">&#x672F;&#x8BED;</h3>
+<ul>
+<li>&#x540D;&#x79F0;&#xFF08;domain&#xFF09;- ENS &#x6807;&#x8BC6;&#x7B26;&#x7684;&#x5B8C;&#x6574;&#x4E14;&#x53EF;&#x8BFB;&#x7684;&#x5F62;&#x5F0F;&#xFF0C;&#x6BD4;&#x5982; <em>iam.alice.eth</em> &#x3002;</li>
+<li>&#x6807;&#x7B7E;&#xFF08;label&#xFF09;- &#x540D;&#x79F0;&#x7684;&#x72EC;&#x7ACB;&#x7EC4;&#x6210;&#x90E8;&#x5206; - &#x6BD4;&#x5982;&#xFF1A;<em>iam</em> &#xFF0C;<em>alice</em> &#x6216; <em>eth</em> &#x3002;</li>
+<li>&#x6807;&#x7B7E;&#x54C8;&#x5E0C;&#xFF08;label hash&#xFF09;- &#x5355;&#x4E2A;&#x6807;&#x7B7E;&#x7ECF;&#x8FC7; keccak256 &#x51FD;&#x6570;&#x8BA1;&#x7B97;&#x540E;&#x7684;&#x8F93;&#x51FA;&#x503C;&#xFF0C;&#x6BD4;&#x5982;&#xFF1A;<code>keccak256(&#x2018;eth&#x2019;) = 0x4f5b812789fc606be1b3b16908db13fc7a9adf7ca72641f84d75b47069d3d7f0</code></li>
+<li>&#x8282;&#x70B9;&#xFF08;node&#xFF09;- <code>namehash</code> &#x51FD;&#x6570;&#x7684;&#x8F93;&#x51FA;&#x503C;&#xFF0C;&#x7528;&#x4F5C; ENS &#x540D;&#x79F0;&#x7684;&#x552F;&#x4E00;&#x6027;&#x6807;&#x8BC6;&#x3002;</li>
+</ul>
+<h3 id="&#x7B97;&#x6CD5;">&#x7B97;&#x6CD5;</h3>
+<p>&#x9996;&#x5148;&#xFF0C;&#x6309;&#x70B9;&#xFF08;&#x201C;.&#x201D;&#xFF09;&#x5206;&#x9694;&#x5C06;&#x540D;&#x79F0;&#x5212;&#x5206;&#x4E3A;&#x6807;&#x7B7E;&#x3002;&#x6240;&#x4EE5;&#xFF0C;&#x201C;vitalik.wallet.eth&#x201D; &#x53D8;&#x6210;&#x4E86;&#x5217;&#x8868;[&#x201C;vitalik&#x201D;, &#x201C;wallet&#x201D;, &#x201C;eth&#x201D;]&#x3002;</p>
+<p>&#x7136;&#x540E;&#x6309;&#x9012;&#x5F52;&#x7684;&#x65B9;&#x5F0F;&#x5B9A;&#x4E49; namehash &#x51FD;&#x6570;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-text">namehash([]) = 0x0000000000000000000000000000000000000000000000000000000000000000
+namehash([label, &#x2026;]) = keccak256(namehash(&#x2026;), keccak256(label))
+</code></pre>
+<p>&#x4E0B;&#x9762;&#x662F;&#x7528; Python &#x5B9E;&#x73B0; namehash &#x7684;&#x793A;&#x4F8B;&#x3002;</p>
+<pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">namehash</span><span class="hljs-params">(name)</span>:</span>
+  <span class="hljs-keyword">if</span> name == <span class="hljs-string">&apos;&apos;</span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&apos;\0&apos;</span> * <span class="hljs-number">32</span>
+  <span class="hljs-keyword">else</span>:
+    label, _, remainder = name.partition(<span class="hljs-string">&apos;.&apos;</span>)
+    <span class="hljs-keyword">return</span> sha3(namehash(remainder) + sha3(label))
+</code></pre>
+<p>Namehash &#x5728; <a href="https://eips.ethereum.org/EIPS/eip-137" target="_blank">EIP137</a> &#x4E2D;&#x6709;&#x8BE6;&#x7EC6;&#x7684;&#x8BF4;&#x660E;&#x3002;</p>
+<h3 id="&#x5982;&#x4F55;&#x67E5;&#x8BE2;&#x4E00;&#x4E2A;&#x540D;&#x79F0;&#x7684;&#x6807;&#x7B7E;&#x54C8;&#x5E0C;&#x6216;-namehash">&#x5982;&#x4F55;&#x67E5;&#x8BE2;&#x4E00;&#x4E2A;&#x540D;&#x79F0;&#x7684;&#x6807;&#x7B7E;&#x54C8;&#x5E0C;&#x6216; namehash</h3>
+<p>&#x5728;&#x67D0;&#x4E9B;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x4F60;&#x53EF;&#x80FD;&#x9700;&#x8981;&#x77E5;&#x9053;&#x7279;&#x5B9A; ENS &#x540D;&#x79F0;&#x7684;&#x54C8;&#x5E0C;&#x503C;&#x3002;labelhash &#x8868;&#x793A;&#x540D;&#x79F0;&#x6807;&#x7B7E;&#x7684;&#x54C8;&#x5E0C;&#x503C;&#xFF08;&#x4F8B;&#x5982;&#xFF1A;<code>makoto</code> &#x662F; <code>makoto.eth</code> &#x7684;&#x6807;&#x7B7E;)&#xFF0C; namehash &#x662F;&#x6807;&#x7B7E;&#x54C8;&#x5E0C;&#x7EC4;&#x5408;&#x540E;&#x7684;&#x54C8;&#x5E0C;&#x503C;&#x3002;&#x6211;&#x4EEC;&#x76EE;&#x524D;&#x6B63;&#x5728;&#x52AA;&#x529B;&#x5C06;&#x8FD9;&#x4E9B;&#x4FE1;&#x606F;&#x5448;&#x73B0;&#x5728;&#x6211;&#x4EEC;&#x7684;&#x7BA1;&#x7406;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#xFF08;&#x5373; <a href="https://app.ens.domains/" target="_blank">ENS App</a>&#xFF09;&#x3002;&#x540C;&#x65F6;&#xFF0C;&#x60A8;&#x53EF;&#x4EE5;&#x901A;&#x8FC7; <a href="https://thegraph.com/explorer/subgraph/ensdomains/ens" target="_blank">TheGraph &#x4E2D;&#x7684; ENS &#x5B50;&#x56FE;</a> &#x5229;&#x7528;&#x4EE5;&#x4E0B;&#x4EE3;&#x7801;&#x67E5;&#x8BE2;&#x76F8;&#x5173;&#x4FE1;&#x606F;&#x3002;</p>
+<pre><code class="lang-text">{
+  domains(where: {name:&quot;vitalik.eth&quot;}) {
+    id
+    name
+    labelName
+    labelhash
+  }
+}
+</code></pre>
+<h2 id="&#x4E0D;&#x660E;&#x786E;&#x540D;&#x79F0;&#x7684;&#x5904;&#x7406;">&#x4E0D;&#x660E;&#x786E;&#x540D;&#x79F0;&#x7684;&#x5904;&#x7406;</h2>
+<p>&#x7531;&#x4E8E; unicode &#x4E2D;&#x6709;&#x5927;&#x91CF;&#x7684;&#x5B57;&#x7B26;&#xFF0C;&#x800C;&#x4E14;&#x6240;&#x8868;&#x793A;&#x7684;&#x811A;&#x672C;&#x79CD;&#x7C7B;&#x7E41;&#x591A;&#xFF0C;&#x56E0;&#x6B64;&#x4E0D;&#x53EF;&#x907F;&#x514D;&#x5730;&#x4F1A;&#x51FA;&#x73B0;&#x4E0D;&#x540C;&#x7684; unicode &#x5B57;&#x7B26;&#xFF0C;&#x8FD9;&#x4E9B;&#x5B57;&#x7B26;&#x5728;&#x5E38;&#x7528;&#x5B57;&#x4F53;&#x4E2D;&#x662F;&#x76F8;&#x4F3C;&#x7684;&#xFF0C;&#x751A;&#x81F3;&#x662F;&#x76F8;&#x540C;&#x7684;&#x3002;&#x8FD9;&#x4E00;&#x70B9;&#x53EF;&#x80FD;&#x4F1A;&#x88AB;&#x7528;&#x6765;&#x6B3A;&#x9A97;&#x7528;&#x6237;&#xFF0C;&#x8BA9;&#x7528;&#x6237;&#x4EE5;&#x4E3A;&#x4ED6;&#x4EEC;&#x6B63;&#x5728;&#x8BBF;&#x95EE;&#x67D0;&#x4E2A;&#x7AD9;&#x70B9;&#x6216;&#x8D44;&#x6E90;&#xFF0C;&#x800C;&#x5B9E;&#x9645;&#x4E0A;&#x4ED6;&#x4EEC;&#x6B63;&#x5728;&#x8BBF;&#x95EE;&#x662F;&#x53E6;&#x4E00;&#x4E2A;&#x7AD9;&#x70B9;&#x6216;&#x8D44;&#x6E90;&#x3002;&#x5373;&#x6240;&#x8C13;&#x7684; &#x201C;<a href="https://en.wikipedia.org/wiki/Internationalized_domain_name#ASCII_spoofing_concerns" target="_blank">&#x540C;&#x5F62;&#x653B;&#x51FB;</a>&#x201D; &#x3002;</p>
+<p>&#x5411;&#x7528;&#x6237;&#x663E;&#x793A;&#x540D;&#x79F0;&#x7684;&#x5BA2;&#x6237;&#x7AEF;&#x548C;&#x5176;&#x4ED6;&#x8F6F;&#x4EF6;&#x5E94;&#x8BE5;&#x9488;&#x5BF9;&#x8FD9;&#x4E9B;&#x653B;&#x51FB;&#x91C7;&#x53D6;&#x5BF9;&#x7B56;&#xFF0C;&#x6BD4;&#x5982;&#x7A81;&#x51FA;&#x663E;&#x793A;&#x6709;&#x95EE;&#x9898;&#x7684;&#x5B57;&#x7B26;&#xFF0C;&#x6216;&#x8005;&#x5411;&#x7528;&#x6237;&#x663E;&#x793A;&#x6DF7;&#x5408;&#x811A;&#x672C;&#x7684;&#x8B66;&#x544A;&#x3002;<a href="https://www.chromium.org/developers/design-documents/idn-in-google-chrome" target="_blank">Chromium &#x7684; IDN &#x7B56;&#x7565;</a> &#x5BF9;&#x4E8E;&#x5448;&#x73B0; IDN &#x540D;&#x79F0;&#x65F6;&#x7684;&#x5BA2;&#x6237;&#x7AEF;&#x884C;&#x4E3A;&#x5177;&#x5907;&#x4E00;&#x5B9A;&#x7684;&#x53C2;&#x8003;&#x4EF7;&#x503C;&#x3002;</p>
+<footer class="page-footer"><span class="copyright">&#xA9; Pengfei Ni all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">Updated at
+2022-05-17 21:04:39
+</span></footer>
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="ENS-Contracts-Overview.html" class="navigation navigation-prev " aria-label="Previous page: ENS 合约概述">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="ens.html" class="navigation navigation-next " aria-label="Next page: 注册表">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"part":"ENS 中文文档","title":"名称处理","description":"描述如何规范化 ENS 名称以及如何将名称进行哈希.","level":"4.2","depth":1,"next":{"title":"注册表","level":"4.3","depth":1,"path":"docs/contract-api-reference/ens.md","ref":"docs/contract-api-reference/ens.md","articles":[]},"previous":{"title":"ENS 合约概述","level":"4.1","depth":1,"path":"docs/contract-api-reference/ENS-Contracts-Overview.md","ref":"docs/contract-api-reference/ENS-Contracts-Overview.md","articles":[]},"dir":"ltr"},"config":{"plugins":["mermaid","github","editlink","page-toc","-lunr","-search","search-plus","tbfed-pagefooter","livereload"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"&copy Pengfei Ni","modify_label":"Updated at","modify_format":"YYYY-MM-DD HH:mm:ss"},"github":{"url":"https://github.com/feiskyer/kubernetes-handbook"},"editlink":{"label":"编辑本页","multilingual":false,"base":"https://github.com/feiskyer/kubernetes-handbook/blob/master"},"livereload":{},"mermaid":{},"page-toc":{"position":"before-first","selector":".markdown-section h1, .markdown-section h2, .markdown-section h3","showByDefault":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Pengfei Ni","pdf":{"pageNumbers":true,"fontSize":11,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"toc":true},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Kubernetes Handbook","language":"zh-cn","gitbook":">= 3.2.2"},"file":{"path":"docs/contract-api-reference/name-processing.md","mtime":"2022-05-18T04:04:39.509Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-05-18T06:00:13.958Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-editlink/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-page-toc/anchor-3.1.1.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-page-toc/page-toc.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search-plus/jquery.mark.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search-plus/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
