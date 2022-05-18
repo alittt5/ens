@@ -1,45 +1,46 @@
 ---
-part: ENS 中文文档
-subpart: ensip
-title: 'ENSIP-10: 通配符解析'
-description: Provides a mechanism to support wildcard resolution of ENS names (formerly EIP-2544).
+description: >-
+  Provides a mechanism to support wildcard resolution of ENS names (formerly
+  EIP-2544).
 ---
 
-| **作者**    | Nick Johnson \<nick@ens.domains>, 0age (@0age) |
+# ENSIP-10: Wildcard Resolution
+
+| **Author**    | Nick Johnson \<nick@ens.domains>, 0age (@0age) |
 | ------------- | ---------------------------------------------- |
-| **状态**    | 草案                                          |
-| **提交时间** | 2020-02-28                                     |
+| **Status**    | Draft                                          |
+| **Submitted** | 2020-02-28                                     |
 
-### 摘要
+### Abstract
 
-以太坊名称服务规范 (ENSIP-1) 确定了名称解析过程分为两个步骤。首先，ENS 客户端对名称执行 namehash 算法，确定名称对应的“节点”，随后将该节点提供给 ENS 注册表合约来找到这个名称的解析器。这时，如果在注册表上已经设置了解析器，客户端将向解析器合约提供同一个节点，解析器就会返回相应的地址或其他记录。
+The Ethereum Name Service Specification (ENSIP-1) establishes a two-step name resolution process. First, an ENS client performs the namehash algorithm on the name to determine the associated "node", and supplies that node to the ENS Registry contract to determine the resolver. Then, if a resolver has been set on the Registry, the client supplies that same node to the resolver contract, which will return the associated address or other record.
 
-按照当前的规范，如果在 ENS 注册表中没有为给定的节点设置解析器，那么解析过程就会结束。此 ENSIP 将会更改名称解析的过程，它会为那些没有设置解析器的域添加一个额外的步骤。这个步骤从名称中除去最左边的标签，派生出新名称片段的节点，并将该节点提供给 ENS 注册表。如果找到了该节点的解析器，客户端将向该解析器合约提供原始的、完整的节点，以获取相应的记录。此步骤重复执行，直到找到具有解析器的节点。
+As currently specified, this process terminates if a resolver is not set on the ENS Registry for a given node. This ENSIP changes the name resolution process by adding an additional step if a resolver is not set for a domain. This step strips out the leftmost label from the name, derives the node of the new fragment, and supplies that node to the ENS Registry. If a resolver is located for that node, the client supplies the original, complete node to that resolver contract to derive the relevant records. This step is repeated until a node with a resolver is found.
 
-此外，该规范为解析器定义了一种解析名称的新方法，统一使用能够更灵活地处理名称解析的 `resolve()` 方法。
+Further, this specification defines a new way for resolvers to resolve names, using a unified `resolve()` method that permits more flexible handling of name resolution.
 
-### 动机
+### Motivation
 
-许多应用程序，如钱包提供商、交易所和 dapp 都表示希望通过共享父域上的自定义子域向用户分发 ENS 名称。然而目前，这样做必须在 ENS 注册表上为每个子域设置一个不同的记录，因此对于拥有巨量用户群体的应用程序来说，成本就成了限制因素。
+Many applications such as wallet providers, exchanges, and dapps have expressed a desire to issue ENS names for their users via custom subdomains on a shared parent domain. However, the cost of doing so is currently prohibitive for large user bases, as a distinct record must be set on the ENS Registry for each subdomain.
 
-此外，由于为子域节点分配解析器的交易必须先在链上提交和打包，因此用户不能在创建帐户时立即使用这些子域。这给新用户造成了不必要的障碍，而这些新用户将会从 ENS 名称的可用性改进中获益。
+Furthermore, users cannot immediately utilize these subdomains upon account creation, as the transaction to assign a resolver for the node of the subdomain must first be submitted and mined on-chain. This adds unnecessary friction when onboarding new users, who coincidentally would often benefit greatly from the usability improvements afforded by an ENS name.
 
-通配符的启用能够支持设计更高级的解析器，为未分配的子域确定性地生成地址和其他记录。生成的地址可以映射到反事实的合约部署地址 (即 `CREATE2` 地址) 或指定的“回退”地址，或者其他方案。此外，仍然可以给任何指定的子域分配独立的解析器，这将使用父解析器取代通配符解析。
+Enabling wildcard support allows for the design of more advanced resolvers that deterministically generate addresses and other records for unassigned subdomains. The generated addresses could map to counterfactual contract deployment addresses (i.e. `CREATE2` addresses), to designated "fallback" addresses, or other schemes. Additionally, individual resolvers would still be assignable to any given subdomain, which would supersede the wildcard resolution using the parent resolver.
 
-这项标准的另一个关键动机是以向后兼容的方式支持通配符解析。它不需要修改当前 ENS 注册表合约或任何现有的解析器，并继续支持现有的 ENS 记录，只是旧的 ENS 客户端将无法解析通配符记录。
+Another critical motivation with this standard is to enable wildcard resolution in a backwards-compatible fashion. It does not require modifying the current ENS Registry contract or any existing resolvers, and continues to support existing ENS records — legacy ENS clients would simply fail to resolve wildcard records.
 
-### 规范
+### Specification
 
-本文档中的关键词 “必须”、“绝对不能”、“必需”、“会”、“不会”、“应该”、“不应”、“推荐”、“可以”和“可选”应按照 RFC 2119 中的描述进行解释。
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119.
 
-设:
+Let:
 
-* `namehash` 是 ENSIP-1 中定义的算法。
-* `dnsencode` 是 RFC1035 3.1 节中指定的 DNS 域名的编码过程，但编码后的名称的总长度没有限制。空字符串作为一个 0 长度的 8 位元组，与名称 '.' 编码相同。
-* `parent` 是一个函数，用于删除一个名称的第一个标签 (例如，`parent('foo.eth') = 'eth'`)。`parent('tld')` 被定义为空字符串。
-* `ens` 是当前网络的 ENS 注册表合约。
+* `namehash` be the algorithm defined in ENSIP-1.
+* `dnsencode` be the process for encoding DNS names specified in section 3.1 of RFC1035, with the exception that there is no limit on the total length of the encoded name. The empty string is encoded identically to the name '.', as a single 0-octet.
+* `parent` be a function that removes the first label from a name (eg, `parent('foo.eth') = 'eth'`). `parent('tld')` is defined as the empty string ''.
+* `ens` is the ENS registry contract for the current network.
 
-兼容 ENSIP-10 的 ENS 解析器**可以**实现以下功能接口:
+ENSIP-10-compliant ENS resolvers MAY implement the following function interface:
 
 ```
 interface ExtendedResolver {
@@ -47,32 +48,32 @@ interface ExtendedResolver {
 }
 ```
 
-如果一个解析器实现了这个函数，那么在 `supportsInterface()` 被调用且传入 0x9061b923 这个接口 ID 时，它**必须**返回 true。
+If a resolver implements this function, it MUST return true when `supportsInterface()` is called on it with the interface's ID, `0x9061b923`.
 
-ENS 客户端将调用 `resolve` 并传入需要解析的 DNS 编码名称和用于解析器函数的编码后的调用数据 (比如 ENSIP-1 和其他地方指定的)，该函数**必须**返回有效的数据，或在不支持的情况下进行回退。
+ENS clients will call `resolve` with the DNS-encoded name to resolve and the encoded calldata for a resolver function (as specified in ENSIP-1 and elsewhere); the function MUST either return valid return data for that function, or revert if it is not supported.
 
-兼容 ENSIP-10 的 ENS 客户端在获取给定名称的解析器时**必须**执行以下步骤:
+ENSIP-10-compliant ENS clients MUST perform the following procedure when determining the resolver for a given name:
 
-1. 设置 `currentname = name`
-2. 设置 `resolver = ens.resolver(namehash(currentname))`
-3. 如果 `resolver` 不是零地址，则停止并返回 `resolver`。
-4. 如果 `currentname` 为空 ('' 或 '.')，则停止并返回 null。
-5. 其他情况下，设置 `currentname = parent(currentname)` 并进入第 2 步。
+1. Set `currentname = name`
+2. Set `resolver = ens.resolver(namehash(currentname))`
+3. If `resolver` is not the zero address, halt and return `resolver`.
+4. If `currentname` is the empty name ('' or '.'), halt and return null.
+5. Otherwise, set `currentname = parent(currentname)` and go to 2.
 
-如果上面的过程返回 null，名称解析**必须**终止。其他情况下，兼容 ENSIP-10 的 ENS 客户端解析一条记录时**必须**执行以下步骤:
+If the procedure above returns null, name resolution MUST terminate unsuccessfully. Otherwise, ENSIP-10-compliant ENS clients MUST perform the following procedure when resolving a record:
 
-1. 将 `calldata` 设置为解析函数对应的 ABI 编码数据——例如，解析 `addr` 记录时，设置为 `addr(namehash(name))` 的 ABI 编码。
-2. 设置 `supportsENSIP10 = resolver.supportsInterface('0x9061b923')`。
-3. 如果 `supportsENSIP10` 为 true，则设置 `result = resolver.resolve(dnsencode(name), calldata)`。
-4. 如果 `supportsENSIP10` 为 false 且 `name == currentname`，则将 `result` 设置为使用 `calldata` 作为调用 `resolver` 获得的结果。
-5. 如果 3 和 4 均不为 true，以失败结束。
-6. 使用对应的解析函数的返回数据 ABI 解码后，返回 `result` (例如，对于 `addr()`， `resolver.resolve()` 的结果经 ABI 解码为 `address`)。
+1. Set `calldata` to the ABI-encoded call data for the resolution function required - for example, the ABI encoding of `addr(namehash(name))` when resolving the `addr` record.
+2. Set `supportsENSIP10 = resolver.supportsInterface('0x9061b923')`.
+3. If `supportsENSIP10` is true, set `result = resolver.resolve(dnsencode(name), calldata)`
+4. If `supportsENSIP10` is false and `name == currentname`, set `result` to the result of calling `resolver` with `calldata`.
+5. If neither 3 nor 4 are true, terminate unsuccessfully.
+6. Return `result` after decoding it using the return data ABI of the corresponding resolution function (eg, for `addr()`, ABI-decode the result of `resolver.resolve()` as an `address`).
 
-请注意，在所有情况下，解析函数 (`addr()` 等) 和 `resolve` 函数都使用了原来的 `name`， 而不是在解析的第一阶段找到的 `currentname`。
+Note that in all cases the resolution function (`addr()` etc) and the `resolve` function are supplied the original `name`, _not_ the `currentname` found in the first stage of resolution.
 
-还要注意的是，当使用通配符解析时 (例如，`name != currentname`)，客户端绝对不能调用传统方法，如 `addr` 来解析名称。这些方法只能在与 `name` 精确匹配的解析器中调用。
+Also note that when wildcard resolution is in use (eg, `name != currentname`), clients MUST NOT call legacy methods such as `addr` to resolve the name. These methods may only be called on resolvers set on an exact match for `name`.
 
-#### 伪代码
+#### Pseudocode
 
 ```
 function getResolver(name) {
@@ -85,6 +86,7 @@ function getResolver(name) {
     }
     return [null, ''];
 }
+
 function resolve(name, func, ...args) {
     const [resolver, resolverName] = getResolver(name);
     if(resolver === null) {
@@ -103,30 +105,30 @@ function resolve(name, func, ...args) {
 }
 ```
 
-### 原理
+### Rationale
 
-实现本提案将会以一种对现有系统影响最小化的方式支持通配符解析。它最大程度上重用了现有的算法和过程，从而减轻了各种 ENS 客户端的作者和维护人员的负担。
+The proposed implementation supports wildcard resolution in a manner that minimizes the impact to existing systems. It also reuses existing algorithms and procedures to the greatest possible extent, thereby easing the burden placed on authors and maintainers of various ENS clients.
 
-它也承认当前关于 ENS 通配符解析的共识，通过解决关键的可伸缩性障碍，使原有规范得到更广泛的采用。
+It also recognizes an existing consensus concerning the desirability of wildcard resolution for ENS, enabling more widespread adoption of the original specification by solving for a key scalability obstacle.
 
-为解析器引入可选的 `resolve` 函数，在解析函数中传入了名称和 calldata，这些增加了实现的复杂性，但也为解析器提供了一种方法来获取明文标签并执行相应的程序，使得原本许多不可能实现的通配符相关用例变得可能——例如，通配符解析器可以将 `id.nifty.eth` 指向某个集合中 id 为 `id` 的 NFT 的所有者，而如果只使用名称集，这是不可能的。
+While introducing an optional `resolve` function for resolvers, taking the unhashed name and calldata for a resolution function increases implementation complexity, it provides a means for resolvers to obtain plaintext labels and act accordingly, which enables many wildcard-related use-cases that would otherwise not be possible - for example, a wildcard resolver could resolve `id.nifty.eth` to the owner of the NFT with id `id` in some collection. With only namehashes to work with, this is not possible.
 
-DNS wireformat 用于名称编码，因为它能够快速且高效地进行名称哈希，以及其他类似获取或删除单个标签的常见操作，相反，点分隔的名称需要遍历名称中的每个字符来找到分隔符。
+The DNS wire format is used for encoding names as it permits quick and gas-efficient hashing of names, as well as other common operations such as fetching or removing individual labels; in contrast, dot-separated names require iterating over every character in the name to find the delimiter.
 
-### 向后兼容性
+### Backwards Compatibility
 
-兼容 ENSIP-1 的现有 ENS 客户端将无法解析通配符记录并拒绝与之交互，而符合 ENSIP-10 的客户端将继续正确解析或拒绝现有 ENS 记录。希望为非通配符的用例实现新的 `resolve` 函数 (例如，解析器直接设置在被解析的名称上) 的解析器，应该考虑将什么返回给调用单个解析函数的旧客户端，以获得最大的兼容性。
+Existing ENS clients that are compliant with ENSIP-1 will fail to resolve wildcard records and refuse to interact with them, while those compliant with ENSIP-10 will continue to correctly resolve, or reject, existing ENS records. Resolvers wishing to implement the new `resolve` function for non-wildcard use-cases (eg, where the resolver is set directly on the name being resolved) should consider what to return to legacy clients that call the individual resolution functions for maximum compatibility.
 
-要求客户端避免在通配符解析器上调用现有的解析函数 (如 `addr` 等)，可以防止解析器在返回所有名称的查询时出现意外的向后兼容问题。
+Requiring clients to avoid calling existing resolution functions (eg, `addr` etc) on wildcard resolvers prevents inadvertant backwards compatiability issues with resolvers that answer queries for all names.
 
-### 安全注意事项
+### Security Considerations
 
-尽管兼容的 ENS 客户端在没有解析器的情况下会拒绝解析记录，但仍然会存在错误配置的客户端引用错误解析器的风险，或者在无法获取解析器时继续与空地址进行交互。
+While compliant ENS clients will continue to refuse to resolve records without a resolver, there is still the risk that an improperly-configured client will refer to an incorrect resolver, or will not reject interactions with the null address when a resolver cannot be located.
 
-此外，对于完全支持任意通配符子域解析的解析器来说，由于输入错误而将资金意外发送给其他接收者的可能性将会增加。实现这种解析器的应用程序应该考虑根据上下文为客户提供额外的名称验证，或者实现支持资金找回的功能。
+Additionally, resolvers supporting completely arbitrary wildcard subdomain resolution will increase the likelihood of funds being sent to unintended recipients as a result of typos. Applications that implement such resolvers should consider making additional name validation available to clients depending on the context, or implementing features that support recoverability of funds.
 
-还有一种可能性是，一些应用程序可能需要不给某些子域设置解析器。如果要解决这个问题，父域需要正确解析给定的子域节点——据作者所知，目前没有应用程序支持此特性或期望子域不要解析到某条记录。
+There is also the possibility that some applications might require that no resolver be set for certain subdomains. For this to be problematic, the parent domain would need to successfully resolve the given subdomain node — to the knowledge of the authors, no application currently supports this feature or expects that subdomains should not resolve to a record.
 
-### 版权
+### Copyright
 
-通过 [CC0](https://creativecommons.org/publicdomain/zero/1.0/) 放弃版权及相关权利。
+Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).

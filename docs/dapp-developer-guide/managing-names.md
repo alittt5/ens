@@ -1,175 +1,185 @@
----
-part: ENS 中文文档
-title: ENS 名称管理 
----
+# Managing Names
 
-## 转移名称
+## Transferring a Name
 
-ENS 中的每个名称都有一个所有者，这个所有者可以是帐户或智能合约，而且是唯一一个可以在 ENS 注册表中对这个名称进行更改的帐户或合约。名称的所有者可以将所有权转移到任何其他帐户或合约。
+Each name in ENS has an owner. This account or contract is the only one that may make changes to the name in the ENS registry. The owner of a name can transfer ownership to any other account.
 
-采用 **ensjs** 时：
-
+{% tabs %}
+{% tab title="ensjs" %}
 ```javascript
 await ens.name('alice.eth').setOwner('0x1234...');
 ```
+{% endtab %}
 
-采用 **go-ens** 时：
-
+{% tab title="go-ens" %}
 ```go
 // opts are go-ethereum's bind.TransactOpts
 err := registry.SetOwner(opts, "alice.eth", common.HexToAddress("0x1234..."))
 ```
+{% endtab %}
 
-采用 **web3.py** 时：
-
+{% tab title="web3.py" %}
 ```python
 ns.setup_owner('alice.eth', '0x1234...')
 ```
+{% endtab %}
+{% endtabs %}
 
-## 创建子名称
+## Creating Subdomains
 
-每个名称的所有者都可以根据需要配置子名称，配置子名称是指创建子名称并将其所有者设置为所需地址的过程，这个地址可以与父名称的所有者相同，也可以不同。
+The owner of any domain can configure subdomains as desired. This is achieved by creating a subdomain and setting its owner to the desired address - this can be the same as the owner of the parent domain, or any other address.
 
-采用 **ensjs** 时：
-
+{% tabs %}
+{% tab title="ensjs" %}
 ```javascript
 await ens.name('alice.eth').createSubdomain('iam');
 ```
+{% endtab %}
 
-采用 **go-ens** 时：
-
+{% tab title="go-ens" %}
 ```go
 // opts are go-ethereum's bind.TransactOpts
 err := registry.SetSubdomainOwner(opts, "alice.eth", "iam", common.HexToAddress("0x1234..."))
 ```
+{% endtab %}
 
-采用 **web3.py** 时：
-
+{% tab title="web3.py" %}
 ```python
 ns.setup_owner('iam.alice.eth', '0x1234...')
 ```
 
-另外，web3.py 提供了一种便利的方法，可以同时创建子名称、设置解析器和配置地址记录：
+Additionally, web3.py provides a convenience method to create a subdomain, set a resolver, and configure an address record all at once:
 
 ```python
 ns.setup_address('iam.alice.eth', '0x1234...')
 ```
 
-一般情况下，名称应该指向所有者的地址，因此上面函数的第二个参数是可选的（默认值是名称所有者的地址）。
+In the common case that the name should be pointed to the owner's address, the second argument is optional.
+{% endtab %}
+{% endtabs %}
 
-## 设置解析器
+## Setting a Resolver
 
-在启用新创建的名称或子名称之前，必须设置解析器地址。如果有解析器进行升级并支持了一些你希望用到的功能，你也可以重新设置解析器地址。
+Before a newly created domain or subdomain can be used, a resolver address must be set. You may also want to do this if an updated resolver implementation is available that supports features that you want to make use of.
 
-名称的解析器通常设置为公共解析器，公共解析器是一个 “符合标准” 的解析器，它能提供常用的功能，但是每个人都可以编写和部署自己的专用解析器，有关详细信息，请参见解析器接口定义。
+Most commonly, names are set to use a 'standard' resolver called the public resolver, which provides commonly-used functionality, but anyone may write and deploy their own special-purpose resolver; see the resolver interface definition for details.
 
-采用 **ensjs** 时：
-
+{% tabs %}
+{% tab title="ensjs" %}
 ```javascript
 await ens.name('iam.alice.eth').setResolver('0x1234');
 ```
 
-在主网和 Kovan 测试网络上，“resolver.eth” 指向了当前部署的最新版本的公共解析器，以便于用户为名称配置并使用公共解析器：
+On mainnet and the Kovan test network, 'resolver.eth' is configured to point to the latest deployed version of the public resolver, making it possible to easily configure a name to use the public resolver:
 
 ```javascript
 const resolver = await ens.resolver('resolver.eth').addr();
 await ens.setResolver('iam.alice.eth', resolver, {from: ...});
 ```
+{% endtab %}
 
-采用 **go-ens** 时：
-
+{% tab title="go-ens" %}
 ```go
 // opts are go-ethereum's bind.TransactOpts
 err := registry.SetResolver(opts, "iam.alice.eth", common.HexToAddress("0x1234..."))
 ```
+{% endtab %}
 
-采用 **web3.py** 时：
+{% tab title="web3.py" %}
+Not supported. web3.py automatically uses the public resolver when `setup_address` is called, and does not support setting custom resolvers.
+{% endtab %}
+{% endtabs %}
 
-不支持自定义解析器。web3.py 会在用户调用 `setup_address` 时，自动使用公共解析器，它不支持设置自定义解析器。
+Note that changing the resolver for a name will not automatically migrate records from the old resolver over; to do this you will need to follow the process outlined below for updating records.
 
-注意，更改名称的解析器后，该名称在原解析器上的记录不会自动迁移到新解析器上。要更新解析器记录，需要按照下面的程序来实现。
+## Updating Records
 
-## 更新解析记录
+To change the resources an address resolves to, it's necessary to update that name's records in its resolver.
 
-要更改名称解析到的地址或其他资源，需要更新该名称在其解析器中的记录。
+Each resolver may specify its own mechanism for updating records, but a standard method is implemented by the public resolver and many others. Some libraries provide functionality for updating a resolver's records using this interface.
 
-每个解析器都可以指定自己的记录更新机制，但是公共解析器和很多解析器都遵循一套标准的接口。一些 ENS 库提供的解析器记录更新功能就是使用了这类接口。
+### Updating the Address Record
 
-### 更新解析到地址的记录
-
-采用 **ensjs** 时：
-
+{% tabs %}
+{% tab title="ensjs" %}
 ```javascript
 await ens.name('iam.alice.eth').setAddr('ETH', '0x1234...');
 ```
+{% endtab %}
 
-采用 **go-ens** 时：
-
+{% tab title="go-ens" %}
 ```go
 resolver, err := ens.NewResolver(client, "iam.alice.eth")
 // opts are go-ethereum's bind.TransactOpts
 err := resolver.SetAddress(opts, common.HexToAddress("0x1234..."))
 ```
+{% endtab %}
 
-采用 **web3.js** 时：
-
+{% tab title="web3.js" %}
 ```javascript
 ens.setAddress('iam.alice.eth, '0x1234...', {from: ...});
 ```
+{% endtab %}
 
-采用 **web3.py** 时：
-
+{% tab title="web3.py" %}
 ```python
 ns.setup_address('iam.alice.eth', '0x1234...')
 ```
+{% endtab %}
+{% endtabs %}
 
-### 更新解析到其他资源的记录
+### Updating Other Records
 
-有些 ENS 库（目前只有 ensjs 、go-ens 和 web3.js）支持使用相同的模式更新其他记录类型（内容的哈希和文本记录等）。例如，要设置或更新文本记录:
+Some libraries - presently only ensjs, go-ens and web3.js - support updating other record types, such as content hashes and text records, using the same pattern. For example, to set or update a text record:
 
-采用 **ensjs** 时：
-
+{% tabs %}
+{% tab title="ensjs" %}
 ```javascript
 ens.name('iam.alice.eth').setText('test', 'Test record');
 ```
+{% endtab %}
 
-采用 **go-ens** 时：
-
+{% tab title="go-ens" %}
 ```go
 // opts are go-ethereum's bind.TransactOpts
 err := resolver.SetContenthash(opts, []byte{0x12, 0x34...})
 err := resolver.SetAbi(opts, "Sample", `[{"constant":true,"inputs":...}]`, big.NewInt(1))
 err := resolver.SetText(opts, "Sample", `Hello, world`)
 ```
+{% endtab %}
 
-采用 **web3.js** 时：
-
+{% tab title="web3.js" %}
 ```javascript
 ens.setText('iam.alice.eth', 'Test', 'Test record', {from: ...});
 ```
+{% endtab %}
+{% endtabs %}
 
-### 在一笔交易中更新多条解析记录
+### Updating multiple records in one transaction
 
-公共解析器有一个  `multicall` 函数，用户可以使用通过该函数在一笔交易中同时更新多条解析记录。详细信息请参阅 [公共解析器](/docs/contract-api-reference/publicresolver.html#多重调用) 部分。
+Public Resolver has  `multicall`  that permits users to set multiple records in a single operation. Read [PublicResolver](https://docs.ens.domains/contract-api-reference/publicresolver#multicall) section for more detail.
 
-## 配置反向解析
+## Configuring Reverse Resolution
 
-“常规” 解析实现了从名称到地址的映射，而反向解析是指从地址映射回名称或其他元数据。ENS 支持反向解析，以便应用程序用 ENS 名称代替显示十六进制地址。
+While 'regular' resolution involves mapping from a name to an address, reverse resolution maps from an address back to a name - or other metadata. ENS supports reverse resolution to allow applications to display ENS names in place of hexadecimal addresses.
 
-要达到上述效果，地址的所有者必须为其地址配置反向解析。配置反向解析通过调用反向解析器上的 `claim()` 方法来实现，该方法的专用名为 “addr.reverse” 。
+Before this can be done, the owner of the address has to configure reverse resolution for their address. This is done by calling the `claim()` method on the reverse resolver, found at the special name 'addr.reverse'.
 
-配置反向解析通常是通过诸如 [ENS APP](https://app.ens.domains/) 这样的用户界面来实现的。 go-ens 和 web3.py 也可以提供这项功能：
+Most commonly this is accomplished via a user-interface such as the [ENS Manager DApp](https://manager.ens.domains/). go-ens and web3.py also provide functionality for this:
 
-采用 **go-ens** 时：
-
+{% tabs %}
+{% tab title="go-ens" %}
 ```go
 reverseRegistrar, err := ens.NewReverseRegistrar(client)
 // opts are go-ethereum's bind.TransactOpts
 err := reverseRegistrar.SetName(opts, "iam.alice.eth")
 ```
+{% endtab %}
 
-采用 **web3.py** 时：
-
+{% tab title="web3.py" %}
 ```python
 ns.setup_name('iam.alice.eth', '0x1234...')
 ```
+{% endtab %}
+{% endtabs %}
+

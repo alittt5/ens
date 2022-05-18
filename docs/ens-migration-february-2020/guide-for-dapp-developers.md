@@ -1,35 +1,32 @@
----
-part: ENS 中文文档
-title: DApp 开发者迁移指南 - 开发者需要在此次 ENS 迁移中做什么
----
+# Guide for DApp Developers
 
-如果您维护着一个依赖于 ENS 的 DApp、钱包或库，为了确保在迁移期间和之后不会对您的用户造成干扰，您需要完成一些工作。这个文档描述了你需要做什么来更新你的应用程序。
+If you maintain a DApp, wallet, or library that depends on ENS, you will need to take action to ensure no disruption occurs for your users during and after the migration period. This document describes what you will need to do in order to update your app.
 
-## 需要做什么
+## What you need to do
 
-### 实现名称解析的 DApp、钱包和库
+### Wallets, libraries, and DApps that resolve names
 
-您应该尽快将代码中的 ENS 注册表地址更改为新地址：`0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e` 。这个新地址现在已经启用，它会返回与旧地址相同的结果。为确保您的用户不会经历任何服务的干扰或中断，最好现在就更改。
+You should update the ENS registry address in your code to the new address of 0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e as soon as possible. This new address is functional now, and will return the same results as the old one. Switching now ensures your users will not experience any disruption or interruption of service.
 
-如果您在 2 月 3 日迁移过程开始时，仍然没有更新注册地址，您的用户就会逐渐看到过期的信息：迁移以后注册或更新的名称不能被正确解析。
+If you do not update the registry address by the time the migration process begins on February 3rd, your users will begin to see out-of-date results: Names registered or updated after the migration will not resolve correctly for your users.
 
-如果您维护着一个库，您应该发布一个新版本，其中包含更新的地址，并通知用户尽快更新。在用户无法轻松升级到最新版本的情况下，您可以考虑通过发布 “猴子补丁” 的方式说明地址的更换。
+If you maintain a library, you should release a new version with the updated address, and notify users that they should update as soon as possible. You may wish to consider publishing instructions for ‘monkeypatching’ the new address, in situations where users cannot easily upgrade to the latest version.
 
-主网和所有测试网的 ENS 现在都部署在相同的地址上。
+All ENS deployments across mainnet and all testnets now use the same addresses.
 
-### 实现名称注册或更新的 DApp、钱包和库
+### Wallets, libraries, and DApps that register or update names
 
-如果您的 DApp 或库允许用户注册名称，或更改当前名称，您有两种选择：
+If your DApp or library allows users to register names, or to make changes to existing names, you have two options:
 
-1. 只需尽快切换到新的注册表地址。切换之后，用户将暂时不能在你的应用程序中设置他们的名称，直到用户的名称在 2 月 3 日至 5 日之间的某个时间完成迁移。
-2. 进行名称设置时，请在新注册表上调用 `recordExists` 函数。如果返回 `true` ，就将名称设置的交易发送到新注册表，否则就把它发送到旧注册表。如果您选择这么做，您仍然应该禁止转让 .eth 这种 ERC721 代币，因为在名称迁移时发生的转让交易可能会使用户感到疑惑。
+1. Simply switch over to the new registry address as soon as possible. When you do, users will be temporarily unable to make changes to their names using your app until their name is migrated between the 3rd and 5th of February.
+2. When making a change to a name, call the \`recordExists\` function on the new registry. If it returns \`true\`, send the modification transaction to the new registry; otherwise, send it to the old one. If you take this option, you should still prohibit transfers of .ETH ERC721 tokens; a transfer that happens as the name is migrated could result in confusing results for users.
 
-迁移过程会自动将 .eth 二级名称（例如 foo.eth）转移到新注册表和新注册器。子名称（例如 bar.foo.eth）和其他种类名称（例如 foo.xyz）需要由它们的所有者进行迁移。有关该过程的更多细节，请参阅此次迁移的 [技术说明](technical-description.html)，或向 ENS 团队寻求帮助。
+The migration process will automatically transfer .ETH second-level domains (eg, foo.eth) to the new registry and registrar. Subdomains (eg, bar.foo.eth) and other top-level domains (eg, foo.xyz) will need to be migrated by their owners. For more details on this process, see [our documentation](technical-description.md), or reach out to us for help.
 
-### ENS 二级市场
+### ENS Secondary Marketplaces
 
-如果你经营着一个 ENS 名称交易市场，应该立即停止交易。虽然这个漏洞目前还没有被利用，可一旦它的存在被公开，我们预计攻击者会逆向检查并利用它。停止当前 ENS 注册器的交易可以防止您的用户受到影响。
+If you operate a marketplace that trades ENS names, you should immediately stop trading them. Although this vulnerability has not been exploited so far, once its existence is publicised we expect that attackers will reverse-engineer it and exploit it. Halting trading on the current registrar will prevent your users being affected by this.
 
-在名称完成迁移之后，旧注册器 `0xfac7bea255a6990f749363002136af6556b31e04` 上的 ERC721 代币不再与ENS名称对应，并且毫无价值，因此，您必须最迟在 2 月 3 日 00:00 UTC 之前停止这些交易。
+After a name has been migrated, tokens on the old registrar at 0xfac7bea255a6990f749363002136af6556b31e04 no longer correspond to ENS names, and are worthless; as a result you must disable trading of these before February 3rd 00:00UTC at the very latest.
 
-您可以立即启用新注册器上的名称交易，地址为 `0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85` 。当名称从 2 月 3 日 00:00 UTC 开始迁移到这个合约时，名称的所有者将自动在这个新注册器上创建新的 ERC721 代币，其 ID 与当前注册器中的相同。
+You can immediately enable trading of names on the new registrar, at address 0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85. When names are migrated to this contract starting on February 3rd 00:00 UTC, domain owners will automatically have new ERC721 tokens created on this new registrar, with the same ID as those on the current registrar.

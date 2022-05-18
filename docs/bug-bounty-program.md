@@ -1,54 +1,51 @@
----
-part: ENS 中文文档
-title: 漏洞奖金计划
----
+# Bug Bounty Program
 
-ENS 漏洞奖金计划用于奖励那些在本计划涉及的 ENS 智能合约中发现漏洞的人。
+The ENS bug bounty program rewards anyone who finds a bug in covered ENS smart contracts.
 
-## 奖励规则
+## Rules and Rewards
 
-* 其他用户已经提交的问题或 ENS 团队已经知道的问题没有资格获得奖励。
-* 包括主网或任何公共测试网络上的漏洞在内，公开披露漏洞会丧失获得奖励的资格。
-* 由 ENS 项目直接或间接支付的 ENS 团队、员工等人都没有获得奖励的资格。
-* 只有在下列智能合约中发现漏洞才有资格获得奖励，网站和其他基础设施不在悬赏计划的覆盖范围之内。
-* ENS 赏金计划在决定奖励时会考虑多种因素，资格、分数以及与奖项相关的所有条款的确定均由ENS团队自行决定。
+* Issues that have already been submitted by another user or are already known to the ENS team are not eligible for bounty rewards.
+* Public disclosure of a vulnerability makes it ineligible for a bounty. This includes exploiting the bug on mainnet or any public test network.
+* The ENS team, employees and all other people paid by ENS project, directly or indirectly, are not eligible for rewards.
+* Only the smart contracts listed below are eligible for rewards. Websites and other infrastructure are not covered by the bounty program.
+* The ENS bounty program considers a number of variables in determining rewards. Determinations of eligibility, score and all terms related to an award are at the sole and final discretion of the ENS team.
 
-奖金额度与漏洞严重性相关，漏洞严重性根据 Impact and Likelihood 的 OWASP 风险评级模型计算：
+The value of rewards paid out will vary depending on Severity. The severity is calculated according to the OWASP risk rating model based on Impact and Likelihood :
 
-![](/images/docs/owasp_w600.png)
+![](<.gitbook/assets/owasp\_w600 (1).png>)
 
-奖金额度遵循以下规则，但最终由 ENS 团队自行决定
+Reward sizes are _guided_ by the rules below, but are in the end, determined at the sole discretion of the ENS team
 
-* **极危**: 最高 $250,000 USD
-* **高危**: 最高 $150,000 USD
-* **中危**: 最高 $100,000 USD
-* **低危**: 最高 $20,000 USD
-* **提醒**: 最高 $5,000 USD
+* **Critical**: up to $250,000 USD
+* **High**: up to $150,000 USD
+* **Medium**: up to $100,000 USD
+* **Low**: up to $20,000 USD
+* **Note**: up to $5,000 USD
 
-ENS 团队保留在未来任何时间调整奖金额度的权利。
+The ENS team reserves the right to adjust bounty amounts at any time in the future.
 
-对于我们 GitHub 仓库中合约与以太坊上部署合约存在差异的地方，由于自上次部署以来发生了变化，以下规则适用:
+Where the contract in our GitHub repository differs from the one deployed on Ethereum, due to changes having been made since the last deployment, the following rules apply:
 
-1. 如果在以太坊上部署的合约中存在漏洞，则应支付全额奖金。
-2. 如果只有 GitHub 上的版本存在漏洞，ENS 团队会以代码的状态作为依据来决定一个合适赏金比例（从未打算部署的代码适用比例为 0%，最终版本的代码适用比例为 100%）。
+1. If the bug exists in the contract deployed on Ethereum, the full bounty amount is payable.
+2. If the bug is only in the version on GitHub, the ENS team will decide at is discretion an appropriate proportion of the bounty to award based on the state of the code (from 0% for code that was never intended to be deployed, to 100% for code that is considered final).
 
-当 ENS 团队对漏洞评分时，除了严重程度，还会考虑其他因素，包括（但不限于）：
+In addition to Severity, other variables are also considered when the ENS team decides the score, including (but not limited to):
 
-* 描述质量。清晰、规范的提交内容会得到更高的奖励。
-* 重现性质量。请测试代码、脚本和详细说明一起提交。我们越容易复制和验证弱点，奖金就越高。
-* 修复质量（如果包含修复方法的话）。如果提交的内容清楚地描述了如何解决问题，就会获得更高的奖励。
+* Quality of description. Higher rewards are paid for clear, well-written submissions.
+* Quality of reproducibility. Please include test code, scripts and detailed instructions. The easier it is for us to reproduce and verify the vulnerability, the higher the reward.
+* Quality of fix, if included. Higher rewards are paid for submissions with clear description of how to fix the issue.
 
-## 涉及合约
+## Covered Contracts
 
-奖金计划涉及以下合约：
+The following smart contracts are covered by the bounty:
 
-* [ensdomains/ens-contracts](https://github.com/ensdomains/ens-contracts) 中的所有非测试合约。
-* [ensdomains/name-wrapper](https://github.com/ensdomains/name-wrapper)
+* All non-test contracts in [ensdomains/ens-contracts](https://github.com/ensdomains/ens-contracts).
+* [ensdomains/name-wrapper](https://github.com/ensdomains/name-wrapper).
 
-## 重要法律信息
+## Important Legal Information
 
-漏洞奖金计划是一个自由决定的奖励计划，旨在鼓励和奖励那些帮助改进平台的人。这不是竞赛，我们可能在任何时间取消该计划，且奖项由 ENS 团队全权决定。此外，我们不能向在制裁名单上的个人或在制裁名单上的国家的个人颁发奖励。您要对所有的税收负责。所有裁决均受适用法律约束。提供任何补丁必须要遵循相应代码仓库的许可协议。最后，您的测试不能违反任何法律或泄露任何不属于您的数据。
+The bug bounty program is a discretionary rewards program for the ENS community to encourage and reward those who are helping to improve the platform. It is not a competition. You should know that we can cancel the program at any time, and awards are at the sole discretion of the ENS team. In addition, we are not able to issue awards to individuals who are on sanctions lists or who are in countries on sanctions lists (e.g. North Korea, Iran, etc). You are responsible for all taxes. All awards are subject to applicable law. Any patches must be offered under the same license as the repository they affect. Finally, your testing must not violate any law or compromise any data that is not yours.
 
-## 漏洞提交方式
+## Submitting a Bug
 
-漏洞可以通过电子邮件提交至 bugs@ens.domains，或通过 Keybase 提交给 @arachnid。
+Bugs should be submitted via email to bugs@ens.domains, or on Keybase to @arachnid.

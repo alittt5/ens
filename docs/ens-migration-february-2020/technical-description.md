@@ -1,81 +1,78 @@
----
-part: ENS 中文文档
-title: 技术说明 - 关于 ENS 迁移的一些技术细节
----
+# Technical Description
 
-最近，我们注意到 ENS 注册表合约存在一个漏洞。这个漏洞导致名称的所有者可以设置 “后门”，通过这个后门，他们可以在将一个名称转让或出售给别人以后，还能单方面收回该名称的所有权。
+Recently, we were made aware of a vulnerability in the ENS registry contract. This vulnerability would make it possible for the owner of a domain to set a ‘back door’ such that they could transfer or sell the domain to another user, then, at a later time, claw back ownership of that domain without the new owner’s consent.
 
-这个漏洞有个特点：攻击者必须先拥有该名称的合法所有权，并且必须在转让名称所有权之前设置这个 “后门”。因此，该漏洞不能被用来追回名称。
+The nature of this vulnerability is such that the attacker must at one point have had legitimate ownership of the domain in question, and they must set this ‘back door’ before they relinquished ownership of the name. As a result, this vulnerability cannot be exploited retrospectively.
 
-这个漏洞是由 Sam Sun 通过以太坊基金会的漏洞悬赏程序报告的。我们已经详细检查了 ENS 的注册表，并且确信之前没有人利用过这个漏洞。因此，所有 ENS 名称的所有权都是安全的。
+This vulnerability was reported via the Ethereum Foundation’s bug bounty process by Sam Sun. We have examined the ENS registry in detail, and are confident that nobody has previously exploited this vulnerability. As a result, ownership of all ENS names is secure.
 
-因此，ENS 将迁移到一个新部署的合约上。本文档描述了具体的技术操作步骤，并简要描述这些操作对 DApp 开发者和用户的影响。
+Due to this, ENS is migrating to a new deployment. This document describes the exact technical steps being taken, along with a brief description of their implications for DApp authors and users.
 
-本文所描述的内容主要是针对那些对迁移的底层细节感兴趣的人，而对于大多数用户或开发者来说，则没有必要了解这些内容。对于漏洞及其对用户影响的描述，可以参阅 [这篇文章](https://medium.com/the-ethereum-name-service/ens-registry-migration-bug-fix-new-features-64379193a5a) ；对于迁移步骤的描述，开发者们可以参阅 [DApp 开发者迁移指南](guide-for-dapp-developers.html)。
+This document is intended to provide a detailed description for anyone interested in the low-level details of the migration. Understanding this is not necessary for most users or developers; for a description of the vulnerability and its effect on users, see [our medium post](https://medium.com/the-ethereum-name-service/ens-registry-migration-bug-fix-new-features-64379193a5a); for a description of the migration steps for developers see the [guide for DApp developers](guide-for-dapp-developers.md).
 
-## 新部署的 ENS 合约
+## New ENS deployment
 
-大多数 ENS 合约已经重新部署完成。其中有几个进行了更改，还有一些正在重新部署，确保它们引用的是新注册表。
+A new instance of most ENS contracts is being deployed. Several of these have changes, while others are being redeployed in order to reference the new registry instead of the old one.
 
-### ENS 注册表
+### ENS Registry
 
-新版的 ENS 注册表已经成功部署在这个地址：`0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e` 。除了修复漏洞，我们还利用这个机会实现了一些其他的功能，这些功能会提高 ENS 的可用性：
+A new version of the ENS registry has been deployed, and can be found at address 0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e Besides fixing the vulnerability, we have taken the opportunity to implement a couple of additional features that will improve ENS’s usability going forward:
 
-* 添加了 `setRecord` 和 `setSubnodeRecord` 方法，允许在单个操作中设置所有者、解析器和 TTL 。
-* 增加了基于 ERC721 的审批机制，允许用户将名称的控制权委托给另一个地址，而无须转让名称。
+* Addition of \`setRecord\` and \`setSubnodeRecord\` methods, which allow setting owner, resolver, and TTL in a single operation.
+* Addition of an approval mechanism based on ERC721, that allows users to delegate control over their names to another address, without having to transfer their names.
 
-新注册表合约已经由 [Sam Sun 进行了审查](https://gist.github.com/samczsun/2f0a2e266191042baada48c5407d8986)，并经过了 ConsenSys Diligence 的复查，双方都没有发现问题。
+The new registry implementation has been [audited by Sam Sun](https://gist.github.com/samczsun/2f0a2e266191042baada48c5407d8986), as well as reviewed by Consensys Diligence; no issues were found by either auditor.
 
-为了使迁移尽可能地顺利，我们给新注册表配置了回调机制。如果它在自己的存储中查询不到某条记录，它会在以前的 ENS 注册表合约中查询。此回调仅对读操作有效；如果旧注册表中存在记录，而新注册表中还没有，则用户不能调用函数来修改新注册表中的记录。
+In order to make the migration as smooth as possible, the new registry has a fallback configured; if a record is not found in its own storage, it will look it up in the previous ENS registry contract. This fallback works only for read operations; if a record exists in the old registry but not yet in the new one, users cannot call functions to modify that record on the new registry.
 
-这意味着要将所有名称从以前的注册表中迁移过来，必须像从零开始一样重新创建名称。例如，如果 `foo.eth` 在新注册表中还不存在，那么 `eth` 的所有者必须通过调用 `setSubnodeOwner`（或新的 `setSubnodeRecord`）将其作为新名称进行创建。其他顶级名称的所有者（例如，`.luxe` `.kred` `.club` 和 `.art`）需要代表其用户执行此操作，以便这些用户能够恢复对其名称的写权限。
+This means that to migrate each name over from the previous registry, the name must be recreated as if from scratch - so, for example, if ‘foo.eth’ does not yet exist in the new registry, the owner of ‘eth’ must create it in the same fashion as if it were a new domain, by calling \`setSubnodeOwner\` (or the new \`setSubnodeRecord\`). Other top-level domain owners (eg, .luxe, .kred, .club and .art) will need to do this on behalf of their users, so those users can recover write access to their domains.
 
-因此，如果某条记录没有迁移到新注册表，用户和应用程序可以继续更新旧注册表中的记录，然后这些变化最终将映射至新注册表中。在将记录迁移到新注册表以后，在旧注册表中进行的更改就不会再映射到新注册表中。这可以确保由智能合约操作的名称继续发挥作用，直到它们的所有者采取手动操作将它们迁移过来。
+As a result of this fallback, if a record has not been migrated to the new registry, users and processes can continue to update records in the old registry; when they do, those changes will be reflected in the new one. At the point where a record is migrated to the new registry, it ceases to reflect any changes made in the old one. This ensures that names operated by smart contracts continue to function until their owners can take manual action to migrate them over.
 
-下面列出了针对各种类别名称的迁移策略：
+Migration strategies for each class of name are outlined below:
 
-* 顶级名称（`.eth` `.luxe` `.kred` `.club` `.art` `.xyz` 和 `.reverse`）的迁移作为部署工作的一部分来完成。
-* `.eth` 二级名称（如 foo.eth）将会自动为用户进行迁移，详细信息请参阅下面的 “[迁移合约](#迁移合约)” 部分。
-* 由子名称注册器管理的子名称也会自动为用户迁移。
-* 通过其他方式创建的子名称需要父名称的所有者通过调用 `setSubnodeOwner` 或 `setSubnodeRecord` 来重新创建。[ENS APP](https://app.ens.domains/) 为用户直接拥有的子名称提供一键迁移的功能。
-* 反向解析记录（`.addr.reverse` 名称）需要在 ENS APP 界面中通过 “claim” 过程来重新创建。
-* `.xyz` 记录的迁移需要先在 ENS APP 界面通过 “claim” 过程证明相应 DNS 域名的所有权。
-* `.kred` `.art` 和 `.club` 名称由这些顶级名称的操作人员迁移。
+* Top-level domains (.eth, .luxe, .kred, .club, .art, .xyz, and .reverse) were migrated over as part of the deployment process.
+* .eth second-level domains (eg, foo.eth) will be migrated over automatically for users - see the ‘migration contract’ section below for details.
+* Subdomains managed by the Subdomain Registrar will also be migrated over automatically for users.
+* Subdomains created by other means will need to be recreated by the owner of the parent domain calling \`setSubnodeOwner\` or \`setSubnodeRecord\`. The ENS dapp at app.ens.domains provides a one-click button to to do this for domains that are owned directly by users.
+* Reverse records (.addr.reverse domains) will need to be recreated by repeating the ‘claim’ process in the ENS dapp UI.
+* .xyz records will need to be migrated by repeating the ‘claim’ process proving ownership of the corresponding DNS domain. This can be done via the ENS Manager UI.
+* .kred, .art, and .club domains will be migrated by the operators of those top-level domains.
 
-对于尚未迁移到新注册表的名称，名称解析可以正常进行。用户只有在更改名称的所有权、解析器或 TTL 时，才需要关心迁移的问题。
+Name resolution will continue to work normally for names that have not yet been migrated to the new registry. Migration is only necessary in order for users to be able to change the name’s ownership, resolver, or TTL.
 
-### .eth 注册器
+### .ETH Registrar
 
-新版的 .eth 注册器（BaseRegistrarImplementation）也已经重新部署，地址是：`0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85` 。这个注册器基本没有变化，只进行了一些细微的修改，以便于支持迁移。
+A new instance of the .eth registrar (BaseRegistrarImplementation) has been deployed, and can be found at 0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85. This registrar is largely unchanged, with only a couple of minor modifications made to support the migration.
 
-### 迁移合约
+### Migration Contract
 
-一个专门为迁移过程而设计的新合约已经部署在这个地址：`0x6109DD117AA5486605FC85e040ab00163a75c662` 。该合约作为新版 .eth 注册控制器，在迁移过程开始时，会在旧注册器中被设置为 .eth 的所有者。该合约内实现的功能可以将 .eth 二级名称（如 foo.eth）从旧注册表和旧注册器迁移到新版本中。
+A new contract, designed specifically for the migration process, has been deployed and can be found at 0x6109DD117AA5486605FC85e040ab00163a75c662. This contract is configured as a controller for the new .eth registrar, and will be set as the owner of .eth on the old registry once the migration process begins. Functions on this contract permit migrating .eth second-level names (eg, foo.eth) over from the old registry and registrar to the new ones.
 
-一旦激活，ENS 团队将会把所有当前注册的 .eth 二级名称迁移到新部署的合约系统中。所有名称的注册记录将自动转到新注册器，名称有效期保持不变。注册表记录将被自动迁移，除非它们受到合约的控制。那些由合约控制的名称不会自动迁移，这样做是为了避免破坏注册器合约。
+Once activated, the ENS team will submit transactions to migrate over all presently registered .eth second-level domains to the new deployment. Registrations for all names will be automatically moved over to the new registrar, with the same expiry date as they had previously. Registry records will be automatically migrated over, unless they are controlled by a contract. Records controlled by contracts will not be automatically migrated in order to avoid breaking registrar contracts.
 
-如果你的某个名称是由智能合约控制的（例如，使用了自定义注册器来分配子名称），那么你需要部署一个新版本的合约，并引用新注册表，然后自己手动在 ENS APP 中通过设置管理员来迁移这个名称。
+If you own a name that is controlled by a smart contract (for example, you’re using a custom registrar to allocate subdomains), you will need to deploy a new version of that contract that references the new ENS registry, then manually migrate the name yourself, by using the ‘Set controller’ functionality in the ENS manager dapp.
 
-此外，ENS 团队会自动地从原先的临时注册器（基于拍卖的注册器）迁移记录。临时注册器上还没有迁移的名称会在新部署的注册器自动创建，这些名称的有效期会被设置为 2020 年 5 月 4 日，也就是说这些名称不再需要用户手动迁移了。尽管如此，他们还是需要发送一笔交易来收回之前的押金，该操作不受时间限制。这样，ENS 的新注册器就可以完全与这个过时的注册器撇清关系了。
+In addition, the ENS team is automatically migrating over records from the legacy (auction-based) registrar. Names on the legacy registrar that have not previously been migrated over will be automatically created in the new deployment, with their expiration dates set to their existing expiry of May 4, 2020, meaning users will no longer have to do this manually - though they will still have to send a transaction to recover their deposit, which they can do at any time. This permits the new ENS deployment to do away with legacy code for supporting this obsolete registrar.
 
-### 公共解析器
+### Public Resolver
 
-新版的公共解析器合约已经成功部署在这个地址：`0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41` 。该合约引用了新的 ENS 注册表，并附带实现了 “多重调用” 功能，允许用户通过一笔交易同时设置多条记录。
+A new instance of the public resolver has been deployed, and can be found at 0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41. This instance references the new ENS registry, and has an additional ‘multicall’ feature implemented, which permits users to set multiple records in a single operation.
 
-虽然使用旧版公共解析器的名称依旧可以正常解析，但由于公共解析器需要在 ENS 注册表中查询谁具有设置某个名称解析记录的权限，所以要想修改解析记录，就需要先迁移到新版公共解析器才行。ENS APP 利用 “多重调用” 功能来助力迁移进程，使得用户能够通过两笔交易完成一个名称所有解析记录的迁移：第一笔交易将所有解析记录从旧解析器复制到新解析器中，第二笔交易将名称在注册表中的记录指向新的解析器合约。
+Since the public resolver looks up names in the ENS registry to determine who is permitted to configure records for them, while names - migrated or otherwise - pointed at an old instance of the public resolver will continue to function, they will need to migrate to the new public resolver in order to make changes. The ENS dapp at app.ens.domains facilitates this process using the new `multicall` function, making it possible to migrate over all records for a name in two transactions: the first one copying all records from the old resolver to the new one, and the second one updating the registry to point to the new resolver contract.
 
-### .eth 注册控制器
+### .ETH Registrar Controller
 
-ENS 中所有 .eth 二级名称的注册请求都是通过 [控制器合约](/docs/contract-api-reference/eth-permanent-registrar/controller.html) 来处理的。迁移完成后，所有来自旧注册表和旧注册器的名称都在新注册表和新注册器中重新注册，ENS 团队将启用标准注册控制器，该控制器通过前后两笔交易完成一次注册。控制器合约与以前的部署没有任何变化。
+All registration requests for ENS .eth second-level names are processed via a [‘controller’ contract](https://docs.ens.domains/contract-api-reference/.eth-permanent-registrar/controller). Once the migration is complete and all names from the old registry and registrar have been re-registered on the new one, the ENS team will enable the standard registrar controller, which permits registrations via the standard two-transaction process. The controller contract has no changes from the previous deployment.
 
-### 反向注册器
+### Reverse Registrar
 
-新版反向注册器已经成功部署，并指向了新版注册器。与旧版本相比，没有任何变化。在整个迁移过渡期间，反向解析将继续正常工作。
+A new instance of the reverse registrar has been deployed to point to the new registry. There are no changes to this compared to the old version. Reverse resolution will continue to function as normal throughout the transition.
 
-### DNSSEC 注册器
+### DNSSEC Registrar
 
-新版 DNSSEC 注册器已经成功部署。新版本保留了旧版本的所有功能，同时加入了一些改进，这些改进让 DNSSEC 支持更多顶级名称变得更为容易。.xyz 名称的解析会继续正常工作，但是这些名称的所有者如果需要更改名称的某些信息，就必须先通过 “claim” 过程收回名称的所有权。
+A new instance of the DNSSEC registrar has been deployed. The new instance retains all the functionality of the old one, while incorporating a few improvements that will make rolling DNSSEC support out to more top-level domains easier. Resolution of .xyz names will continue to function as normal, but any owners of these names wanting to make changes will have to repeat the ‘claim’ process to reclaim ownership of the name.
 
-### 子名称注册器
+### Subdomain Registrar
 
-新版子名称注册器已经成功部署，该版本与之前的版本相比，除了支持这次迁移，基本没有变化。
+A new instance of the subdomain registrar has been deployed. This instance is largely unchanged from the previous version, except insofar as it supports migrating from that version to the new one.

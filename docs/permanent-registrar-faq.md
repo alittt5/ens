@@ -1,70 +1,69 @@
----
-part: ENS 中文文档
-title: 关于 ENS 注册器的常见问题 
----
+# Registrar Frequently Asked Questions
 
-### 注册一个 .eth 名称需要发送几笔交易
+## About the ENS Registrar
 
-注册一个 .eth 名称需要两笔交易（请求注册和执行注册）。
+### How many transactions are required to register a .eth name?
 
-### 使用 .eth 注册器注册一个名称需要多长时间
+The registrar uses two transactions (commit and reveal) to register a name.
 
-注册一个名称只需不到 5 分钟，包括在两笔交易之间用于防抢注的 1 分钟延时。
+### How long does it take to register a name using the .eth registrar?
 
-### 要想继续使用现有的 ENS 名称，需要做些什么
+It takes less than 5 minutes to register a name, including a 1-minute delay between the first and second transactions to prevent frontrunning.
 
-确保在你的名称到期之前进行续费！你随时可以给任意名称延长注册年限，延长的年限可以自定义。
+### Do we need to do anything to ensure the continued use of existing ENS names?
 
-### 如果我有多个不同的 ENS 名称，它们的续费时间不同怎么办
+Make sure you renew your ENS names before they expire! You add registration years to any name at any time, and for any duration you'd like.
 
-你可以在 ENS APP 中的“我的名称”页面一次性地给多个名称延长注册年限。
+### What happens if I have several ENS names with different renewal dates?
 
-### 如何续费
+You can add registration years to many names at a time on your My Account page in the ENS Manager App.
 
-任何人都可以在任意时间通过支付所需的费用来延长任何现有名称的注册年限。
+### How do renewals work?
 
-续费的时间没有上限，但有 28 天的最短期限。
+Anyone can add registration years to any existing name by paying the required fee, at any time.
 
-### 其他人能在我的名称有效期结束时获取我的名称吗
+There is no maximum limitation of the renewal duration but there is a minimum renewal period of 28 days.
 
-在名称的有效期内，你可以随时可以为它续费，所以，最好在你的名称到期前就进行续费，以此防止别人注册它。
+### Can someone grab my domains at the end of my subscription period?
 
-你的名称到期后还有 90 天的 “宽限期” ，你可以在宽限期内续费以保留所有权。
+You can renew your name at any time during the period you own it. Making sure you renew before the name expires will prevent someone else from registering the name.
 
-### 每年的续费价格是多少
+There is also a 'grace period' of 90 days after your name expires. You can renew the name to retain ownership of it during the grace period.
 
-对于 5 个及以上字符的名称，每年的费用为 5 美元。4 个字符的名称每年需要 160 美元， 3 个字符的名称每年 640 美元。续费使用 ETH 进行支付，ETH 和美元之间的汇率由 DAI USD 预言机合约自动设定。
+### How much will the yearly renewals cost?
 
-### 续费的资金怎么处理，我可以收回它们吗
+Yearly renewals cost $5/year for names that are 5 characters or longer. 4 character names cost $160/year, and 3 character names cost $640/year. Fees are paid in ETH. The ETH/USD exchange rate is set by the Chainlink ETH/USD oracle.
 
-与最初的临时注册器锁定并保留押金的形式不同，永久注册器的续费资金是消费，不能收回。
+### What happens to the renewal fees? Do I get them back?
 
-### ENS 团队将如何管理和使用这些资金，会不会成立基金或是有公开的监督机制
+Rather than being locked and held, as in the original interim registrar, renewal fees in the permanent registrar are spent. You will not get them back.
 
-最初，资金将被发送到 ENS 根域（一个多重签名的智能合约），以便由密钥的持有者们决定如何分配资金。对于这些资金，我们正在考虑多种长期使用机制，比如资助核心 ENS 团队，以及其他基于 ENS 的团队。另外还有一些税收方面的考虑。
+### How will ENS team manage and spend the funds? Will there be a foundation or transparent oversight?
 
-### 如何使用这些来自 .eth 名称注册的收入
+Funds are sent to the ENS root multisig, for the keyholders to determine how funds get allocated. We're considering multiple options for the long-term use of the funds, such as funding the core ENS team, as well as other teams building on ENS. There are also tax considerations to address.
 
-最终要由密钥持有者们来分配资金，而且我们希望他们能够资助ENS的生态系统项目。如果可用资金超出ENS生态系统的合理需求，我们希望其他以太坊项目也能受益于这些资金。
+### How are funds from .eth registration income used?
 
-### 从哪里可以管理我的 ENS 名称
+It's ultimately up to the keyholders to allocate the funds. We hope they will fund ENS ecosystems projects. If available funds exceed the reasonable needs of the ENS ecosystem, we hope other Ethereum projects will receive them.
 
-只需前往 ENS APP [app.ens.domains](https://app.ens.domains/) ，然后点击“我的名称”。
+### Where can I manage all my ENS names?
 
-### 我可以在 NFT 交易所交易 ENS 名称吗
+Simply go to [app.ens.domains](https://app.ens.domains) and click on "My Account".
 
-是的，.eth 名称可以作为 NFT 被交易。
+### Can I trade ENS domains on NFT exchanges?
 
-### 如何将 .eth 注册表中注册的名称转让给其他人
+Yes, .eth names are tradeable as NFTs.
 
-你可以使用 [ENS APP](https://app.ens.domains/) 或其他支持 NFT 的工具来实现转让。
+### How can I transfer domains registered in the .eth registry to someone else?
 
-### 除了注册费之外，还有什么因素可以防止大规模抢注名称
+You can do this using [our Manager interface here](https://app.ens.domains), or using any tool with NFT support.
 
-大规模抢注名称的成本是唯一的限制因素。
+### What prohibits large scale domain grabbing besides registration fees?
 
-### 管理员（controller）是什么
+The cost of doing this is the only limitation in place.
 
-注册人是拥有 .eth 名称的账户，他可以将名称的所有权转移到另一个账户，并且可以更改管理员。注册人是名称（同时作为 NFT）的所有者。
+### What is the "registrant" and "controller" of a name?
 
-管理员是对名称进行日常操作的账户，这些操作包括创建子名称、设置解析器和记录，等等。
+The registrant is the account that owns the .eth name. They can transfer ownership to another account, and they can replace the controller address. The registrant is the owner of the NFT token that represents the name.
+
+The controller is the account that controls day-to-day operations with the name: creating subdomains, setting the resolver and records, and so forth.

@@ -1,9 +1,6 @@
----
-part: ENS 中文文档
-title: 链上 ENS 名称解析 
----
+# Resolving Names On-chain
 
-目前还没有用于链上解析的可靠库，但是 ENS 解析非常简单，不需要库也可以轻松完成。首先，我们定义了一些只包含必要方法的简化接口，:
+Solidity libraries for on-chain resolution are not yet available, but ENS resolution is straightforward enough it can be done trivially without a library. First, we define some pared-down interfaces containing only the methods we need:
 
 ```text
 abstract contract ENS {
@@ -15,24 +12,21 @@ abstract contract Resolver {
 }
 ```
 
-解析时，在 ENS 合约中只需要用到 `resolver` 函数。ENS 合约中的其他方法可以用来在拥有名称的合约中查找所有者和更新 ENS 名称。
+For resolution, only the `resolver` function in the ENS contract is required; other methods permit looking up owners and updating ENS from within a contract that owns a name.
 
-根据这些定义，查询一个给定节点哈希的名称非常简单：
+With these definitions, looking up a name given its node hash is straightforward:
 
 ```text
 contract MyContract {
     // Same address for Mainet, Ropsten, Rinkerby, Gorli and other networks;
     ENS ens = ENS(0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e);
 
-    function MyContract(address ensAddress) public {
-        ens = ENS(ensAddress);
-    }
-
     function resolve(bytes32 node) public view returns(address) {
-        Resolver resolver = ens.resolver(node)
+        Resolver resolver = ens.resolver(node);
         return resolver.addr(node);
     }
 }
 ```
 
-虽然合约可以将可读名称转换成节点哈希，但考虑到处理节点哈希会更加便利和高效，我们强烈建议在合约中使用节点哈希来取代名称，同时将规范化名称这项复杂工作交给链下的调用者来执行。如果某个合约总是解析一些相同的名称，则可以将这些名称转换为节点哈希并作为常量存储在合约中。
+While it is possible for a contract to process a human-readable name into a node hash, we highly recommend working with node hashes instead, as they are easier and more efficient to work with, and allow contracts to leave the complex work of normalizing the name to their callers outside the blockchain. Where a contract always resolves the same names, those names may be converted to a node hash and stored in the contract as a constant.
+

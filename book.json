@@ -1,8 +1,8 @@
 {
-    "title": "Kubernetes Handbook",
-    "author": "Pengfei Ni",
-    "gitbook": ">= 3.2.2",
-    "language": "zh-cn",
+    "title": "ENSdocs",
+    "author": "a",
+    "gitbook": "3.2.3",
+    "language": "en",
     "plugins": [
         "mermaid",
         "github",
@@ -25,14 +25,14 @@
           "showByDefault": true
         },
         "github": {
-            "url": "https://github.com/feiskyer/kubernetes-handbook"
+            "url": "https://github.com/alittt5/ens/"
         },
         "editlink": {
-            "base": "https://github.com/feiskyer/kubernetes-handbook/blob/master",
+            "base": "https://github.com/alittt5/ens/blob/gh-pages/",
             "label": "编辑本页"
         },
         "tbfed-pagefooter": {
-          "copyright":"&copy Pengfei Ni",
+          "copyright":"&a",
           "modify_label": "Updated at",
           "modify_format": "YYYY-MM-DD HH:mm:ss"
         }

@@ -1,85 +1,80 @@
----
-part: ENS 中文文档
-title: 常见问题 
----
+# Frequently Asked Questions
 
-## 关于 ENS 注册表
+## About the ENS Registry
 
-### 为什么名称要以哈希的形式进行注册
+### Why are names registered as hashes?
 
-因为哈希值是一个固定长度的标识字符串，可以在固定开销的合约之间轻松地传递，而且可以正常传递可变长度的字符串。
+Hashes provide a fixed length identifier that can easily be passed around between contracts with fixed overhead and no issues passing around variable-length strings.
 
-### 目前有哪些钱包和 dapp 支持 ENS
+### Which wallets and dapps support ENS so far?
 
-在 [ENS 的主页](https://ens.domains/) 上可以查看部分已经支持 ENS 的钱包和 DApp 的列表。
+A partial list can be seen on [our homepage](https://ens.domains).
 
-### 如果我有一个 ENS 名称，那我可以创建自己的子名称吗
+### Once I own a name, can I create my own subdomains?
 
-是的。你可以创建任意子名称，并将它们的所有权分配给其他人。你甚至可以建立自己的名称注册器！
+Yes. You can create whatever subdomains you wish and assign ownership of them to other people if you desire. You can even set up your own registrar for your domain.
 
-### 如果我买了一个名称，我可以在买了之后更改这个名称指向的地址吗
+### Can I change the address my name points to after I’ve bought it?
 
-是的，你可以随时更新这个名称所指向的地址或其他资源。
+Yes, you can update the addresses and other resources pointed to by your name at any time.
 
-### 我能在 ENS 注册一个自己的 TLD（顶级名称）吗
+### Can I register a TLD of my own in the ENS?
 
-不能。我们认为 ENS 是 DNS 所占用的 “全域名称空间” 的一部分，所以我们尽量不去破坏这个名称空间。ENS 上专用的 TLD 仅限于 .eth（在主网上），或 .eth 和 .test（在Ropsten测试网上），再加上一些用途比较特殊的 TLD，比如那些需要进行反向查询的 TLD。
+No. We consider ENS to be part of the 'global namespace' inhabited by DNS, and so we do our best not to pollute that namespace. ENS-specific TLDs are restricted to only .eth (on mainnet), or .eth and .test (on Ropsten), plus any special purpose TLDs such as those required to permit reverse lookups.
 
-此外，我们正在部署一个依赖 DNSSEC 的集成工具，它可以支持从大多数 DNS 顶级名称内导入 DNS 域名。有关这些计划的详情，请参阅 [这篇文章](https://medium.com/the-ethereum-name-service/upcoming-changes-to-the-ens-root-a1b78fd52b38)。
+In addition to that, we are deploying support for importing DNS domains from the majority of DNS top-level domains using an integration that relies on DNSSEC. For details on those plans, please read [this post](https://medium.com/the-ethereum-name-service/upcoming-changes-to-the-ens-root-a1b78fd52b38).
 
-### 谁控制着 ENS 根节点，这给了他们什么权力
+### Who owns the ENS rootnode? What powers does that grant them?
 
-根节点目前由一个多重签名的智能合约来控制，合约的密钥由[以太坊社区中几个值得信任的个人](https://ens.domains/about#about-root)持有。我们期望这种模式是非干涉性的，因此根节点的所有权仅用于实施名称管理方面的变更，比如引入新的 TLD ，或从紧急情况（如 TLD 注册商的关键漏洞）中恢复。
+The root node is presently owned by a multisig contract, with keys held by [trustworthy individuals in the Ethereum community](https://ens.domains/about#about-root). We expect that this will be hands-off, with the root ownership only used to effect administrative changes, such as the introduction of a new TLD, or to recover from an emergency such as a critical vulnerability in a TLD registrar.
 
-密钥的持有者们是从受人尊敬的社区成员中选取的，除了尼克·约翰逊（Nick Johnson，ENS 的创始人）之外都与 ENS 无关，我们要求并期望他们为 ENS 社区的利益着想，并通过个人判断来行使权限，而不是随意签署 ENS 开发人员向他们发送的请求。
+The keyholders are drawn from respected members of the community, and with the exception of Nick Johnson, founder of ENS, are unaffiliated with ENS. We ask and expect them to exercise their individual judgement acting in the interests of the ENS community, rather than rubber-stamping requests made to them by ENS developers.
 
-由于节点的所有者可以更改任意子节点的所有权（除非他们将节点锁定，让节点不再受他们控制），所以根节点的所有者可以更改 ENS 树中的任何节点。这意味着，对于那些负责发行和管理名称的合约，根域的密钥持有者们具有更换这些合约的权限。可以说，他们对 ENS 系统的结构和在其中注册的名称拥有最终控制权。但是，根域的密钥持有者们已经锁定了 `.eth` 注册器合约的控制权，这意味着即使是密钥持有者也不能影响 `.eth` 名称的所有权。
+Since the owner of a node can change ownership of a subnode (unless they have otherwise locked it from their control), the owner of the root can change any node in the ENS tree. This means that the keyholders can replace the contracts that govern issuing and managing domains, giving them ultimate control over the structure of the ENS system and the names registered in it. However, the root key holders have locked control of the .eth registrar contract, which means that even keyholders cannot affect the ownership of .eth domains.
 
-密钥持有人仍然能够执行以下操作:
+The keyholders are still capable of doing the followings:
 
-- 控制除了 .eth 之外的顶级域名的分配和替换——这是实现 DNSSEC 集成所必需的。
-— 启用或禁用 .eth 注册控制器，这会影响 .eth 名称的注册和续费策略。
-- 更新 .eth 名称的价格。
-- 注册费的收取和管理。
+* Control allocation and replacement of TLDs other than .eth - this is required to implement DNSSEC integration.
+* Enable and disable controllers for the .eth registrar, which affect registration and renewal policies for .eth names.
+* Update the pricing for .eth names.
+* Receive and manage registration revenue.
 
-随着时间的推移，我们计划减少和分散人类对 ENS 系统的控制。目前 ENS 根域仍然拥有的权限，比如为名称设置定价和续费条件，这些权限将被分散，因为已经有稳健的系统可以实现这种分散。
+Over time, we plan to reduce and decentralise human control over the system. Powers still held by the ENS root, such as those to set pricing and renewal conditions for domains, will be decentralised as robust systems become available to permit doing so.
 
-### ENS 支持英文以外的字符吗? 支持大写字母吗? 支持所有的 unicode 字符吗
+### What about foreign characters? What about upper case letters? Is any unicode character valid?
 
-由于 ENS 的合约只处理哈希值，因此这些合约无法直接对注册时使用的字符进行限制，字符长度等限制是通过对用户提交的原始名称进行验证来实现的。
+Since the ENS contracts only deal with hashes, they have no direct way to enforce limits on what can be registered; character length restrictions are implemented by allowing users to challenge a short name by providing its preimage to prove it’s too short.
 
-理论上来说，你可以同时注册 “foo.eth” 和 “FOO.eth” ，甚至是 &lt;picture of my cat&gt; 。但是，浏览器或钱包内的解析器会在解析之前，使用 nameprep 算法对用户输入的名称进行预处理，所以，如果一个名称不是 nameprep 的有效输出，那它实际上毫无用处，因为它不能被标准解析器解析。帮助用户注册名称的 DApp 应该使用 nameprep 算法对请求注册的名称进行预处理，防止用户注册无法解析的名称。
+This means that you can in theory register both ‘foo.eth’ and ‘FOO.eth’, or even \<picture of my cat>.eth. However, resolvers such as browsers and wallets should apply the nameprep algorithm to any names users enter before resolving; as a result, names that are not valid outputs of nameprep will not be resolvable by standard resolvers, making them effectively useless. Dapps that assist users with registering names should prevent users from registering unresolvable names by using nameprep to preprocess names being requested for registration.
 
-### ENS 系统中并没有强制执行 nameprep ，这会不会导致安全、欺诈或网络钓鱼等问题
+### Nameprep isn’t enforced in the ENS system. Is this a security/spoofing/phishing concern?
 
-ENS 合约没有强制执行 nameprep ，但如前所述，解析器在解析名称之前会执行 nameprep ，这意味着非 nameprep 名称将无法被解析。
+It’s not enforced by the ENS contracts, but, as described above, resolvers are expected to use it before resolving names. This means that non-nameprep names will not be resolvable.
 
-### ENS 与其他命名服务（如 Namecoin 和 Handshake）之间有什么区别
+### What are the differences between ENS and other naming services such as Namecoin and Handshake?
 
-ENS 通过为区块链地址和分布式内容等 web3 资源提供分布式的、可信的名称解析来补充和拓展 DNS 的用途，而 Namecoin 和 Handshake 则致力于用基于区块链的替代方案来取代全部或部分 DNS。
+ENS complements and extends the usefulness of DNS with decentralised, trustworthy name resolution for web3 resources such as blockchain addresses and distributed content, while Namecoin and Handshake are efforts to replace all or part of DNS with a blockchain-based alternative.
 
-Handshake 的目标则是试图建立一个由区块链系统进行管理和分发的根域，并用其来替代当前的 DNS 根域。
+## About the .eth Permanent Registrar
 
-## 关于 .eth 永久注册器
+### How do the ENS Manager App and the Twitter bot know what names people are buying?
 
-### ENS APP 和 Twitter 机器人怎么知道人们在购买什么名称
+The ENS Manager App and the Twitter bot have built-in lists of common names, drawn from an English dictionary and Alexa’s list of top 1 million Internet domain names. They use these lists to show you when common names are bought or renewed. We do this because if the app didn’t reveal these names, anyone with a little technical skill could find them out anyway, giving them an advantage over those who don’t have the capacity to build their own list and code to check names against it.
 
-ENS APP 和 Twitter 机器人预置了一些常见名称的列表，列表中的名称取自英文词典和 Alexa 网站的前 100 万个互联网名称，然后通过这些列表来显示哪些常见的名称已经完成注册或续费。之所以这样做是因为，如果应用程序不显示这些名称，有一定技术能力的人可以轻松找到它们，这会让他们在名称注册这件事上，比那些不能自己编写列表和代码来检查名称的人具备太多优势。
+### What does it cost to register a .eth domain?
 
-### 注册一个 .eth 名称需要多少钱
+Currently, registration costs are set at the following prices:
 
-目前，注册费用按以下价格计算：
+* 5+ character .eth names: $5 in ETH per year.
+* 4 character .eth names: $160 in ETH per year.
+* 3 character .eth names $640 in ETH per year.
 
-- 5 个字符及以上的 .eth 名称：每年价值 5 美元的以太币
-- 4 个字符的 .eth 名称：每年价值 160 美元的以太币
-- 3 个字符的 .eth 名称：每年价值 640 美元的以太币
+3 and 4 character names have higher pricing to reflect the small number of these names available.
 
-3 个和 4 个字符名称的高价反映了这些名称的数量很少。
+### What happens if I forget to extend the registration of a name?
 
-### 如果我忘记给一个名称续费，会发生什么
+After your name expires, there is a 90 day grace period in which the owner can't edit the records but can still re-register the name. After the grace period, the name is released for registration by anyone with a temporary premium which decreases over a 28 days period. The released name continues to resolve your ETH address until the new owner overwrites it.
 
-在你的名称过期后，有一个 90 天的宽限期，在此期间，名称的所有者不能修改记录，但仍然可以为其续费。在宽限期之后，会有一个 28 天的临时溢价，这时任何人都可以注册。释放的名称会继续解析至您的ETH地址，直到新的所有者覆盖这些记录。
+### What kinds of behaviours are likely to result in losing ownership of a name?
 
-### 什么情况下可能会导致失去名称的所有权
-
-`.eth` 注册器的内部结构决定了：只要注册过程是有效的，那么名称一经注册就无法撤销。
+The .eth registrar is structured such that names, once issued, cannot be revoked so long as an active registration is maintained.

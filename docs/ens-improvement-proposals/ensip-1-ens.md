@@ -1,99 +1,98 @@
 ---
-part: ENS 中文文档
-subpart: ensip
-title: 'ENSIP-1: ENS'
 description: Documentation of the basic ENS protocol (formerly EIP-137).
 ---
 
-| **作者**  | Nick Johnson \<arachnid@notdot.net> |
+# ENSIP-1: ENS
+
+| **Author**  | Nick Johnson \<arachnid@notdot.net> |
 | ----------- | ----------------------------------- |
-| **状态**  | 完结 |
-| **创建时间** | 2016-04-04 |
+| **Status**  | Final                               |
+| **Created** | 2016-04-04                          |
 
-## 摘要
+## Abstract
 
-这个 ENSIP 描述了以太坊名称服务（Ethereum Name Service）的细节，是一个包含协议及 ABI 定义的提案，它支持将简短的、人类可读的名称灵活地解析至服务和资源标识。用户和开发人员可以引用易读且容易记忆的名称，并允许在底层资源(合约、内容寻址数据等)发生变化时，根据需要更新这些名称。
+This ENSIP describes the details of the Ethereum Name Service, a proposed protocol and ABI definition that provides flexible resolution of short, human-readable names to service and resource identifiers. This permits users and developers to refer to human-readable and easy to remember names, and permits those names to be updated as necessary when the underlying resource (contract, content-addressed data, etc) changes.
 
-名称的目标是提供稳定的、人类可读的标识符，用来指向网络资源。通过这种方式，用户可以输入一个容易记住的字符串，例如 `vitalik.wallet` 或 `www.mysite.swarm`，并定向到正确的资源。名称和资源之间的映射可能会随着时间的推移而改变，所以用户可能会更改钱包，网站可能会更改主机，文档可能会更新到新版本，而名称不会改变。此外，名称不一定指定单一的资源，通过不同的记录类型允许相同的名称引用不同的资源。例如，浏览器可以通过获取 A（地址）记录将 `mysite.swarm` 解析至它的服务器 IP 地址，同时邮件客户端可以通过获取邮件服务器的 MX（邮件交换器）记录来将相同的名称解析至邮件服务器。
+The goal of domain names is to provide stable, human-readable identifiers that can be used to specify network resources. In this way, users can enter a memorable string, such as 'vitalik.wallet' or 'www.mysite.swarm', and be directed to the appropriate resource. The mapping between names and resources may change over time, so a user may change wallets, a website may change hosts, or a swarm document may be updated to a new version, without the domain name changing. Further, a domain need not specify a single resource; different record types allow the same domain to reference different resources. For instance, a browser may resolve 'mysite.swarm' to the IP address of its server by fetching its A (address) record, while a mail client may resolve the same address to a mail server by fetching its MX (mail exchanger) record.
 
-## 动机
+## Motivation
 
-以太坊中现有的名称解析[规范](https://github.com/ethereum/wiki/wiki/Registrar-ABI)和[实现](https://ethereum.gitbooks.io/frontier-guide/content/registrar\_services.html)能够提供基本功能，但存在一些缺陷，会在很大程序上限制其长期可用性: 
+Existing [specifications](https://github.com/ethereum/wiki/wiki/Registrar-ABI) and [implementations](https://ethereum.gitbooks.io/frontier-guide/content/registrar\_services.html) for name resolution in Ethereum provide basic functionality, but suffer several shortcomings that will significantly limit their long-term usefulness:
 
-* 一个全局命名空间，所有名称都有一个 “集中式” 解析器。
-* 有限的支持或完全不支持委托和子名称/子名称。
-* 只有一种记录类型，不支持将多种记录关联至同一个名称。
-* 由于单一的全局实现，因此不支持多个名称分配系统。
-* 合并的职责: 名称解析、注册和 whois 信息。
+* A single global namespace for all names with a single 'centralised' resolver.
+* Limited or no support for delegation and sub-names/sub-domains.
+* Only one record type, and no support for associating multiple copies of a record with a domain.
+* Due to a single global implementation, no support for multiple different name allocation systems.
+* Conflation of responsibilities: Name resolution, registration, and whois information.
 
-这些特性支持的用例包括:
+Use-cases that these features would permit include:
 
-* 支持子名称/子名称，如 live.mysite.tld 和 forum.mysite.tld
-* 单一名称下的多个服务，如托管在 Swarm 的 DApp、Whisper 地址和邮件服务器。
-* 支持 DNS 记录类型，允许区块链托管的“传统”名称。这将允许 Ethereum 客户端（如 Mist）从区块链名称解析至传统网站地址或电子邮件服务器。
-* DNS 网关，通过 DNS 对接 ENS 名称，为传统客户端解析和连接到区块链服务提供更便利的方法。
+* Support for subnames/sub-domains - eg, live.mysite.tld and forum.mysite.tld.
+* Multiple services under a single name, such as a DApp hosted in Swarm, a Whisper address, and a mail server.
+* Support for DNS record types, allowing blockchain hosting of 'legacy' names. This would permit an Ethereum client such as Mist to resolve the address of a traditional website, or the mail server for an email address, from a blockchain name.
+* DNS gateways, exposing ENS domains via the Domain Name Service, providing easier means for legacy clients to resolve and connect to blockchain services.
 
-特别是前两个用例，在当今的互联网 DNS 下随处可见，我们相信它们是名称服务的基本特性，随着以太坊平台的发展和成熟，它们将继续发挥作用。
+The first two use-cases, in particular, can be observed everywhere on the present-day internet under DNS, and we believe them to be fundamental features of a name service that will continue to be useful as the Ethereum platform develops and matures.
 
-本文件的规范性部分没有规定提议系统的实现，它的目的是记录不同解析器的实现可以遵循的协议，以促进的名称解析的一致性。附录提供了解析器合约和库的实现示例，它们仅作为示例来用。
+The normative parts of this document does not specify an implementation of the proposed system; its purpose is to document a protocol that different resolver implementations can adhere to in order to facilitate consistent name resolution. An appendix provides sample implementations of resolver contracts and libraries, which should be treated as illustrative examples only.
 
-同样，本文档也不会指定应该如何注册或更新名称，或者系统如何查询某个名称的所有者。注册是注册商的工作，也是一个治理问题，在顶级名称之间必然会有所不同。
+Likewise, this document does not attempt to specify how domains should be registered or updated, or how systems can find the owner responsible for a given domain. Registration is the responsibility of registrars, and is a governance matter that will necessarily vary between top-level domains.
 
-名称记录的更新也可以与解析分开处理。一些系统，如 Swarm，可能需要一个定义相对完善的接口来更新名称，鉴于此，我们计划为此开发一个标准。
+Updating of domain records can also be handled separately from resolution. Some systems, such as swarm, may require a well defined interface for updating domains, in which event we anticipate the development of a standard for this.
 
-## 规范
+## Specification
 
-### 概述
+### Overview
 
-ENS 系统包括三个主要部分:
+The ENS system comprises three main parts:
 
-* ENS 注册表
-* 解析器
-* 注册器
+* The ENS registry
+* Resolvers
+* Registrars
 
-注册表是一个单独的合约，它支持将任意已注册名称映射到负责这个名称的解析器，并允许名称的所有者设置解析器地址，并创建子域，子域的所有者可以与父域不同。
+The registry is a single contract that provides a mapping from any registered name to the resolver responsible for it, and permits the owner of a name to set the resolver address, and to create subdomains, potentially with different owners to the parent domain.
 
-解析器负责查找一个名称对应的资源——例如，返回一个合约地址、一个内容哈希或一个对应的 IP 地址。解析器规范在这里定义并在其他 ensip 中扩展，定义了解析器可以实现哪些方法来支持解析不同类型的记录。
+Resolvers are responsible for performing resource lookups for a name - for instance, returning a contract address, a content hash, or IP address(es) as appropriate. The resolver specification, defined here and extended in other ENSIPs, defines what methods a resolver may implement to support resolving different types of records.
 
-注册器负责向系统用户分配名称，并且是唯一能够更新 ENS 的实体；ENS 注册表中节点的所有者是其注册器。注册器可以是合约或外部帐户，但根域和顶级域的注册器至少要通过合约来实现。
+Registrars are responsible for allocating domain names to users of the system, and are the only entities capable of updating the ENS; the owner of a node in the ENS registry is its registrar. Registrars may be contracts or externally owned accounts, though it is expected that the root and top-level registrars, at a minimum, will be implemented as contracts.
 
-在 ENS 中解析名称需要两个步骤。首先，利用以下方法对要解析的名称进行哈希处理之后，通过这个哈希调用 ENS 注册表，如果记录存在，注册表将返回其解析器的地址。然后，使用与请求资源类型对应的方法来调用解析器，解析器返回所需的结果。
+Resolving a name in ENS is a two-step process. First, the ENS registry is called with the name to resolve, after hashing it using the procedure described below. If the record exists, the registry returns the address of its resolver. Then, the resolver is called, using the method appropriate to the resource being requested. The resolver then returns the desired result.
 
-例如，假设您希望找到与 “beercoin.eth” 相关联的合约地址。首先，获取解析器:
+For example, suppose you wish to find the address of the token contract associated with 'beercoin.eth'. First, get the resolver:
 
 ```javascript
 var node = namehash("beercoin.eth");
 var resolver = ens.resolver(node);
 ```
 
-然后，向解析器请求合约地址:
+Then, ask the resolver for the address for the contract:
 
 ```javascript
 var address = resolver.addr(node);
 ```
 
-由于 “namehash” 过程只依赖于名称本身，因此可以预先计算并插入到合约中，从而不必再进行字符串操作，并且无论原始名称中有几级组件，都可以对 ENS 记录进行 O(1) 查找。
+Because the `namehash` procedure depends only on the name itself, this can be precomputed and inserted into a contract, removing the need for string manipulation, and permitting O(1) lookup of ENS records regardless of the number of components in the raw name.
 
-### 语法
+### Name Syntax
 
-ENS 名称必需符合以下语法
+ENS names must conform to the following syntax:
 
 ```
-<域> ::= <标签> | <域> "." <标签>
-<标签> ::= 任意符合 UTS46 标准的字符串标签 
+<domain> ::= <label> | <domain> "." <label>
+<label> ::= any valid string label per [UTS46](https://unicode.org/reports/tr46/)
 ```
 
-简而言之，名称由一系列以点分隔的标签构成。每个标签都必须是有效的标准化标签，符合 `transitional=false` 和 `useSTD3AsciiRules=true` 条件下的 [UTS46](https://unicode.org/reports/tr46/) 规范。对于 Javascript 的实现，可以使用一个[库](https://www.npmjs.com/package/idna-uts46)来规范和检查名称。
+In short, names consist of a series of dot-separated labels. Each label must be a valid normalised label as described in [UTS46](https://unicode.org/reports/tr46/) with the options `transitional=false` and `useSTD3AsciiRules=true`. For Javascript implementations, a [library](https://www.npmjs.com/package/idna-uts46) is available that normalises and checks names.
 
-需要注意的是，虽然名称中允许使用大写和小写字母，但 UTS46 规范化会在对标签进行哈希之前先对其进行大小写合并（译注，实际上就是会全部转换为小写字母），因此大小写不同但拼写相同的两个名称将产生相同的名称哈希。
+Note that while upper and lower case letters are allowed in names, the UTS46 normalisation process case-folds labels before hashing them, so two names with different case but identical spelling will produce the same namehash.
 
-标签和域可以是任意长度，但为了与传统 DNS 兼容，建议每个标签限制为不超过 64 个字符，完成的 ENS 名称不超过 255 个字符。出于同样的原因，建议标签不要以连字符开头或结尾，也不要以数字开头。
+Labels and domains may be of any length, but for compatibility with legacy DNS, it is recommended that labels be restricted to no more than 64 characters each, and complete ENS names to no more than 255 characters. For the same reason, it is recommended that labels do not start or end with hyphens, or start with digits.
 
-### namehash 算法
+### namehash algorithm
 
-一个名称在 ENS 中使用之前，先使用 `namehash` 算法进行哈希处理。该算法对一个名称的各个组成部分进行递归式哈希，为任何有效的输入域生成一个唯一的、固定长度的字符串。namehash 的输出称为 “节点”。
+Before being used in ENS, names are hashed using the 'namehash' algorithm. This algorithm recursively hashes components of the name, producing a unique, fixed-length string for any valid input domain. The output of namehash is referred to as a 'node'.
 
-namehash 算法的伪代码如下:
+Pseudocode for the namehash algorithm is as follows:
 
 ```
 def namehash(name):
@@ -104,7 +103,7 @@ def namehash(name):
     return sha3(namehash(remainder) + sha3(label))
 ```
 
-简单来说，名称被分成一个或多个标签，每个标签都经过哈希处理。然后，从最后一个标签开始，将前一个输出与当前标签的哈希连接并再次进行哈希处理。第一个标签与 32 个 `0` 字节连接。因此，`mysite.swarm` 的处理过程如下
+Informally, the name is split into labels, each label is hashed. Then, starting with the last component, the previous output is concatenated with the label hash and hashed again. The first component is concatenated with 32 '0' bytes. Thus, 'mysite.swarm' is processed as follows:
 
 ```
 node = '\0' * 32
@@ -112,7 +111,7 @@ node = sha3(node + sha3('swarm'))
 node = sha3(node + sha3('mysite'))
 ```
 
-namehash 的实现应该匹配以下测试向量:
+Implementations should conform to the following test vectors for namehash:
 
 ```
 namehash('') = 0x0000000000000000000000000000000000000000000000000000000000000000
@@ -120,72 +119,72 @@ namehash('eth') = 0x93cdeb708b7545dc668eb9280176169d1c33cfd8ed6f04690a0bcc88a93f
 namehash('foo.eth') = 0xde9b09fd7c5f901e23a3f19fecc54828e9c848539801e86591bd9801b019f84f
 ```
 
-### 注册表规范
+### Registry specification
 
-ENS 注册表合约中公开了以下函数:
+The ENS registry contract exposes the following functions:
 
 ```solidity
 function owner(bytes32 node) constant returns (address);
 ```
 
-返回指定节点的所有者（注册器）。
+Returns the owner (registrar) of the specified node.
 
 ```solidity
 function resolver(bytes32 node) constant returns (address);
 ```
 
-返回指定节点的解析器。
+Returns the resolver for the specified node.
 
 ```solidity
 function ttl(bytes32 node) constant returns (uint64);
 ```
 
-返回节点的 TTL，也就是节点信息可以被缓存的最大时长。
+Returns the time-to-live (TTL) of the node; that is, the maximum duration for which a node's information may be cached.
 
 ```solidity
 function setOwner(bytes32 node, address owner);
 ```
 
-将节点的所有权转移给另一个注册器。此函数只能由 `node` 的当前所有者调用，此函数被调用成功后会记录事件 `Transfer(bytes32 indexed, address)`。
+Transfers ownership of a node to another registrar. This function may only be called by the current owner of `node`. A successful call to this function logs the event `Transfer(bytes32 indexed, address)`.
 
 ```solidity
 function setSubnodeOwner(bytes32 node, bytes32 label, address owner);
 ```
 
-创建一个新节点，`sha3(node, label)` 并将期所有者设置为 `owner`，而如果该节点已经存在，则会用新的所有者更新这个节点。此函数只能被 `node` 的当前所有者调用。此函数被调用成功后会记录事件 `NewOwner(bytes32 indexed, bytes32 indexed, address)`。
+Creates a new node, `sha3(node, label)` and sets its owner to `owner`, or updates the node with a new owner if it already exists. This function may only be called by the current owner of `node`. A successful call to this function logs the event `NewOwner(bytes32 indexed, bytes32 indexed, address)`.
 
 ```solidity
 function setResolver(bytes32 node, address resolver);
 ```
 
-为 `node` 设置解析器。此函数只能被 `node` 的当前所有者调用。此函数被调用成功后会记录事件 `NewResolver(bytes32 indexed, address)`。
+Sets the resolver address for `node`. This function may only be called by the owner of `node`. A successful call to this function logs the event `NewResolver(bytes32 indexed, address)`.
 
 ```solidity
 function setTTL(bytes32 node, uint64 ttl);
 ```
 
-设置节点的 TTL。节点的 TTL 适用于注册表中的“所有者”和“解析器”记录，以及相应解析器返回的任何信息。
+Sets the TTL for a node. A node's TTL applies to the 'owner' and 'resolver' records in the registry, as well as to any information returned by the associated resolver.
 
-### 解析器规范
+### Resolver specification
 
-解析器可以实现这里指定的记录类型的任意子集。如果记录类型规范要求解析器提供多种功能，则解析器必须实现或者放弃所有功能。解析器必须指定一个回调函数。
+Resolvers may implement any subset of the record types specified here. Where a record types specification requires a resolver to provide multiple functions, the resolver MUST implement either all or none of them. Resolvers MUST specify a fallback function that throws.
 
-解析器具有一项强制性功能:
+Resolvers have one mandatory function:
 
 ```solidity
 function supportsInterface(bytes4 interfaceID) constant returns (bool)
 ```
 
-`supportsInterface` 函数记录在 EIP-165 中，如果解析器实现了某个 4 字节标识符代表的接口，则返回 `true`。接口标识符由该接口提供的函数的签名哈希的异或组成，在单函数接口情况下，它直接等于该函数的签名哈希。
+The `supportsInterface` function is documented in ENSIP-165, and returns true if the resolver implements the interface specified by the provided 4 byte identifier. An interface identifier consists of the XOR of the function signature hashes of the functions provided by that interface; in the degenerate case of single-function interfaces, it is simply equal to the signature hash of that function. If a resolver returns `true` for `supportsInterface()`, it must implement the functions specified in that interface.
 
-对于 `0x01ffc9a7`（即 `supportsInterface` 自身的接口 ID），`supportsInterface` 必须返回 true。
+`supportsInterface` must always return true for `0x01ffc9a7`, which is the interface ID of `supportsInterface` itself.
 
-下表中指定了当前标准化的解析器接口。
+Currently standardised resolver interfaces are specified in the table below.
 
-以下接口已经定义:
+The following interfaces are defined:
 
-| Interface name  | Interface hash | Specification     |
-| --------- | ------- | -------- |
+| Interface name        | Interface hash | Specification                                       |
+| --------------------- | -------------- | --------------------------------------------------- |
 | `addr`                | 0x3b3b57de     | Contract address                                    |
 | `name`                | 0x691f3431     | [ENSIP-3](ensip-3-reverse-resolution.md)            |
 | `ABI`                 | 0x2203ab56     | [ENSIP-4](ensip-4-support-for-contract-abis.md)     |
@@ -194,27 +193,27 @@ function supportsInterface(bytes4 interfaceID) constant returns (bool)
 | interfaceImplementer  | 0xb8f2bbb4     | [ENSIP-8](ensip-8-interface-discovery.md)           |
 | addr(bytes32,uint256) | 0xf1cb7e06     | [ENSIP-9](ensip-9-multichain-address-resolution.md) |
 
-ENSIP 可以定义要添加到此注册表的新接口。
+ENSIPs may define new interfaces to be added to this registry.
 
-#### 合约地址接口
+#### Contract Address Interface <a href="#addr" id="addr"></a>
 
-期望支持合约地址资源的解析器必须提供以下功能:
+Resolvers wishing to support contract address resources must provide the following function:
 
 ```solidity
 function addr(bytes32 node) constant returns (address);
 ```
 
-如果解析器支持 `addr` 查询，但请求的节点没有记录地址，那么解析器必须返回零地址。
+If the resolver supports `addr` lookups but the requested node does not have an addr record, the resolver MUST return the zero address.
 
-解析 `addr` 记录的客户端必须检查零返回值，并将其视为一个未指定解析器的名称——即拒绝向该地址发送资金或与之交互。否则可能会导致用户不小心将资金发送到零地址。
+Clients resolving the `addr` record MUST check for a zero return value, and treat this in the same manner as a name that does not have a resolver specified - that is, refuse to send funds to or interact with the address. Failure to do this can result in users accidentally sending funds to the 0 address.
 
-更改地址必须触发以下事件:
+Changes to an address MUST trigger the following event:
 
 ```solidity
 event AddrChanged(bytes32 indexed node, address a);
 ```
 
-## 附录 A: 注册表的实现
+## Appendix A: Registry Implementation
 
 ```solidity
 contract ENS {
@@ -274,11 +273,11 @@ contract ENS {
 }
 ```
 
-## 附录 B: 解析器的实现示例
+## Appendix B: Sample Resolver Implementations
 
-### 内置解析器
+#### Built-in resolver
 
-最简单的解析器是通过实现合约地址配置来充当自己名称的解析器的合约:
+The simplest possible resolver is a contract that acts as its own name resolver by implementing the contract address resource profile:
 
 ```solidity
 contract DoSomethingUseful {
@@ -298,11 +297,11 @@ contract DoSomethingUseful {
 }
 ```
 
-这样的合约可以直接插入 ENS 注册表，在简单的用例中无需单独的解析器合约。但是，“抛出”未知函数调用的要求可能会干扰某些类型合约的正常运行。
+Such a contract can be inserted directly into the ENS registry, eliminating the need for a separate resolver contract in simple use-cases. However, the requirement to 'throw' on unknown function calls may interfere with normal operation of some types of contract.
 
-### 独立解析器
+#### Standalone resolver
 
-一个实现合约地址配置的基本解析器，并且只允许其所有者更新记录:
+A basic resolver that implements the contract address profile, and allows only its owner to update records:
 
 ```solidity
 contract Resolver {
@@ -339,11 +338,11 @@ contract Resolver {
 }
 ```
 
-部署此合约后，通过更新某个名称在 ENS 注册表中的记录来引用此合约，然后使用同一节点（译注: 这里的同一节点可以理解为上述名称的所有者）调用 `setAddr()` 以设置它将解析到的合约地址。
+After deploying this contract, use it by updating the ENS registry to reference this contract for a name, then calling `setAddr()` with the same node to set the contract address it will resolve to.
 
-### 公共解析器
+#### Public resolver
 
-与上面的解析器类似，此合约仅支持合约配置，但使用 ENS 注册来确定由谁负责更新记录条目:
+Similar to the resolver above, this contract only supports the contract address profile, but uses the ENS registry to determine who should be allowed to update entries:
 
 ```solidity
 contract PublicResolver {
@@ -381,9 +380,9 @@ contract PublicResolver {
 }
 ```
 
-## 附录 C: 注册器的实现示例
+## Appendix C: Sample Registrar Implementation
 
-该注册器支持第一个请求某个名称的人免费注册该名称。
+This registrar allows users to register names at no cost if they are the first to request them.
 
 ```solidity
 contract FIFSRegistrar {

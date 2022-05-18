@@ -1,9 +1,6 @@
----
-part: ENS 中文文档
-title: 编写一个 ENS 注册器 
----
+# Writing a Registrar
 
-ENS 中的注册器就是一个拥有某个名称所有权的合约，并根据合约代码中定义的一组规则来分配它的子名称。一个简易的即时注册合约如下:
+A registrar in ENS is simply any contract that owns a name, and allocates subdomains of it according to some set of rules defined in the contract code. A trivial first in first served contract is demonstrated below:
 
 ```text
 contract FIFSRegistrar {
@@ -26,7 +23,8 @@ contract FIFSRegistrar {
 }
 ```
 
-你可能希望通过设置自定义规则为用户分配新名称，至于设置什么样的规则，这完全由你来决定。
+You may wish to set custom rules for the allocation of new names to your users; the rules you set are entirely up to you.
 
-你还应该记住，只要你保留父名称的所有权（无论是直接的还是通过另一个合约的方式），你的用户就无法保证他们拥有的子名称的所有权不会被你收回，也无法保证他们关于子名称的设置不会被你更改。你可能打算将名称的所有权转让给一个能够限制你控制它的合约中。有关示例，请参见 [ENSNow](https://github.com/ensdomains/subdomain-registrar)。
+You should also bear in mind that as long as you retain ownership of the parent name - either directly or through another contract - your users have no guarantee that you will not take back ownership of their names and change what they resolve to. You may wish to consider committing ownership of the name to a contract that restricts your ability to control it. For an example of this, see [ENSNow](https://github.com/ensdomains/subdomain-registrar).  
+
 

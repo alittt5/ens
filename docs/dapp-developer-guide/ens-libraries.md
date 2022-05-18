@@ -1,37 +1,32 @@
----
-part: ENS 中文文档
-title: ENS 库 
----
+# ENS Libraries
 
-ENS 支持多种主流语言。如果有些你知道的 ENS 库没有在本页面陈列出来，请 [向我们发起 PR（pull request）](https://github.com/ensdomains/ens/compare)。
+ENS support is available in many popular languages. If you know of a library that is not listed here, please [send us a PR](https://github.com/ensdomains/ens/compare).
 
 ### Javascript
 
-* [ensjs](https://www.npmjs.com/package/@ensdomains/ensjs)，由 ENS 开发者维护
-* [ethereum-ens](https://www.npmjs.com/package/ethereum-ens)（不推荐）
+* [ensjs](https://www.npmjs.com/package/@ensdomains/ensjs), maintained by the ENS developers
+* [ethereum-ens](https://www.npmjs.com/package/ethereum-ens) \(deprecated\)
 * [react-ens-address](https://github.com/ensdomains/react-ens-address)
 * [ethers.js](https://github.com/ethers-io/ethers.js)
 * [web3.js](https://web3js.readthedocs.io/en/1.0/web3-eth-ens.html)
 * [embark.io](https://framework.embarklabs.io/docs/naming_configuration.html)
 * [waffle.io](https://ethereum-waffle.readthedocs.io/en/latest/ens.html)
 
-#### 我应该使用哪个 Javascript 库
+#### Which Javascript library should I use?
 
-如果你用过 web3.js 或 ethers.js ，并且不需要使用创建子名称、转移所有权或更新解析器等功能，那么你可以使用这些库内置的 ENS 特性。
+If you are already using web3.js or ethers.js, and do not require functionality such as creating subdomains, transferring ownership, or updating resolvers, use built in ENS features of these libraries.
 
-如果你在用 React ，并且只需要在 UI 界面中对 ENS 名称进行正向和反向解析，那么你可以使用 react-ens-address。
+If you are using React and only need to do forward and reverse resolution of ENS names with built in UI, use react-ens-address.
 
-如果你用过 ethers.js ，并且只需要对 ENS 名称进行正向和反向解析，那么你可以使用 ethers.js 库中对 ENS 的支持。
+If you want to have ENS instance deployed into your dev environment, you may want to use embark.io or waffle.io which allows you to configure/deploy ENS registry in your Ethereum test instance.
 
-如果你想要将 ENS 实例部署到您的开发环境中，那么你可以使用 embark.io 或 waffle.io ，它们可以让你在以太坊测试实例中配置和部署 ENS 注册表。
+Otherwise, use ensjs.
 
-其他情况下，建议使用 ensjs 库。
+#### Accessing smart contracts directly
 
-#### 直接访问智能合约
+All the ENS smart contracts are published as `@ensdomains/ens-contracts` [npm module.](https://github.com/ensdomains/ens-contracts)
 
-当前所有的 ENS 智能合约都是作为 `@ensdomains/ens-contracts` [npm 模块](https://github.com/ensdomains/ens-contracts) 发布的。
-
-在前端代码中包含 ABI 的方法：
+This is how you include abi into your frontend code.
 
 ```text
 import {
@@ -40,7 +35,7 @@ import {
 } from '@ensdomains/ens-contracts'`
 ```
 
-在 Solidity 中导入 ENS 智能合约的方法：
+This is how you import our smartcontract within Solidity.
 
 ```text
 import '@ensdomains/ens-contracts/contracts/registry/ENS.sol';
@@ -70,6 +65,7 @@ import '@ensdomains/ens-contracts/contracts/registry/ENS.sol';
 
 * [delphereum](https://github.com/svanas/delphereum)
 
-## 后续工作
+## Next Steps
 
-选定使用哪个库以后，就可以通过阅读 [ENS 的使用](working-with-ens.html) ，来学习如何在应用程序中使用你选择的 ENS 库。
+Once you've chosen a library, read [Working with ENS](working-with-ens.md) to learn how to use your chosen ENS library in your application.
+

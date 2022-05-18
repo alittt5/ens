@@ -1,13 +1,10 @@
----
-part: ENS 中文文档
-title: ENS 作为一种 NFT
----
+# ENS as NFT
 
-自从 ENS 的 `.eth` 注册器在 2019 年 5 月完成迁移后，`.eth` 注册器已经成为一个符合 [ERC721](https://github.com/ensdomains/ens/blob/master/docs/ethregistrar.rst#id3) 标准的 NFT（非同质化代币）合约，这意味着 .eth 名称可以像其他 NFT 那样进行转移。
+When ENS .eth registrar migrated in May 2019, the .eth registrar became an [ERC721](https://github.com/ensdomains/ens/blob/master/docs/ethregistrar.rst#id3) compliant non-fungible token contract, meaning that .eth registrations can be transferred in the same fashion as other NFTs.
 
-## 从 ENS 名称派生 tokenId
+## Deriving tokenId from ENS name
 
-ENS 名称的 tokenId 其实是以 uint256 形式来表示名称标签的哈希值（比如，名称 `vitalik.eth` 的标签是 `vitalik`）。
+The tokenId of ENS name is simply the uint256 representation of the hash of the label (`vitalik` for `vitalik.eth`).
 
 ```javascript
 const ethers = require('ethers')
@@ -18,13 +15,13 @@ const labelHash = utils.keccak256(utils.toUtf8Bytes('vitalik'))
 const tokenId = BigNumber.from(labelHash).toString()
 ```
 
-在上面的示例中，[`79233663829379634837589865448569342784712482819484549289560981379859480642508`](https://opensea.io/assets/0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85/79233663829379634837589865448569342784712482819484549289560981379859480642508) 就是名称 `vitalik.eth` 的 tokenId。
+In the example above,[`79233663829379634837589865448569342784712482819484549289560981379859480642508`](https://opensea.io/assets/0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85/79233663829379634837589865448569342784712482819484549289560981379859480642508) is the tokenId of `vitalik.eth`
 
-## 从 tokenId 派生 ENS 名称
+## Deriving ENS name from tokenId
 
-与派生 tokenId 不同，从 tokenId 派生 ENS 名称并不容易。这是因为所有 ENS 名称都存储为固定长度的哈希，以便允许注册长度不限的名称。这种架构的缺点是不能使用 tokenId 直接查询 ENS 智能合约来返回 ENS 名称。
+Unlike deriving tokenId, deriving ENS name from tokenId is not as easy. This is because all ENS names are stored as fixed-length hash to allow registering infinite length of names. The downside of this architecture is that you cannot directly query ENS smart contracts to return ENS name using tokenId.
 
-我们推荐的方式是通过 [TheGraph 服务](https://thegraph.com) 中的 ENS 子图来查询。TheGraph 可以通过其索引将哈希值解码为名称。查询的示例代码如下。
+Our recommended way is to query via [https://thegraph.com](https://thegraph.com) ENS subgraph. The graph decodes the hash to name as it indexes. The example code to query is as follows.
 
 ```javascript
 const ethers = require('ethers')
@@ -34,6 +31,7 @@ const { request, gql } = gr
 const tokenId = '79233663829379634837589865448569342784712482819484549289560981379859480642508'
 // Should return 0xaf2caa1c2ca1d027f1ac823b529d0a67cd144264b2789fa2ea4d63a67c7103cc
 const labelHash = BigNumber.from(tokenId).toHexString()
+
 const url = 'https://api.thegraph.com/subgraphs/name/ensdomains/ens'
 const GET_LABEL_NAME = gql`
 query{
@@ -41,19 +39,20 @@ query{
     labelName
   }
 }`
+
 request(url, GET_LABEL_NAME).then((data) => console.log(data))
 // { domains: [ { labelName: 'vitalik' } ] }
 ```
 
-如果你不喜欢依赖 TheGraph 这样的第三方，开源的 [ENS-rainbow](https://github.com/graphprotocol/ens-rainbow) 包含了原始数据集（6GB，内含 1.33 亿条数据）的链接，这样你就可以托管自己的 ENS 解码服务。
+If you prefer not to rely on a third party like TheGraph, the team open-sourced [ens-rainbow](https://github.com/graphprotocol/ens-rainbow) containing a link to the original dataset (6GB with 133 million entities) so that you can host your own ENS name decoding service.
 
-## 将子名称转换为 NFT
+## Turning subdomain into NFT
 
-目前，所有的子名称或非 `.eth` 名称都不是 NFT（比如 `dcl.eth` 和 `.kred` ），除非名称注册器本身支持 NFT 标准。如果你想将自己所有的子名称转换成 NFT，你必须创建一个注册器：
+Currently, all the subdomains nor non `.eth` domains are not NFT, unless the domain registrar itself supports NFT such as (`dcl.eth`, and `.kred`). If you want to turn all subdomains which you own, you have to create a registrar
 
-1. 创建一个符合 ERC721 标准的注册器合约
-2. 设置 ENS 注册表地址（主要是在部署注册器时）
-3. 创建 `register` 函数用来调用 `registry.setSubnodeOwner`，然后通过将子域标签哈希转换为 tokenId 来生成 NFT。
+1. Create a registrar contract as ERC721 compliant
+2. Set ENS registry address (mostly when you deploy the registrar)
+3. Create `register` function which calls `registry.setSubnodeOwner` then mint the token making the subdomain label hash as tokenId
 
 ```
 contract DCLRegistrar is ERC721Full, Ownable {
@@ -63,6 +62,7 @@ contract DCLRegistrar is ERC721Full, Ownable {
         // ENS registry
         updateRegistry(_registry);
     }
+
     function register(
         string memory _subdomain,
         bytes32 subdomainLabelHash,
@@ -71,18 +71,18 @@ contract DCLRegistrar is ERC721Full, Ownable {
     ) internal {
         // Create new subdomain and assign the _beneficiary as the owner
         registry.setSubnodeOwner(domainNameHash, subdomainLabelHash, _beneficiary);
-        // Mint an ERC721 token with the suddomain label hash as its id
+        // Mint an ERC721 token with the subdomain label hash as its id
         _mint(_beneficiary, uint256(subdomainLabelHash));
     }
 }
 ```
 
-一旦部署完成，您就必须将控制器地址转移到该合约。
+Once deployed, then you have to transfer the controller address to the contract.
 
-对于非技术用户，我们目前正在升级我们的 `SubdomainRegistrar`，它能让你不用写代码也可以将你的子名称变成 NFT。
+For non-technical users, we are currently working on upgrading our `SubdomainRegistrar` which allows you to turn your subdomain into NFT without any coding.
 
-## 元数据（Metadata）
+## Metadata
 
-.eth does not have `.tokenURI` . However, we created a separate metadata service which NFT marketlpaces like OpenSea can fetch metadata for ENS such as registration data, expiration date, name length, etc. For more detail, please refer to the metadata documentation site.
+.eth does not have `.tokenURI` . However, we created a separate metadata service which NFT marketplaces like OpenSea can fetch metadata for ENS such as registration data, expiration date, name length, etc. For more detail, please refer to the metadata documentation site.
 
-.eth 没有 `.tokenURI`。然而，我们创建了一个独立的元数据服务，OpenSea 等 NFT 市场 可以获取 ENS 的元数据，如注册数据、过期时间、名称长度等。要了解更多细节，请参考[元数据文档](https://metadata.ens.domains/docs)。
+{% embed url="https://metadata.ens.domains/docs" %}

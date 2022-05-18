@@ -1,116 +1,119 @@
 ---
-part: ENS 中文文档
-title: ENS 前端设计指南 
-description: ENS 是一个简化用户体验的工具。这里有一系列的使用指南和工具，将帮助你选择合适的设计并实现最佳的 ENS 用户体验。
+description: >-
+  ENS is a tool to simplify the experience for your users. Here are a series of
+  guidelines and tools that will help you make design choices and implement the
+  best ENS user experience.
 ---
 
-ENS 是一个简化用户体验的工具。这里有一系列的使用指南和工具，将帮助你选择合适的设计并实现最佳的 ENS 用户体验。
+# ENS Front-End Design Guidelines
 
-### 何时显示 ENS 名称
+### When to show ENS names
 
-在用户可能看到以太坊地址或内容哈希的每一个实际场景中，都可以换成 ENS 名称显示出来。
-关于在 DApp 中向用户显示 ENS 名称，这里有两个典型用例：
+In every instance a user might otherwise see an Ethereum address or content hash, you can instead display an ENS name.  
+There are two primary use cases for allowing users to display ENS names in your dapp:
 
-1. **用 ENS 名称替换以太坊地址**：在供用户浏览和使用的 DApp 的前端界面中，只要是准备显示以太坊地址的位置，你都可以换成 ENS 名称来显示。
-2. **解析输入的内容**：在那些原本需要输入以太坊地址的文本框里，你可以允许用户直接输入更为易读的 ENS 名称，而不必非要输入一长串十六进制地址。
+1. **Replacing Ethereum addresses with ENS names**: When users are exploring the front-end of your dapp, wherever you would display an Ethereum address, you can instead display an ENS name. 
+2. **Resolving input fields**: You can allow the user to write an ENS name in an input field that expects an Ethereum address, rather than entering the Ethereum address.
 
-除了这些用例，还要记得 [ENS 公共解析器](../contract-api-reference/publicresolver.html) 支持将 ENS 名称指向 [不同类型的资源](../contract-api-reference/publicresolver.html)（比如：在 IPFS 或 Swarm 上存储的内容，或是类似文本内容的任意数据）。因此，还会有一些其他的应用场景会让你想要在 DApp 中使用 ENS。例如，在面对复杂的 IPFS 或 Swarm 内容哈希时，可以使用 ENS 将哈希转换为可读的名称。[在 DApp 中启用 ENS](ens-enabling-your-dapp.html) 一文可以帮你了解更多关于不同用例的信息。
+Beyond these use cases, remember that the [ENS Public Resolver](../contract-api-reference/publicresolver.md) allows you to link [different kinds of resources](https://docs.ens.domains/contract-api-reference/publicresolver), such as content stored on IPFS or Swarm, or any arbitrary data like text fields, to ENS names. This means there are other situations in which you might want to use ENS in your dapp. For example, if you are using complicated IPFS or Swarm hashes it is possible to convert the hashes to human readable names using ENS. Learn more about the different use cases in the chapter about [Enabling ENS in your DApp](ens-enabling-your-dapp.md).
 
-## 1. 用 ENS 名称替换以太坊地址
+## 1. Replacing Ethereum Addresses with ENS Names
 
+{% hint style="warning" %}
+An ENS name \(as a substitute for an Ethereum Address\) **should only be shown** if the user has set a [Reverse Record](https://docs.ens.domains/dapp-developer-guide/resolving-names#reverse-resolution) for their address, and if the reverse record \(address &gt; name\) matches the [forward resolution](https://docs.ens.domains/dapp-developer-guide/resolving-names#looking-up-ethereum-addresses) \(name &gt; address\).
 
-只有当用户为其地址设置了一个 [反向记录](resolving-names.html#反向解析)，并且反向记录（地址 &gt; 名称）能够与 [正向解析](resolving-names.html#解析至以太坊地址)（名称 &gt; 地址）完全匹配时，这个 ENS 名称（作为对应以太坊地址的替代）**才可以被显示出来**。
-  
-因此，作为 DApp 开发者，首先应该确认用户是否已经为其地址设置了反向记录。而且，由于用户可以自由设置反向记录，即使不属于他的名称或是其他随机字符也可以设置成功，所以，你还应该确认这个反向解析出的名称也能通过正向解析得到原来的地址。请从 [这里](resolving-names.html#反向解析) 和后面的 “[其他指南和提示](#其他指南和提示)” 部分了解更多内容。
+As a dApp developer you should therefore first check if the Reverse Record for a given address has been set by the user, and, because users can set the reverse record to be anything they want, even a name they don't own or a random string, you should immediately after check that the resolved name also resolves to the same address by performing the forward resolution. Read more [here](https://docs.ens.domains/dapp-developer-guide/resolving-names#reverse-resolution) and in the _'other guidelines_' section further down.
+{% endhint %}
 
+### 1.1 - Displaying ENS names instead of Ethereum addresses
 
-### 1.1 - 将以太坊地址换成 ENS 名称显示
+![example of showing just the name and the visual checksum](../.gitbook/assets/ensguidelines_01_onlydomain_2x.jpg)
 
-![仅显示名称和可视校验和的示例](/images/docs/ensguidelines_01_onlydomain_2x.jpg)
+When replacing Ethereum addresses with ENS names you should consider these facts and best practices:
 
-当用 ENS 名称替换以太坊地址时，你应该考虑以下情况和实践经验:
+* **Consider adding a visual checksum:** it is important to indicate to the user that a name is an ENS name that relates to an Ethereum address or other hash, rather than an http link. To do this, it is advisable to associate the ENS name with some form of visual checksum: [identicons, Blockies](http://discuss.conflux.network/t/comparing-the-efficacy-of-visual-checksums-identicons-vs-blockies-vs-custom/59) or other custom algorithmic representation of the address.
 
-**添加一个可视校验和：** 使用 ENS 名称时重要的一点就是得向用户指出，这里的名称是指可以关联以太坊地址或其他哈希的 ENS 名称，而不是指 http 链接。为此，建议将 ENS 名称与某种形式的可视校验和（比如地址的 [标识、Blockies](http://discuss.conflux.network/t/comparing-the-efficacy-of-visual-checksums-identicons-vs-blockies-vs-custom/59) 或其他自定义算法表示）相关联。
+{% hint style="danger" %}
+**Visual checksums** like [identicons can be spoofed](https://medium.com/@austin_48503/vanity-blockie-miner-for-ethereum-902fccf0a427) or imitated. Therefore they are **not meant as a security mechanism.** They are only meant as an indicator, to let the user understand that the name is **just a different representation of an Ethereum Address.**
+{% endhint %}
 
+* **Design a truncated version of the ENS name:** ENS names can be very long; besides not being character-limited, users can create an infinite number of subdomains and subdomains of subdomains. If you do show a truncated version of the name, you should provide a way to view the full name, such as expanding it on hover. 
+* **Not all ENS names end with .eth**: ENS names normally end with .eth. However other top-level domains \(TLD\) are currently supported \(.xyz, .luxe, .kred, .art, .club\) and more will be in the future. Consider this if you are thinking about displaying the TLD part in the truncated view of long names.
 
-**可视校验和**像身份识别一样 [可以被欺骗](https://medium.com/@austin_48503/vanity-blockie-miner-for-ethereum-902fccf0a427) 或模仿，所以它们**不能算是一种安全机制**。它们只是一个标识符，让用户知道这个名称**只是以太坊地址的另一种表示**。
+### 1.2 - Always provide an option to see the Ethereum address associated with the ENS name
 
+![by clicking the name, this expanded pop-up appears showing the name with the full address](../.gitbook/assets/ensguidelines_03_expanded1.jpg)
 
-* **设计一个缩略版的 ENS 名称：** ENS 名称可以很长，除了不受字符限制之外，用户还可以创建无限数量的子名称以及子名称的子名称，所以可以考虑设计一个缩略版的 ENS 名称。如果显示了缩略版的名称，则应该提供查看完整名称的方法，例如在悬停时展开整个名称。
-* **不是所有的 ENS 名称都以 .eth 结尾：** ENS 名称通常以 .eth 结尾。但是，ENS 系统目前已经实现了对 `.xyz` `.luxe` `.kred` `.art` `.club` 这几个顶级名称（TLD）的支持，未来还将支持更多的顶级名称。如果你考虑在缩略版的 ENS 名称中显示 TLD 部分，请注意这一点。
+If you are showing the ENS name in its entirety or a truncated version, you should:
 
-### 1.2 - 提供一个可以随时查看与 ENS 名称关联的以太坊地址的方法
+* **Always provide the user a way to display the full Ethereum address**: The above example illustrates a pop-up option. Another option would be to use a tooltip. However, consider that floating / pop-ups may be more appropriate than tooltips because the former also supports the other features described here. 
+* **Provide a view where you display both the ENS name** _**and**_ **the Ethereum address together**: If the pop-up hides the name and only shows the address it's less friendly than showing both at the same time. 
+* **Allow the user to copy the full Ethereum address**: Allow the user to copy the full address either through a copy button or by selecting it. Tooltips displaying the ENS name in this case should stay visible and not automatically disappear. 
+* **Optionally give the user a way to automatically open the Ethereum address in a block explorer** such as Etherscan \(the external link icon in the above example\). 
+* **Optionally show the** **balance amount, but only to the current signed-in user.** User research shows that users tend to recognise their own Ethereum address through their balance, as well as the address itself. This is meant only for the currently "signed in" user: only show their own balance and avoid showing the balance of other users.
 
-![点击名称后，会在弹出窗口中显示名称及其关联的地址](/images/docs/ensguidelines_03_expanded1.jpg)
+### 1.3 - Displaying ENS names and Ethereum addresses together
 
-如果要显示 ENS 的完整名称或缩略版，你应该：
+![example of names with the address visible at the same time](../.gitbook/assets/ensguidelines_02_nameandaddress_2x.jpg)
 
-* **始终为用户提供显示完整的以太坊地址的方法：** 上面的示例演示了一个弹出选项。还有一个方法是使用提示信息，但是浮动或弹出窗口的方式相比提示信息更为合适，因为前者也具备后者能够实现的特点。
-* **提供一个可以同时查看 ENS 名称及其关联地址的的界面：** 相比于弹出窗口只显示地址而隐藏名称的做法，两者同时显示的方式显然对用户更为友好。
-* **允许用户复制完整的以太坊地址：** 允许用户通过复制按钮或点选的方式来复制完整地址，而且在这个过程中，显示 ENS 名称的提示信息应该始终保持可见，不会自动关闭。
-* **选择性地为用户提供自动在区块浏览器中打开以太坊地址的方法** ，比如在 Etherscan 浏览器打开（上面示例中的外部链接图标）。
-* **选择性地显示当前登录用户的余额数量。** 研究表明，用户不但通过地址本身，还倾向于通过余额来识别自己的以太坊地址。这只适用于当前 “已登录” 的用户：只显示他们自己的余额，同时避免显示其他用户的余额。
+In some situations you might want to display both the ENS name _and_ the Ethereum address to which it resolves. These layouts can be useful when:
 
-### 1.3 - 同时显示 ENS 名称和以太坊地址
+* **Displaying the currently connected user**: For the user badge, for example, it could be appropriate to display both the ENS name and a short version of the Ethereum address. 
+* **The user inputs an ENS name into an input field**: This will be described in greater detail in the next chapter that discusses input field resolution. 
+* **In other high-risk situations**: These are situations where the user wants to confirm who a given user/address is, or if you notice that your users keep clicking ENS names because they want to see the Ethereum address in the pop-up, then you could substitute the simple version \(only the ENS name\) with one that displays both the name and the address.
 
-![同时显示名称和地址界面的示例](/images/docs/ensguidelines_02_nameandaddress_2x.jpg)
+## 2. Resolving Input Fields
 
-有时你可能希望同时显示 ENS 名称和它解析到的以太坊地址。当遇到下列情况时，这种显示方式就会派上用场：
+![when resolving an input show both the ENS name and the Address together](../.gitbook/assets/ensguidelines_02b_nameandaddressclear.jpg)
 
-* **显示当前连接的用户：** 例如，用于标识用户时，可以同时显示 ENS 名称和缩略的以太坊地址。
-* **用户向文本框输入 ENS 名称：** 有关内容会在下一节中讨论输入文本解析时进行更详细的描述。
-* **在其他高风险情况下：** 当用户想要证实某个用户或地址是谁时，或者你注意到用户为了在弹出窗口中查看以太坊地址而持续点击 ENS 名称时，你就可以用同时显示名称和地址的方式代替只有名称的显示方式。
+Input fields where a user is supposed to insert Ethereum addresses should also accept and resolve ENS names. These inputs indicate that the user wants to interact with another user's Ethereum address or contract.
 
-## 2. 输入文本解析
+Follow these guidelines to create the best experience:
 
-![解析输入时，同时显示 ENS 名称和地址](/images/docs/ensguidelines_02b_nameandaddressclear.jpg)
+* **Wait before resolving the ENS name**: Wait until the user has typed the last TLD, e.g. .eth, .xyz, .luxe or .kred before resolving the name. Alternatively wait until 0.2 - 1.0 seconds after the user has stopped typing in the input field \(avoid the [eager resolution problem](https://github.com/MetaMask/metamask-extension/issues/4380)\).  
+* **Don't overwrite the input field with the Ethereum address:** Show the resolved ENS name near the input field instead. 
+* **Always display both the ENS name** _**and**_ **the Ethereum address together** : Do this after it has successfully been resolved and possibly add also a visual checksum following the suggestions in guideline 1.1.
 
-在用户可以输入以太坊地址的文本框里也应该支持 ENS 名称的输入和解析，这些输入表明用户希望与另一个用户的以太坊地址或合约进行交互。
+## Other guidelines and tips
 
-通过遵循以下准则，可以建立最好的用户体验:
+### What to do if the Reverse Record doesn't correspond to the Forward Resolution?
 
-* **在解析 ENS 名称之前稍作等待：** 等待用户输完最后的 TLD（比如 .eth 、.xyz 或 .luxe），或者是在用户停止输入后等待 0.2-1 秒的时间，然后再解析输入的名称（要避免出现 [急于解析的问题](https://github.com/MetaMask/metamask-extension/issues/4380)）。
-* **不要用以太坊地址覆盖输入的字段：** 应该在输入字段附近显示解析后的 ENS 名称。
-* **始终同时显示 ENS 名称和以太坊地址：** 在成功实现该功能后再执行此操作，而且最好是根据准则 1.1 中的建议添加可视校验和。
+As mentioned before, user can set the [Reverse Record](https://docs.ens.domains/dapp-developer-guide/resolving-names#reverse-resolution) to be anything they want, even a name owned by another user or a completely random string. This is why, after retrieving the name written in the Reverse Record, a dApp developer should also check that it matches the forward resolution, which means the address that ENS name points to.  
+**If the two don't match, you MUST NOT show the human readable name and simply leave the plain Ethereum Address.** If you don't, users may be able to impersonate other users in your dApp.  
+The chapter on Reverse Resolution has [code](https://docs.ens.domains/dapp-developer-guide/resolving-names#reverse-resolution) for you to do this check.
 
-## 其他指南和提示
+### Options for displaying usernames
 
-### 如果反向记录和正向解析不能正确对应时该怎么办
+The obvious choice is to use the user's ENS name as a username. You can do this by providing a mechanism for your users to register a name under your own subdomain, or by looking up the user's ENS name using reverse resolution.
 
-如前所述，用户可以将 [反向解析记录](resolving-names.html#反向解析) 设置为任何内容，甚至是另一个用户拥有的名称或者完全随机的字符串。这就是为什么在查询了写在反向记录中的名称之后，DApp 开发者还应该检查它是否匹配正向解析，因为正向解析标明了 ENS 名称指向的地址。
-**如果两者不匹配，就不能显示可读的名称，只能直接显示以太坊地址。** 否则，用户可能会在你的 DApp 中冒充其他用户。
-关于反向解析的章节中含有用于此类验证的 [代码](resolving-names.html#反向解析)。
+### **Caching and Updating ENS Names**
 
-### 关于用户名的显示
+If your dApp needs to display many Ethereum Addresses or ENS Names in the UI, you can also consider **caching** the ENS Name after it has been resolved \(and verified\) or after the user has added the name in an input field.
 
-最为直接的方式是将用户的 ENS 名称作为用户名显示。为此，可以让用户在你的子名称下注册一个名称，或者使用反向解析查找用户的 ENS 名称。
+Your **optimistic UI** can safely display the names from cache **in all non-risky situations**, in which your user for example is simply browsing, but doesn't need to act or make decisions, especially risky ones, based on the information displayed.  
+However, **in all** _**risky**_ **situations** \(eg transferring ETH, tokens or other value\), or when the user is interacting with another ENS Name / Ethereum Address, you should **perform a direct live resolution** and get the most up to date information from the ENS Registry.
 
-### **缓存和更新 ENS 名称**
+Also consider that users can change their information in the ENS registry at any time so you should **periodically validate the information you cached**. For this you can also subscribe to certain **Events** made available by the contracts \(especially [AddrChanged](https://docs.ens.domains/contract-api-reference/publicresolver#set-ethereum-address), and [NameChanged](https://docs.ens.domains/contract-api-reference/publicresolver#set-canonical-name)\).
 
-如果你的 DApp 需要在 UI 界面中显示许多以太坊地址或 ENS 名称，你还可以考虑在解析（和验证）该名称后，或是用户在输入字段中添加该名称之后，将这个 ENS 名称**缓存**起来。
-  
-你的**开放式 UI** 可以在**毫无风险的情况下**安全地显示缓存中的名称，例如，用户只是在浏览，并且不需要根据显示的信息采取行动或做出决策，尤其是有风险的决策。
-但是，在所有**存在危险的情况下**（如转移 ETH 、代币或其他值），或者当用户与另一个 ENS 名称或以太坊地址交互时，你就应该**直接执行实时解析**，并从 ENS 注册表中获取最新的信息。
-  
-此外，考虑到用户可以随时更改ENS注册表中的信息，你还应该**定期验证当前缓存的信息**。为此，你可以订阅相关合约中发生的一些特定**事件**，尤其是 [AddrChanged](../contract-api-reference/publicresolver.html#设置以太坊地址) 和 [NameChanged](../contract-api-reference/publicresolver.html#设置规范名称)。
+\*\*\*\*
 
-### 关于显示以太坊地址的说明（无论有没有 ENS 名称）
+### Notes on displaying Ethereum Addresses \(with or without ENS names\)
 
-研究表明，即使在 ENS 名称未启用的情况下，在 DApps 中显示以太坊地址时也有一些好的经验可以借鉴。
+Even when ENS names are not available, [research](https://medium.com/@lyricalpolymath/web3designdecisionframework-e84075816515) [shows](https://medium.com/@lyricalpolymath/web3-design-principles-f21db2f240c1) that there are some good practices to follow when displaying Ethereum addresses in dApps.
 
-* **始终以 “0x” 开头**，以表明它是一个地址。
-* 需要缩略显示名称时，可以**显示地址的前 4 个和后 4 个字符**。相对来说，缩略地址更容易被欺骗，所以这并不是一个安全要求，但这是一个很好的经验，因为有些用户检查名称的开头，有些用户检查名称的结尾。而且，我们的大脑可以轻松划分、解析和记忆的字符最多为 4 个。
-* **始终提供一种显示完整以太坊地址的方式。**可以采用与显示 ENS 名称或提示信息相同的弹出组件。
+* **Always show the initial ' 0x '** to indicate it's an address. 
+* When displaying the name in shorthand versions, **show the first 4 and last 4 characters of the address**. This is not a security requirement as vanity addresses can be spoofed relatively simply; this is a good practice because some users check the beginning of the name and others check the end of the name. Also, four is the highest number of elements that our mind can easily chunk, parse and remember well. 
+* **Always provide a way to display the full Ethereum address.** Use the same pop-up component that you would use to display ENS names or a tooltip style.
 
-![使用 decentralandUI 提示信息显示完整地址](/images/docs/ensguidelines_03_expanded2simple_justatooltip2.jpg)
+![decentralandUI Tooltip showing the full Address](../.gitbook/assets/ensguidelines_03_expanded2simple_justatooltip2.jpg)
 
-前面提到的一些经验也适用于缩略的以太坊地址：
+Other guidelines previously mentioned also apply for simple Ethereum addresses:
 
-* **允许用户复制完整的以太坊地址**（就像前面说到的一样，提示信息可能不是一个好方法）。
-* 选择性地为用户提供自动**在区块浏览器中打开以太坊地址**的方法。
+* **Allow the user to copy the full Ethereum address** \(which mean that tooltips might not be good practice\). 
+* \(Optionally\) allow the user to automatically **open the address in a block explorer.** 
 
-## 前端工具
+## Front-End tools
 
-* **Aragon-UI** - [Address Badge组件](https://github.com/aragon/design/issues/3)（[Design Files](https://github.com/aragon/design) / [代码](https://github.com/aragon/aragon-ui/tree/master/src/components/Badge)）
-* **Decentraland-UI** - [地址提示工具](https://ui.decentraland.org/?selectedKind=Address&selectedStory=Tooltip&full=0&addons=1&stories=1&panelRight=0&addonPanel=storybook%2Fstories%2Fstories-panel)（非 ENS 专用）
+* **Aragon-UI** - [Address Badge component](https://github.com/aragon/design/issues/3) \([Design Files](https://github.com/aragon/design) / [code](https://github.com/aragon/aragon-ui/tree/master/src/components/Badge)\)
+* **Decentraland-UI** - [address Tooltip](https://ui.decentraland.org/?selectedKind=Address&selectedStory=Tooltip&full=0&addons=1&stories=1&panelRight=0&addonPanel=storybook%2Fstories%2Fstories-panel) \(not ENS specific\)
 

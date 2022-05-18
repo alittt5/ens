@@ -1,14 +1,15 @@
 ---
-part: ENS 中文文档
-subpart: ensip
-title: 初始哈希注册器
-description: Describes the hash registrar initially used to register ENS .eth domains (formerly EIP-162).
+description: >-
+  Describes the hash registrar initially used to register ENS .eth domains
+  (formerly EIP-162).
 ---
 
-| **作者**  | Maurelian, Nick Johnson, Alex Van de Sande |
-| ----------- | ---------------------------- |
-| **状态**  | 废止 |
-| **创建日期** | 2016-10-25 |
+# ENSIP-2: Initial Hash Registrar
+
+| **Author**  | Maurelian, Nick Johnson [nick@ethereum.org](mailto:nick@ethereum.org), Alex Van de Sande [avsa@ethereum.org](mailto:avsa@ethereum.org) |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| **Status**  | Obsolete                                                                                                                               |
+| **Created** | 2016-10-25                                                                                                                             |
 
 ### Abstract
 
@@ -80,12 +81,12 @@ The following table outlines important parameters which define the Registrar's a
 
 **Registrar Parameters**
 
-| Name | Description | Value |
-| ------------------ | ---------------------- | ---------- |
-| totalAuctionLength | The full time period from start of auction to end of the reveal period.  | 5 days |
-| revealPeriod  | The length of the time period during which bidding is no longer allowed, and bids must be revealed. | 48 hours   |
-| launchLength  | The time period during which all names will become available for auction. | 8 weeks  |
-| minPrice  | The minimum amount of ether which must be locked up in exchange for ownership of a name. | 0.01 ether |
+| Name               | Description                                                                                         | Value      |
+| ------------------ | --------------------------------------------------------------------------------------------------- | ---------- |
+| totalAuctionLength | The full time period from start of auction to end of the reveal period.                             | 5 days     |
+| revealPeriod       | The length of the time period during which bidding is no longer allowed, and bids must be revealed. | 48 hours   |
+| launchLength       | The time period during which all names will become available for auction.                           | 8 weeks    |
+| minPrice           | The minimum amount of ether which must be locked up in exchange for ownership of a name.            | 0.01 ether |
 
 #### Deeds
 
@@ -205,7 +206,7 @@ After the registration date has passed, this function can be called to finalize 
 
 `function transferRegistrars(bytes32 _hash) onlyOwner(_hash);`
 
-* Used during the upgrade process to a permanent registrar. If this registrar is no longer the owner of the its root node in the ENS, this function will transfers the deed to the current owner, which should be a new registrar. This function throws if this registrar still owns its root node.
+* Used during the upgrade process to a permanent registrar. If this registrar is no longer the owner of the root node in the ENS, this function will transfer the deed to the current owner, which should be a new registrar. This function throws if this registrar still owns its root node.
 
 ### Rationale
 

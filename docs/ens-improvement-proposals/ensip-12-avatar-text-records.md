@@ -1,97 +1,96 @@
 ---
-part: ENS 中文文档
-subpart: ensip
-title: 'ENSIP-12: 头像文本记录'
-description: 在 ENS 中存储头像文本记录的标准。
+description: A standard for storage of the avatar text record in ENS.
 ---
 
-| **作者**    | Nick Johnson \<nick@ens.domains>, Makoto Inoue \<makoto@ens.domains> |
+# ENSIP-12: Avatar Text Records
+
+| **Author**    | Nick Johnson \<nick@ens.domains>, Makoto Inoue \<makoto@ens.domains> |
 | ------------- | -------------------------------------------------------------------- |
-| **状态**    | 草案                                                                |
-| **提交时间** | 2022-01-18                                                           |
+| **Status**    | Draft                                                                |
+| **Submitted** | 2022-01-18                                                           |
 
-### 摘要
+### Abstract
 
-这个 ENSIP 定义了从 ENS 检索头像 URI 的过程、ENS 'avatar' 文本字段的几个 [URI](https://datatracker.ietf.org/doc/html/rfc3986) 方案，以及希望显示用户头像的客户端应该如何解译这些方案。
+This ENSIP defines a process for retrieving avatar URIs from ENS, several [URI](https://datatracker.ietf.org/doc/html/rfc3986) schemes for the ENS 'avatar' text field, and how they should be interpreted by clients wishing to display a user's avatar image.
 
-### 动机
+### Motivation
 
-ENS 主名称 (以前称为反向记录) 已经被广泛集成为许多基于以太坊的应用程序的 web3 用户名。随着多个应用程序开始指定头像并允许用户将 NFT 作为头像，现在将头像信息存储在 ENS 中以便在不同应用程序之间共享头像信息的做法已经司空见惯。
+ENS primary name (formerly known as reverse record) has been widely integrated as a de facto web3 user name across many Ethereum based applications. As multiple apps started specifying avatar profile image as well as let users pick NFT as pfp (profile image), it became obvious to store such information within ENS so that the avatar information can be shared across different applications.
 
-该规范使用 [ENSIP-5: 头像文本记录](ensip-5-text-records.html)将存储和检索这些信息的方法进行了标准化。
+This specification standardises a way to store and retrieve this information using [ENSIP-5: Avatar Text Records](ensip-5-text-records.md)
 
-### 规范
+### Specification
 
-#### 检索头像 URI
+#### Retrieving the avatar URI
 
-检索头像 URI 的过程取决于客户端是否从以太坊地址或 ENS 名称开始。
+The process for retrieving the avatar URI depends on whether the client has an Ethereum address or an ENS name to start with.
 
-#### ENS 名称
+#### ENS Name
 
-为了确定一个 ENS 名称的头像 URI，客户端必须首先在解析器中查找这个名称并调用 `.text(namehash(name), 'avatar')` 来检索这个名称的头像 URI。
+To determine the avatar URI for an ENS name, the client MUST first look up the resolver for the name and call `.text(namehash(name), 'avatar')` on it to retrieve the avatar URI for the name.
 
-客户端必须将以下情况视为找不到有效的头像 URI：解析器不存在；在解析器上调用 `addr` 方法时遇到的回退；或者解析器返回空字符串。
+The client MUST treat the absence of a resolver, an revert when calling the `addr` method on the resolver, or an empty string returned by the resolver identically, as a failure to find a valid avatar URI.
 
-#### 以太坊地址
+#### Ethereum Address
 
-为了确定一个以太坊地址的头像 URI，客户端必须通过在 ENS 注册表中查询 `<address>.addr.reverse` 的解析器来反向解析这个地址，其中 `<address>` 是小写十六进制编码的以太坊地址，不带 '0x'。然后，客户端调用 `.text(namehash('<address>.addr.reverse'), 'avatar')` 来检索该地址的头像 URI。
+To determine the avatar URI for an Ethereum address, the client MUST reverse-resolve the address by querying the ENS registry for the resolver of `<address>.addr.reverse`, where `<address>` is the lowercase hex-encoded Ethereum address, without leading '0x'. Then, the client calls `.text(namehash('<address>.addr.reverse'), 'avatar')` to retrieve the avatar URI for the address.
 
-如果一个解析器返回了反向记录，但是调用 `text` 时发生回退或返回一个空字符串，客户端必须调用 `.name(namehash('<address>.addr.reverse'))`。如果这个方法返回一个有效的 ENS 名称，客户端必须:
+If a resolver is returned for the reverse record, but calling `text` causes a revert or returns an empty string, the client MUST call `.name(namehash('<address>.addr.reverse'))`. If this method returns a valid ENS name, the client MUST:
 
-1. 通过解析返回的名称并在解析器上调用 `addr`，检查它是否与原始以太坊地址匹配，以此来验证反向记录是有效的。
-2. 执行上文中 'ENS 名称' 部分描述的过程，查找名称对应的有效的头像 URI。
+1. Validate that the reverse record is valid, by resolving the returned name and calling `addr` on the resolver, checking it matches the original Ethereum address.
+2. Perform the process described under 'ENS Name' to look for a valid avatar URI on the name.
 
-这个过程中任何一步遇到失败都必须被客户端视为找不到有效的头像 URI。
+A failure at any step of this process MUST be treated by the client identically as a failure to find a valid avatar URI.
 
-#### 通用格式
+#### General Format
 
-'avatar' 文本字段必须格式化为 URI。客户端必须忽略他们不能识别的 URI 类型，将它们看作没有设置该字段一样。
+The 'avatar' text field MUST be formatted as a URI. Clients MUST ignore URI types they do not recognise, treating them the same as if no value was set for the field.
 
-#### 图像类型
+#### Image Types
 
-客户端必须支持 mime 类型为 `image/jpeg`、`image/png` 和 `image/svg+xml` 的图像。客户端可以支持其他的图像类型。
+Clients MUST support images with mime types of `image/jpeg`, `image/png`, and `image/svg+xml`. Clients MAY support additional image types.
 
-#### URI 类型
+#### URI Types
 
-所有客户端都应该支持下面定义的 URI 方案。它们可以实现本规范中未定义的附加方案。
+All clients SHOULD support the URI schemes defined below. They MAY implement additional schemes not defined in this specification.
 
 **`https`**
 
-如果提供的是 https URI，它必须直接解析为头像图像。https URL 不能解析为 HTML 页面、元数据或其他包含头像的内容。
+If an https URI is provided, it MUST resolve to an avatar image directly. https URLs MUST NOT resolve to HTML pages, metadata, or other content containing the avatar image.
 
 **`ipfs`**
 
-如果提供的是 [ipfs URI](https://docs.ipfs.io/how-to/address-ipfs-on-web/#native-urls)，它必须直接解析为头像图像。没有内置 IPFS 支持的客户端可以在解析为 https URL 之前，将 URI 重写为引用 IPFS 网关的 https URL，如[这篇文档](https://docs.ipfs.io/how-to/address-ipfs-on-web/)所述。
+If an [ipfs URI](https://docs.ipfs.io/how-to/address-ipfs-on-web/#native-urls) is provided, it MUST resolve to an avatar image directly. Clients without built-in IPFS support MAY rewrite the URI to an https URL referencing an IPFS gateway as described in [this document](https://docs.ipfs.io/how-to/address-ipfs-on-web/) before resolving it as an https URL.
 
 **`data`**
 
-如果提供的是 [data URL](https://datatracker.ietf.org/doc/html/rfc2397)，它必须直接解析为头像图像。
+If a [data URL](https://datatracker.ietf.org/doc/html/rfc2397) is provided, it MUST resolve to an avatar image directly.
 
-**NFT**
+**NFTs**
 
-对 NFT 的引用可以作为头像 URI 使用，遵循在 [CAIP-22](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-22.md) 和 [CAIP-29](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-29.md) 中定义的标准。
+A reference to an NFT may be used as an avatar URI, following the standards defined in [CAIP-22](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-22.md) and [CAIP-29](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-29.md).
 
-客户端必须至少支持 ERC721 和 ERC1155 类型的 NFT，并且可以支持其他类型的 NFT。
+Clients MUST support at least ERC721 and ERC1155 type NFTs, and MAY support additional types of NFT.
 
-要解析 NFT URI，客户端遵循以下过程:
+To resolve an NFT URI, a client follows this process:
 
-1. 检索 `avatar` 字段 URI 中指定的代币的元数据 URI。
-2. 解析元数据 URI，获取 ERC721 或 ERC1155 元数据。
-3. 提取 NFT 元数据中指定的图像 URL。
-4. 解析图像 URL 并使用它作为头像。
+1. Retrieve the metadata URI for the token specified in the `avatar` field URI.
+2. Resolve the metadata URI, fetching the ERC721 or ERC1155 metadata.
+3. Extract the image URL specified in the NFT metadata.
+4. Resolve the image URL and use it as the avatar.
 
-客户端必须至少支持 `https` 和 `ipfs` URI 来解析元数据 URI 和头像，并且可以支持其他的方案。客户端可以通过如上所述将 URI 重写为引用 IPFS 网关的 HTTPS URL 来实现 `ifps` 方案的支持。
+Clients MUST support at least `https` and `ipfs` URIs for resolving the metadata URI and the avatar image, and MAY support additional schemes. Clients MAY implement `ifps` scheme support by rewriting the URI to an HTTPS URL referencing an IPFS gateway as described above.
 
-客户端还应采取以下验证步骤:
+Clients SHOULD additionally take the following verification steps:
 
-1. 在通过正向解析 (从 ENS 名称开始) 检索头像 URI 的位置，在同一个解析器上针对同一个名称调用 `addr` 函数，来检索名称解析到的以太坊地址。否则，如果头像 URI 是通过反向解析 (从以太坊地址开始) 检索的，则使用该地址。
-2. 验证步骤 1 中的地址是 URI 中指定的 NFT 的所有者。如果不是，客户端必须将 URI 视为无效，并按照与没有指定头像 URI 时相同的方式进行处理。
+1. Where the avatar URI was retrieved via forward resolution (starting from an ENS name), call the `addr` function on the same resolver and for the same name to retrieve the Ethereum address to which the name resolves. Otherwise, if the avatar URI was retrieved via reverse resolution (starting from an Ethereum address), use that address.
+2. Verify that the address from step 1 is an owner of the NFT specified in the URI. If it is not, the client MUST treat the URI as invalid and behave in the same manner as they would if no avatar URI was specified.
 
-客户端可以通过重写为 `https` URI 来支持 NFT 头像解析服务。
+Clients MAY support NFT URIs by rewriting them to `https` URIs for a service that provides NFT avatar image resolution support.
 
-### 示例
+### Examples
 
-以下示例均解析至同一个头像图片:
+The following examples all resolve to the same avatar image:
 
 ```
 eip155:1/erc721:0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d/0 # BAYC token 0
@@ -99,14 +98,14 @@ ipfs://QmRRPWG96cmgTn2qSzjwr2qvfNEuhunv6FNeMFGa9bx6mQ # IPFS hash for BAYC token
 https://ipfs.io/ipfs/QmRRPWG96cmgTn2qSzjwr2qvfNEuhunv6FNeMFGa9bx6mQ # HTTPS URL to IPFS gateway for BAYC token 0 image
 ```
 
-### 向后兼容性
+### Backwards Compatibility
 
-不适用。
+Not applicable.
 
-### 安全注意事项
+### Security Considerations
 
-无。
+None.
 
-### 版权
+### Copyright
 
-通过 [CC0](https://creativecommons.org/publicdomain/zero/1.0/) 放弃版权及相关权利。
+Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).

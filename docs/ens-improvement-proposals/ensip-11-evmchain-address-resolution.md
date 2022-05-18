@@ -1,30 +1,29 @@
 ---
-part: ENS 中文文档
-subpart: ensip
-title: 'ENSIP-11: EVM 兼容链的地址解析'
-description: 引入 EVM 兼容链的代币类型 (修订 ENSIP9)。
+description: Introduces coinType for EVM compatible chains (amending ENSIP9).
 ---
 
-| **作者**    | Makoto Inoue \<makoto@ens.domains> |
-| ------------- | -------------------------------- |
-| **状态**    | 草案                            |
-| **提交时间** | 2022-01-13                       |
+# ENSIP-11: EVM compatible Chain Address Resolution
 
-### 摘要
+| **Author**    | Makoto Inoue \<makoto@ens.domains> |
+| ------------- | ---------------------------------- |
+| **Status**    | Draft                              |
+| **Submitted** | 2022-01-13                         |
 
-这个 ENSIP 扩展了 [ENSIP 9 (多链地址解析)](ensip-9-multichain-address-resolution.html)，为兼容 EVM 的链规定了一系列代币类型，并指定了一种将 EVM 链 ID 派生到指定代币类型的方法。
+### Abstract
 
-专用范围使用超过 0x80000000 (2147483648)，这是在 ENSIP 9 下保留的，因此代币类型不可能出现冲突，其他非 EVM 代币类型会在未来增加。然而，一些以前分配给 EVM 链 ID 的代币类型将被弃用。
+This ENSIP extends [ENSIP 9 (multichain address resolution)](ensip-9-multichain-address-resolution.md), dedicates a range of coin types for EVM compatible chains, and specifies a way to derive EVM chain IDs to the designated coin types.
 
-### 动机
+The dedicated range uses over 0x80000000 (2147483648) which is reserved under ENSIP 9 so there will be no possibility of coin type collision with other non EVM coin types to be added in future. However, some of coin types previously allocated to EVM chain ides will be deprecated.
 
-现有的 ENSIP 9 依赖于 [SLIP44](https://github.com/satoshilabs/slips/blob/master/slip-0044.md) 上存在的代币类型，它被设计用来为确定性钱包定义地址编码类型。由于大多数 EVM 兼容链继承与以太坊相同的编码类型，因此不断请求将 EVM 兼容链添加到 SLIP 44 中是多余的。本规范标准化了一种基于[链 ID](https://chainlist.org) 派生出代币类型的方法。
+### Motivation
 
-### 规范
+The existing ENSIP 9 relies on the existence of coin types on [SLIP44](https://github.com/satoshilabs/slips/blob/master/slip-0044.md) which was designed to define address encoding type for deterministic wallets. As the majority of EVM compatible chains inherit the same encoding type as Ethereum, it is redundant to keep requesting the addition of EVM compatible chains into SLIP 44. This specification standardises a way to derive coinType based on [Chain ID](https://chainlist.org).
 
-该规范修正了 ENSIP 9，规定具有最高有效位集的代币类型将被视为 EVM 链 ID。MSB 在 SLIP44 中保留，用于其他与 HD 钱包密钥派生相关的用途，因此在这个范围内不存在代币类型。
+### Specification
 
-计算 EVM 链的新代币类型时，将链 ID 和 `0x80000000` 进行“位-或”计算: `0x80000000 | chainId`。
+This specification amends ENSIP 9 to specify that coin types with the most-significant bit set are to be treated as EVM chain IDs. The MSB is reserved in SLIP44 for other purposes relating to HD wallet key derivation, so no coin types exist in this range.
+
+To compute the new coin type for EVM chains, bitwise-OR the chain ID with `0x80000000`: `0x80000000 | chainId`.
 
 ```typescript
 export const convertEVMChainIdToCoinType = (chainId: number) =>{
@@ -32,7 +31,7 @@ export const convertEVMChainIdToCoinType = (chainId: number) =>{
 }
 ```
 
-反向操作时，将代币类型和 `0x7fffffff` 进行“位-与”计算: `0x7fffffff & coinType`。
+And to reverse the operation, bitwise-AND the cointType with `0x7fffffff`: `0x7fffffff & coinType`.
 
 ```typescript
 export const convertCoinTypeToEVMChainId = (coinType: number) =>{
@@ -40,13 +39,13 @@ export const convertCoinTypeToEVMChainId = (coinType: number) =>{
 }
 ```
 
-#### 实现
+#### Implementation
 
-[ensdomains/address-encoder](https://github.com/ensdomains/address-encoder/) 仓库中提供了该接口的实现。
+An implementation of this interface is provided in the [ensdomains/address-encoder](https://github.com/ensdomains/address-encoder/) repository.
 
-#### 示例
+#### Example
 
-要为 EVM 链计算新的代币类型，需调用 `convertEVMChainIdToCoinType(chainId)`
+To compute the new coin type for EVM chains, call `convertEVMChainIdToCoinType(chainId)`
 
 ```javascript
 const encoder = require('@ensdomains/address-encoder')
@@ -56,7 +55,7 @@ const encoder = require('@ensdomains/address-encoder')
 61
 ```
 
-你也可以使用现有的 formatsByName 和 formatsByCoinType 函数来派生这些链 ID
+You can also use existing functions formatsByName and formatsByCoinType to derive these chain IDs
 
 ```javascript
 > encoder.formatsByName['XDAI']
@@ -75,18 +74,18 @@ const encoder = require('@ensdomains/address-encoder')
 }
 ```
 
-#### 例外
+#### Exceptions
 
-以下 EVM 链是这个标准的例外。
+The following EVM chains are the exception to this standard.
 
-* AVAX = AVAX 有多链地址格式，只有 c 链兼容 EVM
-* RSK = RSK 有自己的额外验证
+* AVAX = AVAX has multiple chain address formats, and only c chain is EVM compatible
+* RSK = RSK has its own additional validation
 
-他们将继续使用在 SLIP44 定义的代币类型
+They will continue using coinType defined at SLIP44
 
-#### 向后兼容性
+#### Backwards Compatibility
 
-在引入这个新标准之前，存在以下 EVM 兼容的类型。
+The following EVM compatible cointypes existed before introducing this new standard.
 
 * NRG
 * POA
@@ -101,8 +100,8 @@ const encoder = require('@ensdomains/address-encoder')
 * XDAI
 * ETC
 
-出于向后兼容的目的显示它们时，将 `_LEGACY` 附加到代币类型并使其为只读。
+When you display them for backward compatibility purposes, append `_LEGACY` to the cointype and make them read only.
 
-### 版权
+### Copyright
 
-通过 [CC0](https://creativecommons.org/publicdomain/zero/1.0/) 放弃版权及相关权利。
+Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
